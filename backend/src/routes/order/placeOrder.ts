@@ -1,10 +1,10 @@
+import { D1Database } from '@cloudflare/workers-types'
 import { Context } from 'hono'
+import { customAlphabet } from 'nanoid'
 import z from 'zod'
 import { getDB } from '../../db/db'
-import { orders } from '../../db/schema/orders'
 import { orderItems } from '../../db/schema/orderItems'
-import { customAlphabet } from 'nanoid'
-import { D1Database } from '@cloudflare/workers-types'
+import { orders } from '../../db/schema/orders'
 
 export interface Env {
   DB: D1Database
@@ -41,52 +41,61 @@ export async function placeOrder(c: Context) {
     const parsed = OrderRequestSchema.safeParse(body)
 
     if (!parsed.success) {
-      return c.json({ error: parsed.error.flatten() }, 400)
+      return c.json({ error: parsed.error.message }, 400)
     }
 
-    const order: OrderRequest = parsed.data
+    const order = parsed.data
     const db = getDB(c.env.DB)
-
-    const order_id = generateOrderId()
     const created_at = new Date().toISOString()
+    const total_amount = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-    const total_amount = order.items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    )
+    // Generate unique order ID with retry
+    let order_id: string
+    while (true) {
+      order_id = generateOrderId()
+      const existing = await db.query.orders.findFirst({
+        where: (fields, { eq }) => eq(fields.order_id, order_id)
+      })
+      if (!existing) break
+    }
 
-    // Insert into orders table
-    await db.insert(orders).values({
-      order_id,
-      customer_name: order.customerName,
-      customer_phone: order.customerPhone,
-      customer_address: order.customerAddress,
-      total_amount,
-      status: 'pending',
-      payment_method: order.paymentMethod,
-      payment_status: 'pending',
-      stripe_payment_id: order.stripeToken ?? null,
-      created_at,
-    }).run()
-
-    // Insert orderItems 
-    await db.insert(orderItems).values(
-      order.items.map((item) => ({
+    // transaction
+    await db.transaction(async (tx) => {
+      await tx.insert(orders).values({
         order_id,
-        name: item.name,
-        price: item.price.toString(),
-        quantity: item.quantity.toString(),
-      }))
-    ).run()
+        customer_name: order.customerName.trim(),
+        customer_phone: order.customerPhone,
+        customer_address: order.customerAddress.trim(),
+        total_amount,
+        status: 'pending',
+        payment_method: order.paymentMethod,
+        payment_status: 'pending',
+        stripe_payment_id: order.stripeToken ?? null,
+        created_at,
+      }).run()
+
+      await tx.insert(orderItems).values(
+        order.items.map((item) => ({
+          order_id,
+          name: item.name.trim(),
+          price: item.price.toString(),
+          quantity: item.quantity.toString(),
+        }))
+      ).run()
+    })
 
     return c.json({
       success: true,
       orderId: order_id,
       totalAmount: total_amount,
+      createdAt: created_at,
       message: 'Order placed successfully',
     })
   } catch (error) {
-    console.error('Error placing order:', error)
+    console.error('Order Placement Failed', {
+      error,
+      timestamp: new Date().toISOString(),
+    })
     return c.json({ error: 'Internal Server Error' }, 500)
   }
 }
