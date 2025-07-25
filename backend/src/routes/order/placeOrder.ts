@@ -49,7 +49,6 @@ export async function placeOrder(c: Context) {
     const created_at = new Date().toISOString()
     const total_amount = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-    // Generate unique order ID with retry
     let order_id: string
     while (true) {
       order_id = generateOrderId()
@@ -59,30 +58,31 @@ export async function placeOrder(c: Context) {
       if (!existing) break
     }
 
-    // transaction
-    await db.transaction(async (tx) => {
-      await tx.insert(orders).values({
-        order_id,
-        customer_name: order.customerName.trim(),
-        customer_phone: order.customerPhone,
-        customer_address: order.customerAddress.trim(),
-        total_amount,
-        status: 'pending',
-        payment_method: order.paymentMethod,
-        payment_status: 'pending',
-        stripe_payment_id: order.stripeToken ?? null,
-        created_at,
-      }).run()
-
-      await tx.insert(orderItems).values(
-        order.items.map((item) => ({
-          order_id,
-          name: item.name.trim(),
-          price: item.price.toString(),
-          quantity: item.quantity.toString(),
-        }))
-      ).run()
+    // Create batch of queries
+    const insertOrderQuery = db.insert(orders).values({
+      order_id,
+      customer_name: order.customerName.trim(),
+      customer_phone: order.customerPhone,
+      customer_address: order.customerAddress.trim(),
+      total_amount,
+      status: 'pending',
+      payment_method: order.paymentMethod,
+      payment_status: 'pending',
+      stripe_payment_id: order.stripeToken ?? null,
+      created_at,
     })
+
+    const insertItemQueries = order.items.map((item) =>
+      db.insert(orderItems).values({
+        order_id,
+        name: item.name.trim(),
+        price: item.price.toString(),
+        quantity: item.quantity.toString(),
+      })
+    )
+
+    // Execute batch
+    await db.batch([insertOrderQuery, ...insertItemQueries])
 
     return c.json({
       success: true,
