@@ -1,67 +1,68 @@
 import { Context } from "hono";
-import z from "zod";
 import { getDB } from "../../db/db";
 import { orders, orderItems } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
-
-
 export async function viewOrders(c: Context) {
     try {
-        const body = await c.req.json();
-        const parsedBody = GetOrdersSchema.safeParse(body);
-
-        if (!parsedBody.success) {
-            return c.json({ error: parsedBody.error.flatten() }, 400);
-        }
-
-        const data: GetOrder = parsedBody.data;
         const db = getDB(c.env.DB);
 
-        // Perform LEFT JOIN between orders and orderItems
+        // LEFT JOIN orders with orderItems
         const joined = await db
             .select({
                 order: orders,
                 item: orderItems,
             })
             .from(orders)
-            .leftJoin(orderItems, eq(orders.order_id, orderItems.order_id))
-            .where(eq(orders.order_id, data.order_id));
+            .leftJoin(orderItems, eq(orders.order_id, orderItems.order_id));
 
-        if (joined.length === 0) {
-            return c.json({ error: "Order not found" }, 404);
+        // Group by order_id
+        const ordersMap = new Map<
+            string,
+            {
+                order: typeof orders.$inferSelect;
+                items: { name: string; price: string; quantity: string }[];
+            }
+        >();
+
+        for (const row of joined) {
+            const orderId = row.order.order_id;
+            if (!ordersMap.has(orderId)) {
+                ordersMap.set(orderId, {
+                    order: row.order,
+                    items: [],
+                });
+            }
+
+            if (row.item) {
+                ordersMap.get(orderId)!.items.push({
+                    name: row.item.name,
+                    price: row.item.price,
+                    quantity: row.item.quantity || '0',
+                });
+            }
         }
 
-        const { order } = joined[0];
-
-        if (order.customer_phone !== data.ph_no) {
-            return c.json({ error: "Phone number does not match order." }, 403);
-        }
-        const items = joined
-            .filter((j): j is { order: typeof orders.$inferSelect; item: typeof orderItems.$inferSelect } => j.item !== null)
-            .map(j => ({
-                name: j.item.name,
-                price: j.item.price,
-                quantity: j.item.quantity,
-            }))
+        const result = Array.from(ordersMap.values()).map(({ order, items }) => ({
+            orderId: order.order_id,
+            name: order.customer_name,
+            phone: order.customer_phone,
+            address: order.customer_address,
+            total: order.total_amount,
+            paymentMethod: order.payment_method,
+            paymentStatus: order.payment_status,
+            status: order.status,
+            createdAt: order.created_at,
+            items,
+        }));
 
         return c.json({
             success: true,
-            order: {
-                orderId: order.order_id,
-                name: order.customer_name,
-                phone: order.customer_phone,
-                address: order.customer_address,
-                total: order.total_amount,
-                paymentMethod: order.payment_method,
-                paymentStatus: order.payment_status,
-                status: order.status,
-                createdAt: order.created_at,
-            },
-            items,
+            count: result.length,
+            orders: result,
         });
     } catch (error: any) {
-        console.error("Order lookup failed", {
+        console.error("Fetch all orders failed", {
             error,
             timestamp: new Date().toISOString(),
         });
