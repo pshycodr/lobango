@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { IonIcon } from '@ionic/react';
 import { chevronForward } from 'ionicons/icons';
 import Button from '../common/Button';
-import {Rubik, Shadows_Into_Light} from "next/font/google"
+import { Rubik, Shadows_Into_Light } from "next/font/google"
 
 const rubikFont = Rubik({
-  subsets : ['latin'],
+  subsets: ['latin'],
 })
 const shadows_Into_Light = Shadows_Into_Light({
   subsets: ['latin'],
@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative  bg-[url('/assets/images/hero-bg.jpg')] bg-cover bg-center bg-no-repeat px-20 pt-[145px] pb-[150px] text-center md:text-left overflow-hidden z-10"
+      className="relative  bg-[url('/assets/images/hero-bg.jpg')] bg-cover bg-center bg-no-repeat px-20 pt-[145px] pb-[200px] text-center md:text-left overflow-hidden z-10"
     >
       <div className="container mx-auto px-4">
         <div className="relative z-20">
@@ -38,7 +38,7 @@ export default function Hero() {
         </div>
 
         {/* Hero Banner - Hidden on mobile, visible on desktop */}
-        <div className="hidden md:block absolute top-[20%] right-[50px] max-w-[45%] aspect-[1/0.9] z-10">
+        <div className="w-2xl hidden md:block absolute top-[20%] right-[50px] max-w-[45%] aspect-[1/0.9] z-10">
           <Image
             src="/assets/images/hero-banner-bg.png"
             width={820}

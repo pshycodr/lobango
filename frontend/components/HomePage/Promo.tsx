@@ -53,7 +53,7 @@ export default function Promo() {
   };
 
   return (
-    <section className="section-divider bg-isabelline py-16">
+    <section className="section-divider bg-[var(--isabelline)] py-16">
       <div className="container mx-auto px-4 relative">
         {/* Navigation Arrows - Desktop Only */}
         <div className="hidden md:flex justify-between absolute top-1/2 left-0 right-0 transform -translate-y-1/2 z-10 px-2">
