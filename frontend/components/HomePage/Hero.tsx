@@ -1,10 +1,8 @@
 'use client';
 
+import { Rubik, Shadows_Into_Light } from "next/font/google";
 import Image from 'next/image';
-import { IonIcon } from '@ionic/react';
-import { chevronForward } from 'ionicons/icons';
 import Button from '../common/Button';
-import { Rubik, Shadows_Into_Light } from "next/font/google"
 
 const rubikFont = Rubik({
   subsets: ['latin'],
@@ -34,7 +32,7 @@ export default function Hero() {
             Food is any substance consumed to provide nutritional support for an organism.
           </p>
 
-          <Button children={"Book a Table"} />
+          <Button> Book a table </Button>
         </div>
 
         {/* Hero Banner - Hidden on mobile, visible on desktop */}
