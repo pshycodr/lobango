@@ -1,4 +1,5 @@
 import About from "@/components/HomePage/About";
+import Header from "@/components/HomePage/Header";
 import Hero from "@/components/HomePage/Hero";
 import Promo from "@/components/HomePage/Promo";
 import Nav from "@/components/NavBar/Nav";
@@ -19,10 +20,8 @@ export default function Home() {
 function HomeContent() {
   return (
     <>
-      <Nav />
+    <Header/>
       <Hero />
-      <Promo/>
-      <About />
     </>
   )
 }

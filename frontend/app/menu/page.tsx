@@ -11,27 +11,6 @@ import { useScrollSpy } from '@/hooks/useScrollSpy';
 
 const rubik = Rubik({ subsets: ['latin'] });
 
-const colorVars = `
-  :root {
-    --gold-crayola: hsl(38, 61%, 73%);
-    --quick-silver: hsla(0, 0%, 65%, 1);
-    --davys-grey: hsla(30, 3%, 34%, 1);
-    --smoky-black-1: hsla(40, 12%, 5%, 1);
-    --smoky-black-2: hsla(30, 8%, 5%, 1);
-    --smoky-black-3: hsla(0, 3%, 7%, 1);
-    --eerie-black-1: hsla(210, 4%, 9%, 1);
-    --eerie-black-2: hsla(210, 4%, 11%, 1);
-    --eerie-black-3: hsla(180, 2%, 8%, 1);
-    --eerie-black-4: hsla(0, 0%, 13%, 1);
-    --white: hsla(0, 0%, 100%, 1);
-    --white-alpha-20: hsla(0, 0%, 100%, 0.2);
-    --white-alpha-10: hsla(0, 0%, 100%, 0.1);
-    --black: hsla(0, 0%, 0%, 1);
-    --black-alpha-80: hsla(0, 0%, 0%, 0.8);
-    --black-alpha-15: hsla(0, 0%, 0%, 0.15);
-  }
-`;
-
 export default function MenuPage() {
   // @ts-ignore
   const [filteredCategories, setFilteredCategories] = useState<Category[]>(menuData.menu);
@@ -106,7 +85,6 @@ export default function MenuPage() {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: colorVars }} />
       <div className={`min-h-screen bg-[var(--smoky-black-1)] ${rubik.className}`}>
         <div className="flex">
           <MobileMenuToggle

@@ -1,136 +1,103 @@
-'use client'; 
+'use client'
 
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { IonIcon } from '@ionic/react';
-import { searchOutline, closeOutline } from 'ionicons/icons';
+import { X } from 'lucide-react'
+import Image from 'next/image'
+import { smoothScrollTo } from '@/lib/utils'
+import type { NavItem } from '@/types/home'
 
-export default function Nav() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+interface NavbarProps {
+  isOpen: boolean
+  onToggle: () => void
+}
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+const navItems: NavItem[] = [
+  { label: 'Home', href: '#home', active: true },
+  { label: 'Menus', href: '#menu' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Our Chefs', href: '#' },
+  { label: 'Contact', href: '#' },
+]
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
+export default function Navbar({ isOpen, onToggle }: NavbarProps) {
+  const handleNavClick = (href: string) => {
+    if (href.startsWith('#') && href !== '#') {
+      smoothScrollTo(href)
+    }
+    onToggle()
+  }
 
   return (
-    <>
-      <header 
-        className={`fixed top-0 left-0 w-full py-5 px-20 z-50 transition-all duration-300 border-b-1 border-b-[var(--champagne-pink_20)] ${
-          isScrolled 
-            ? 'fixed bg-white shadow-md text-[var(--rich-black-fogra-29)]' 
-            : 'absolute text-white'
-        } ${
-          isScrolled && isMenuOpen ? 'bg-white' : ''
-        }`}
-        data-header
+    <nav className={`navbar fixed bg-smoky-black-1 top-0 -left-90 bottom-0 max-w-90 w-full px-7 pb-12 overflow-y-auto z-2 transition-all duration-500 ${
+      isOpen ? 'visible transform translate-x-90' : 'invisible'
+    } md:static md:bg-transparent md:max-w-none md:px-0 md:pb-0 md:overflow-visible md:transform-none md:translate-x-0 md:visible`}>
+      
+      <button 
+        className="close-btn text-white border border-current p-1 rounded-full ml-auto mt-7 mb-5 hover:text-gold-crayola md:hidden"
+        onClick={onToggle}
+        aria-label="close menu"
       >
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <h1>
-            <Link href="/" className="text-3xl font-extrabold tracking-tighter">
-              Lobango<span className="text-[var(--deep-saffron)]">.</span>
-            </Link>
-          </h1>
+        <X className="w-4 h-4" strokeWidth={2} />
+      </button>
 
-          <nav 
-            className={`absolute top-full left-1/2 transform -translate-x-1/2 w-[calc(100%-30px)] bg-white shadow-md px-5 py-0 h-0 overflow-hidden invisible transition-all duration-300 ${
-              isMenuOpen ? 'h-[236px] visible' : ''
-            } ${
-              isScrolled ? 'text-[var(--rich-black-fogra-29)]' : ''
-            }`}
-            data-navbar
-          >
-            <ul className="my-2">
-              {['Home', 'About Us', 'Shop', 'Blog', 'Contact Us'].map((item) => (
-                <li key={item} className="border-b border-black/5 last:border-b-0">
-                  <Link 
-                    href={`#${item.toLowerCase().replace(' ', '-')}`} 
-                    className="block py-2.5 px-4 font-medium text-black transition-colors hover:text-[var(--dark-orange)]"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+      <a href="#" className="logo max-w-max mx-auto mb-15 md:hidden">
+        <Image 
+          src="/assets/images/logo.svg" 
+          width={160} 
+          height={50} 
+          alt="Labanga - Home"
+        />
+      </a>
 
-          <div className="flex items-center gap-5">
-            <button 
-              className="text-2xl transition-colors hover:text-[var(--dark-orange)]"
-              aria-label="Search"
-              onClick={toggleSearch}
+      <ul className="navbar-list border-b border-white-alpha-20 mb-25 md:flex md:gap-7 md:border-none md:mb-0">
+        {navItems.map((item) => (
+          <li key={item.label} className="navbar-item border-t border-white-alpha-20 md:border-none">
+            <button
+              onClick={() => handleNavClick(item.href)}
+              className={`navbar-link relative text-label-2 uppercase py-2 max-w-none w-full text-left hover-underline md:font-bold md:tracking-wide ${
+                item.active ? 'active' : ''
+              }`}
             >
-              <IonIcon icon={searchOutline} />
+              <div className={`separator absolute top-1/2 left-0 transform -translate-y-1/2 rotate-45 opacity-0 transition-opacity duration-250 ${
+                item.active ? 'opacity-100' : ''
+              } md:hidden`}></div>
+              
+              <span className={`span transition-all duration-250 ${
+                item.active ? 'text-gold-crayola transform translate-x-5 md:transform-none' : ''
+              }`}>
+                {item.label}
+              </span>
             </button>
+          </li>
+        ))}
+      </ul>
 
-            <button className="hidden sm:block bg-[var(--dark-orange)] text-white font-medium px-8 py-2 rounded-full transition-colors hover:bg-[var(--rich-black-fogra-29)]">
-              Reservation
-            </button>
+      <div className="text-center md:hidden">
+        <p className="text-headline-1 font-forum mb-4">Visit Us</p>
 
-            <button 
-              className="grid gap-1 w-6"
-              aria-label="Toggle Menu"
-              onClick={toggleMenu}
-            >
-              <span className={`block h-0.5 bg-current transition-all duration-300 ${
-                isMenuOpen ? 'w-3 transform translate-y-1.5 rotate-45' : 'w-2.5'
-              }`}></span>
-              <span className={`block h-0.5 bg-current transition-all duration-300 ${
-                isMenuOpen ? 'transform -rotate-45' : 'w-5'
-              }`}></span>
-              <span className={`block h-0.5 bg-current transition-all duration-300 ${
-                isMenuOpen ? 'w-3 transform -translate-y-1.5 rotate-45' : 'w-2.5 ml-auto'
-              }`}></span>
-            </button>
-          </div>
-        </div>
-      </header>
+        <address className="text-body-4 not-italic">
+          BHATAR, PURBO BORDHAMAN, WEST BENGAL, IND, <br />
+        </address>
 
-      {/* Search Box */}
-      <div 
-        className={`fixed top-[-60%] left-0 w-full h-[110%] bg-black/95 flex justify-center items-center px-4 z-[60] opacity-0 invisible transition-all duration-500 ${
-          isSearchOpen ? 'opacity-100 visible translate-y-[50%]' : ''
-        }`}
-        data-search-container
-      >
-        <div className="relative w-full max-w-[500px]">
-          <input
-            type="search"
-            name="search"
-            aria-label="Search here"
-            placeholder="Type keywords here..."
-            className="w-full text-3xl text-[var(--gainsboro)] bg-transparent border-b border-[var(--gainsboro)]/30 px-5 py-5 pr-16 focus:outline-none"
-          />
+        <p className="text-body-4 mt-2">Open: 8.00 am - 2.30pm</p>
 
-          <button 
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 text-4xl text-[var(--onyx)] transition-colors hover:text-[var(--gainsboro)]"
-            aria-label="Submit search"
-            onClick={toggleSearch}
-          >
-            <IonIcon icon={searchOutline} />
-          </button>
+        <a 
+          href="mailto:debabratadan6@gmail.com" 
+          className="text-body-4 hover-underline inline-block mt-2"
+        >
+          debabratadan6@gmail.com
+        </a>
 
-          <button 
-            className="absolute inset-0 z-[-1] cursor-pointer"
-            aria-label="Cancel search"
-            onClick={toggleSearch}
-          ></button>
-        </div>
+        <div className="separator mx-auto my-7"></div>
+
+        <p className="contact-label font-bold">Booking Request</p>
+
+        <a 
+          href="tel:+919547061233" 
+          className="text-body-1 contact-number text-gold-crayola max-w-max mx-auto hover-underline block mt-2"
+        >
+          +919547061233
+        </a>
       </div>
-    </>
-  );
+    </nav>
+  )
 }

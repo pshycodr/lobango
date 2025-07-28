@@ -1,63 +1,167 @@
-'use client';
+'use client'
 
-import { Rubik, Shadows_Into_Light } from "next/font/google";
-import Image from 'next/image';
-import Button from '../common/Button';
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { smoothScrollTo } from '@/lib/utils'
+import type { HeroSlide } from '@/types/home'
 
-const rubikFont = Rubik({
-  subsets: ['latin'],
-})
-const shadows_Into_Light = Shadows_Into_Light({
-  subsets: ['latin'],
-  weight: '400'
-})
+const heroSlides: HeroSlide[] = [
+  {
+    id: '1',
+    image: '/assets/images/hero-slider-1.jpg',
+    subtitle: 'Tradational & Hygine',
+    title: 'For the love of delicious food',
+    description: 'Come with family & feel and enjoy of mouthwatering food',
+    buttonText: 'View Our Menu',
+    buttonLink: '#menu'
+  },
+  {
+    id: '2',
+    image: '/assets/images/hero-slider-2.jpg',
+    subtitle: 'delightful experience',
+    title: 'Flavors Inspired by the Seasons',
+    description: 'Come with family & feel the joy of mouthwatering food',
+    buttonText: 'View Our Menu',
+    buttonLink: '#menu'
+  },
+  {
+    id: '3',
+    image: '/assets/images/hero-slider-3.jpg',
+    subtitle: 'amazing & delicious',
+    title: 'Where every flavor tells a story',
+    description: 'Come with family & feel the joy of mouthwatering food',
+    buttonText: 'View Our Menu',
+    buttonLink: '#menu'
+  }
+]
 
 export default function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoSliding, setIsAutoSliding] = useState(true)
+
+  useEffect(() => {
+    if (!isAutoSliding) return
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 7000)
+
+    return () => clearInterval(interval)
+  }, [isAutoSliding])
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+  }
+
+  const handleMenuClick = () => {
+    smoothScrollTo('menu')
+  }
+
+  const handleBookTableClick = () => {
+    smoothScrollTo('reserv')
+  }
+
   return (
-    <section
-      id="home"
-      className="relative  bg-[url('/assets/images/hero-bg.jpg')] bg-cover bg-center bg-no-repeat px-20 pt-[145px] pb-[200px] text-center md:text-left overflow-hidden z-10"
-    >
-      <div className="container mx-auto px-4">
-        <div className="relative z-20">
-          <p className={`text-[var(--dark-orange)] font-shadows-into-light ${shadows_Into_Light.className} text-xl md:text-2xl mb-6`}>
-            Eat Sleep And
-          </p>
+    <section className="hero text-center relative py-30 min-h-screen overflow-hidden z-1" id="home">
+      <ul className="hero-slider">
+        {heroSlides.map((slide, index) => (
+          <li 
+            key={slide.id}
+            className={`slider-item absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full grid place-content-center pt-25 transition-all duration-1000 z-1 ${
+              index === currentSlide ? 'opacity-100 visible' : 'opacity-0 invisible'
+            }`}
+          >
+            <div className="slider-bg absolute inset-0 transform scale-100 pointer-events-none select-none -z-1">
+              <Image
+                src={slide.image}
+                width={1880}
+                height={950}
+                alt=""
+                className="img-cover animate-smooth-scale"
+                priority={index === 0}
+              />
+            </div>
 
-          <h1 className={`text-[var(--champagne-pink)] ${rubikFont.className} text-4xl md:text-7xl font-bold leading-tight tracking-tighter max-w-[12ch] mx-auto md:mx-0`}>
-            Supper delicious Burger in town!
-          </h1>
+            <p className={`section-subtitle text-label-2 text-gold-crayola font-bold uppercase tracking-widest mb-3 transform translate-y-7 opacity-0 ${
+              index === currentSlide ? 'animate-slider-reveal' : ''
+            }`} style={{ animationDelay: '500ms' }}>
+              {slide.subtitle}
+            </p>
 
-          <p className="text-[var(--desert-sand)] my-4 max-w-[44ch] mx-auto md:mx-0">
-            Food is any substance consumed to provide nutritional support for an organism.
-          </p>
+            <h1 className={`hero-title text-display-1 font-forum mb-4 transform translate-y-7 opacity-0 ${
+              index === currentSlide ? 'animate-slider-reveal' : ''
+            }`} style={{ animationDelay: '1000ms' }}>
+              {slide.title.split(' ').reduce((acc, word, i, arr) => {
+                if (i === Math.ceil(arr.length / 2)) {
+                  return acc + '<br>' + word
+                }
+                return acc + (i === 0 ? '' : ' ') + word
+              }, '')}
+            </h1>
 
-          <Button> Book a table </Button>
-        </div>
+            <p className={`hero-text text-body-2 my-10 transform translate-y-7 opacity-0 ${
+              index === currentSlide ? 'animate-slider-reveal' : ''
+            }`} style={{ animationDelay: '1500ms' }}>
+              {slide.description}
+            </p>
 
-        {/* Hero Banner - Hidden on mobile, visible on desktop */}
-        <div className="w-2xl hidden md:block absolute top-[20%] right-[50px] max-w-[45%] aspect-[1/0.9] z-10">
-          <Image
-            src="/assets/images/hero-banner-bg.png"
-            width={820}
-            height={716}
-            alt=""
-            aria-hidden="true"
-            className="w-full hero-img-bg scale-[1.4] translate-x-5 -translate-y-5 absolute "
-          />
-          <Image
-            src="/assets/images/hero-banner.png"
-            width={700}
-            height={637}
-            alt="Burger"
-            className="w-full hero-img "
-            priority
-          />
-        </div>
+            <button
+              onClick={handleMenuClick}
+              className={`btn btn-primary mx-auto transform translate-y-7 opacity-0 ${
+                index === currentSlide ? 'animate-slider-reveal' : ''
+              }`}
+              style={{ animationDelay: '2000ms' }}
+            >
+              <span className="text text-1">{slide.buttonText}</span>
+              <span className="text text-2" aria-hidden="true">{slide.buttonText}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
 
-        {/* Hero background shape - Desktop only */}
-        <div className="hidden md:block absolute right-0 bottom-[-2px] w-full h-full bg-[url('/assets/images/hero-bg-shape.png')] bg-no-repeat bg-[right_bottom] bg-contain pointer-events-none z-0" />
-      </div>
+      <button 
+        className="slider-btn prev hidden md:grid absolute z-1 text-gold-crayola text-2xl border border-gold-crayola w-11 h-11 place-items-center top-1/2 left-7 transform -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-gold-crayola hover:text-black"
+        onClick={prevSlide}
+        onMouseEnter={() => setIsAutoSliding(false)}
+        onMouseLeave={() => setIsAutoSliding(true)}
+        aria-label="slide to previous"
+      >
+        <ChevronLeft className="transform -rotate-45" />
+      </button>
+
+      <button 
+        className="slider-btn next hidden md:grid absolute z-1 text-gold-crayola text-2xl border border-gold-crayola w-11 h-11 place-items-center top-1/2 right-7 transform -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-gold-crayola hover:text-black"
+        onClick={nextSlide}
+        onMouseEnter={() => setIsAutoSliding(false)}
+        onMouseLeave={() => setIsAutoSliding(true)}
+        aria-label="slide to next"
+      >
+        <ChevronRight className="transform -rotate-45" />
+      </button>
+
+      <button
+        onClick={handleBookTableClick}
+        className="hero-btn absolute bottom-4 right-4 z-2 bg-gold-crayola w-28 h-28 p-3 transform scale-60 md:scale-100 rounded-full"
+      >
+        <Image
+          src="/assets/images/hero-icon.png"
+          width={48}
+          height={48}
+          alt="booking icon"
+          className="mx-auto mb-1"
+        />
+        
+        <span className="text-center text-black font-bold uppercase tracking-wide leading-tight text-xs block">
+          Book A Table
+        </span>
+        
+        <div className="absolute inset-0 border border-gold-crayola rounded-full animate-rotate360"></div>
+      </button>
     </section>
-  );
+  )
 }

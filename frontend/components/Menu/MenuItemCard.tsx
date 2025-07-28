@@ -25,7 +25,7 @@ export const MenuItemCard = ({ item, getDescription }: {
 
     <div className="relative w-28 h-28 flex-shrink-0">
       <img
-        src={item.image || "/assets/images/food-menu-3.png"}
+        src={item.image || "/assets/images/menu-3.png"}
         alt={item.name}
         className="w-full h-full object-cover rounded-md"
       />
