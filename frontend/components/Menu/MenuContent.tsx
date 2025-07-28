@@ -1,7 +1,7 @@
+import { Category, MenuItem } from "@/types/menu";
 import { MenuHero } from "./MenuHero";
 import { MenuSection } from "./MenuSection";
 import { NoResults } from "./NoResults";
-import { Category, MenuItem } from "@/types/menu";
 
 export const MenuContent = ({ 
   categories,

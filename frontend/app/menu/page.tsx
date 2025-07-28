@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import menuData from '@/data/menu.json';
 import { Rubik } from "next/font/google";
 import { MobileMenuToggle } from '@/components/Menu/MobileMenuToggle';
 import { MenuSidebar } from '@/components/Menu/MenuSidebar';
 import { MenuContent } from '@/components/Menu/MenuContent';
 import { Category, MenuItem } from '@/types/menu';
+import { useScrollSpy } from '@/hooks/useScrollSpy';
 
 const rubik = Rubik({ subsets: ['latin'] });
 
@@ -35,13 +36,19 @@ export default function MenuPage() {
   // @ts-ignore
   const [filteredCategories, setFilteredCategories] = useState<Category[]>(menuData.menu);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<string>('');
-  const [isScrolling, setIsScrolling] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  // @ts-ignore
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const sectionIds = filteredCategories.map(category => 
+    category.category.replace(/\s+/g, '-').toLowerCase()
+  );
+
+  const activeSection = useScrollSpy(sectionIds, 100);
+
+  const activeCategory = filteredCategories.find(category => 
+    category.category.replace(/\s+/g, '-').toLowerCase() === activeSection
+  )?.category || filteredCategories[0]?.category || '';
+
+  
 
   const getItemDescription = (item: MenuItem) => {
     if (item.description) return item.description;
@@ -67,37 +74,6 @@ export default function MenuPage() {
     return 'Expertly prepared with fresh ingredients and traditional methods';
   };
 
-  // Scroll spy functionality
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isScrolling) return;
-
-      const sections = Object.entries(sectionRefs.current);
-      const scrollPosition = window.scrollY + 200;
-
-      let currentSection = '';
-
-      for (const [category, ref] of sections) {
-        if (ref) {
-          const { offsetTop, offsetHeight } = ref;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            currentSection = category;
-            break;
-          }
-        }
-      }
-
-      if (currentSection && currentSection !== activeCategory) {
-        setActiveCategory(currentSection);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeCategory, isScrolling]);
-
   // Handle search filtering
   useEffect(() => {
     let result = [...menuData.menu];
@@ -111,33 +87,22 @@ export default function MenuPage() {
         )
       })).filter(category => category.items.length > 0);
     }
-    // @ts-ignore
+// @ts-ignore
     setFilteredCategories(result);
+  }, [searchQuery]);
 
-    if (result.length > 0 && !activeCategory) {
-      setActiveCategory(result[0].category);
-    }
-  }, [searchQuery, activeCategory]);
-
-  const scrollToSection = (category: string) => {
-    const section = sectionRefs.current[category];
-    if (section) {
-      setIsScrolling(true);
-      setActiveCategory(category);
-
-      section.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+  const scrollToSection = useCallback((category: string) => {
+    const sectionId = category.replace(/\s+/g, '-').toLowerCase();
+    const element = document.getElementById(sectionId);
+    
+    if (element) {
+      setIsMobileMenuOpen(false);
+      window.scrollTo({
+        top: element.offsetTop - 80,
+        behavior: 'smooth'
       });
-
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
     }
-  };
+  }, []);
 
   return (
     <>
