@@ -1,66 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
-import { CartItem } from '@/types/cart';
+import React from 'react';
 import { CartItemCard } from './CartItemCard';
 import { CartSummary } from './CartSummary';
-
-const initialCartItems: CartItem[] = [
-  {
-    id: '1',
-    name: 'Tandoori Chicken (1pc)',
-    description: 'Tender chicken with aromatic spices',
-    price: 130,
-    quantity: 1,
-    image: '/api/placeholder/48/48'
-  },
-  {
-    id: '2',
-    name: 'Tandoori Kebab (1pc)',
-    description: 'Fresh ingredients, traditional methods',
-    price: 90,
-    quantity: 1,
-    image: '/api/placeholder/48/48'
-  },
-  {
-    id: '3',
-    name: 'Chicken Tengri Kebab (1pc)',
-    description: 'Expertly prepared with spices',
-    price: 90,
-    quantity: 1,
-    image: '/api/placeholder/48/48'
-  },
-  {
-    id: '4',
-    name: 'Chicken Pahari Kebab (6pcs)',
-    description: 'Traditional mountain-style kebabs',
-    price: 240,
-    quantity: 1,
-    image: '/api/placeholder/48/48'
-  }
-];
+import { useCartStore } from '@/store/useCartStore';// adjust path if needed
 
 export const ShoppingCart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
+  const cartItems = useCartStore((state) => state.cart);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeItem = useCartStore((state) => state.removeItem);
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const handleUpdateQuantity = (id: string, quantity: number) => {
     if (quantity === 0) {
-      setCartItems(items => items.filter(item => item.id !== id));
+      removeItem(id);
     } else {
-      setCartItems(items =>
-        items.map(item =>
-          item.id === id ? { ...item, quantity } : item
-        )
-      );
+      updateQuantity(id, quantity);
     }
   };
 
-  const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const handleCheckout = () => {
     console.log('Proceeding to checkout with items:', cartItems);
-    // Implement checkout logic here
+    
+    // Implement checkout logic
   };
 
   return (
@@ -98,24 +65,24 @@ export const ShoppingCart: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                cartItems.map(item => (
+                cartItems.map((item) => (
                   <CartItemCard
                     key={item.id}
                     item={item}
-                    onUpdateQuantity={updateQuantity}
+                    onUpdateQuantity={handleUpdateQuantity}
                   />
                 ))
               )}
             </div>
           </div>
-          
+
           {/* Summary */}
           <div className="mt-6 lg:mt-0">
             {cartItems.length > 0 && (
-              <CartSummary 
-                subtotal={subtotal} 
+              <CartSummary
+                subtotal={subtotal}
                 itemCount={itemCount}
-                onCheckout={handleCheckout} 
+                onCheckout={handleCheckout}
               />
             )}
           </div>

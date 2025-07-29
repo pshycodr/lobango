@@ -7,6 +7,7 @@ type CartItem = {
     price: number;
     description: string;
     quantity: number;
+    image: string;
 };
 
 interface CartStore {

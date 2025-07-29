@@ -21,6 +21,7 @@ export const MenuItemCard = ({
       price: item.price,
       description: getDescription(item),
       quantity: 1,
+      image: item.image || "/assets/images/menu-3.png", 
     });
   };
 
