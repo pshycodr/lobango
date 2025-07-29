@@ -3,6 +3,8 @@ import { Briefcase, Building2, Home } from "lucide-react";
 export interface Address {
     id: string;
     label: string;
+    name: string;
+    phone: string;
     address: string;
     city: string;
     state: string;

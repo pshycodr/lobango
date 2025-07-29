@@ -18,7 +18,7 @@ const getAddressIcon = (type: string) => {
 };
 
 const formatFullAddress = (address: Address) => {
-    return `${address.address}, ${address.city}, ${address.state} ${address.zipCode}`;
+    return `${address.name}, ${address.phone}, ${address.address}`;
 };
 
 export function AddressList({ addresses, currentAddress, onSelectAddress, onDeleteAddress, onAddNewAddress }: AddressListProps) {
