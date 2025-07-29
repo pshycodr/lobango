@@ -34,7 +34,7 @@ export default function PaymentMethod({
       <div className="space-y-2">
         {/* Online Payment Option */}
         <button
-          className={`flex items-center gap-3 w-full bg-[var(--eerie-black-2)] rounded-lg p-3 transition-colors duration-200 text-left border ${
+          className={`cursor-pointer flex items-center gap-3 w-full bg-[var(--eerie-black-2)] rounded-lg p-3 transition-colors duration-200 text-left border ${
             selectedMethod === 'online' 
               ? 'border-[var(--gold-crayola)]' 
               : 'border-transparent'
@@ -68,7 +68,7 @@ export default function PaymentMethod({
         
         {/* Pay on Delivery Option */}
         <button
-          className={`flex items-center gap-3 w-full bg-[var(--eerie-black-2)] rounded-lg p-3 transition-colors duration-200 text-left border ${
+          className={`cursor-pointer flex items-center gap-3 w-full bg-[var(--eerie-black-2)] rounded-lg p-3 transition-colors duration-200 text-left border ${
             selectedMethod === 'cash' 
               ? 'border-[var(--gold-crayola)]' 
               : 'border-transparent'

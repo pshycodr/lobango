@@ -55,7 +55,7 @@ export default function OrderSummary({
             {/* Remove button (mobile-friendly) */}
             <button
               onClick={() => onRemoveItem(item.id)}
-              className="absolute top-1 right-1 p-1 text-[var(--quick-silver)] hover:text-[var(--gold-crayola)]"
+              className="cursor-pointer absolute top-1 right-1 p-1 text-[var(--quick-silver)] hover:text-[var(--gold-crayola)]"
               aria-label="Remove item"
             >
               <X size={16} />
@@ -91,7 +91,7 @@ export default function OrderSummary({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                  className="w-7 h-7 rounded-md border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center active:bg-[var(--gold-crayola)] active:text-[var(--smoky-black-1)] transition-colors"
+                  className="w-7 h-7 cursor-pointer rounded-md border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center active:bg-[var(--gold-crayola)] active:text-[var(--smoky-black-1)] transition-colors"
                   aria-label="Decrease quantity"
                 >
                   <Minus size={12} />
@@ -103,7 +103,7 @@ export default function OrderSummary({
                 
                 <button
                   onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                  className="w-7 h-7 rounded-md border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center active:bg-[var(--gold-crayola)] active:text-[var(--smoky-black-1)] transition-colors"
+                  className="w-7 h-7 cursor-pointer rounded-md border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center active:bg-[var(--gold-crayola)] active:text-[var(--smoky-black-1)] transition-colors"
                   aria-label="Increase quantity"
                 >
                   <Plus size={12} />

@@ -4,11 +4,13 @@ import React from 'react';
 import { CartItemCard } from './CartItemCard';
 import { CartSummary } from './CartSummary';
 import { useCartStore } from '@/store/useCartStore';// adjust path if needed
+import { useRouter } from 'next/navigation';
 
 export const ShoppingCart: React.FC = () => {
   const cartItems = useCartStore((state) => state.cart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
+  const router = useRouter()
 
   const handleUpdateQuantity = (id: string, quantity: number) => {
     if (quantity === 0) {
@@ -26,8 +28,9 @@ export const ShoppingCart: React.FC = () => {
 
   const handleCheckout = () => {
     console.log('Proceeding to checkout with items:', cartItems);
-    
-    // Implement checkout logic
+
+    router.push('/checkout')
+    return null
   };
 
   return (

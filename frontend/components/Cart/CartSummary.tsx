@@ -39,7 +39,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ subtotal, itemCount, o
       
       <button
         onClick={onCheckout}
-        className="w-full bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] py-2.5 rounded-lg text-sm font-semibold font-inter hover:bg-[hsl(38,61%,68%)] transition-all duration-200 active:scale-98"
+        className="w-full bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] py-2.5 rounded-lg text-sm font-semibold font-inter hover:bg-[hsl(38,61%,68%)] transition-all duration-200 active:scale-98 cursor-pointer"
       >
         Proceed to Checkout
       </button>

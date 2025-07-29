@@ -33,7 +33,7 @@ export default function PlaceOrderButton({
         disabled={disabled || loading}
         className={`
           w-full h-14 rounded-xl text-lg font-bold leading-normal tracking-[0.015em]
-          transition-all duration-200 transform
+          transition-all duration-200 transform cursor-pointer
           ${disabled || loading 
             ? 'bg-[var(--davys-grey)] text-[var(--quick-silver)] cursor-not-allowed' 
             : `bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] hover:bg-[var(--gold-crayola)] hover:brightness-110 ${
