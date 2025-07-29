@@ -1,17 +1,18 @@
 'use client';
 
 
-import { useState, useMemo, useEffect, use } from 'react';
-import { useRouter } from 'next/navigation';
+import AddressModal from '@/components/AddressModal/AddressModal';
 import CheckoutHeader from '@/components/Checkout/CheckoutHeader';
 import DeliveryAddress from '@/components/Checkout/DeliveryAddress';
-import PaymentMethod from '@/components/Checkout/PaymentMethod';
 import OrderSummary from '@/components/Checkout/OrderSummary';
+import PaymentMethod from '@/components/Checkout/PaymentMethod';
 import PlaceOrderButton from '@/components/Checkout/PlaceOrderButton';
+import api from '@/lib/axios';
 import { useCartStore } from '@/store/useCartStore';
-import AddressModal from '@/components/AddressModal/AddressModal';
 import { Address } from '@/types/address';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 
 export default function CheckoutPage() {
@@ -111,14 +112,12 @@ export default function CheckoutPage() {
                 })),
             };
 
-            // Step 1: Send initial data to backend to create Razorpay order
-            const res = await axios.post("http://127.0.0.1:8787/api/v1/client/payment/create-order", orderData);
+            const res = await api.post("/api/v1/client/payment/create-order", orderData);
 
             const { razorpayOrderId, amount, currency, orderId: localOrderId, key_id } = res.data;
             
             console.log(res.data);
             
-            // Step 2: Open Razorpay payment modal
             const options = {
                 key: key_id,
                 amount: amount.toString(),
@@ -130,7 +129,7 @@ export default function CheckoutPage() {
                     console.log(response);
                     
                     // Step 3: Verify payment and finalize order
-                    const verifyRes = await axios.post("http://localhost:8787/api/v1/client/order", {
+                    const verifyRes = await api.post("/api/v1/client/order", {
                         ...orderData,
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_order_id: response.razorpay_order_id,
