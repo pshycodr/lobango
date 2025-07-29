@@ -36,6 +36,16 @@ export default function CheckoutPage() {
         }
     }, []);
 
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        document.body.appendChild(script);
+        return () => {
+          document.body.removeChild(script);
+        };
+      }, []);
+
     // Calculate totals from cart
     const { subtotal, deliveryFee, tax, total } = useMemo(() => {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);

@@ -1,6 +1,7 @@
 import { MenuItem } from "@/types/menu";
 import { useCartStore } from "@/store/useCartStore"; 
 import { useMemo } from "react";
+import Image from "next/image"; // ✅ Import next/image
 
 export const MenuItemCard = ({
   item,
@@ -68,10 +69,12 @@ export const MenuItemCard = ({
 
       {/* RIGHT SIDE */}
       <div className="relative w-28 h-28 flex-shrink-0">
-        <img
+        <Image
           src={item.image || "/assets/images/menu-3.png"}
           alt={item.name}
-          className="w-full h-full object-cover rounded-lg"
+          fill
+          className="object-cover rounded-lg"
+          sizes="112px" // 28 * 4 = 112px
         />
 
         {/* Counter or Add Button */}
@@ -107,27 +110,3 @@ export const MenuItemCard = ({
     </div>
   );
 };
-
-
-/**
- * <div className="absolute scale-85 bottom-1 right-0.5 flex items-center justify-between gap- bg-[var(--gold-crayola)] bg-opacity-10 border border-[var(--gold-crayola)] border-opacity-60 text-[var(--smoky-black-1)] text-sm font-medium px-3 py-2  rounded-lg shadow-sm backdrop-blur-sm transition-all duration-200 min-w-[90px]">
-          <button
-            className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[var(--gold-crayola)] hover:bg-opacity-20 transition-all duration-200"
-            onClick={() => setCount(prev => Math.max(prev - 1, 1))}
-            aria-label="Decrease quantity"
-          >
-            –
-          </button>
-          <span className="w-6 text-center select-none text-[13px] tracking-wide">
-            {count.toString().padStart(2, '0')}
-          </span>
-          <button
-            className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[var(--gold-crayola)] hover:bg-opacity-20 transition-all duration-200"
-            onClick={() => setCount(prev => prev + 1)}
-            aria-label="Increase quantity"
-          >
-            +
-          </button>
-        </div>
-
- */
