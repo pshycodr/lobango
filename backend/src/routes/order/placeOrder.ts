@@ -5,13 +5,16 @@ import z from 'zod'
 import { getDB } from '../../db/db'
 import { orderItems } from '../../db/schema/orderItems'
 import { orders } from '../../db/schema/orders'
+import crypto from 'crypto'
 
 export interface Env {
   DB: D1Database
 }
 
+// 👇 Replace this with your actual Razorpay TEST secret securely in production
+
 const OrderItemSchema = z.object({
-  id: z.number(),
+  id: z.number().optional(),
   name: z.string().min(1),
   price: z.number().min(0),
   quantity: z.number().min(1),
@@ -21,9 +24,11 @@ const OrderRequestSchema = z.object({
   customerName: z.string().min(1),
   customerPhone: z.string().min(8),
   customerAddress: z.string().min(5),
-  paymentMethod: z.enum(['stripe', 'cash_on_delivery']),
-  stripeToken: z.string().optional(),
+  paymentMethod: z.enum(['razorpay', 'cash_on_delivery']),
   items: z.array(OrderItemSchema).min(1, "At least one item is required"),
+  razorpay_payment_id: z.string().optional(),
+  razorpay_order_id: z.string().optional(),
+  razorpay_signature: z.string().optional(),
 })
 
 type OrderItems = z.infer<typeof OrderItemSchema>
@@ -35,9 +40,21 @@ const generateOrderId = () => {
   return `ORD_${nanoid()}`
 }
 
+// Helper to verify Razorpay signature
+function verifyRazorpaySignature(orderId: string, paymentId: string, signature: string, secret: string) {
+  const body = `${orderId}|${paymentId}`
+  const expectedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(body)
+    .digest('hex')
+  return expectedSignature === signature
+}
+
 export async function placeOrder(c: Context) {
   try {
     const body = await c.req.json()
+    console.log(body);
+    
     const parsed = OrderRequestSchema.safeParse(body)
 
     if (!parsed.success) {
@@ -49,6 +66,27 @@ export async function placeOrder(c: Context) {
     const created_at = new Date().toISOString()
     const total_amount = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
+    // 🛡️ Verify Razorpay signature if Razorpay is used
+    if (order.paymentMethod === 'razorpay') {
+      const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = order
+
+      if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+        return c.json({ error: 'Missing Razorpay payment details' }, 400)
+      }
+      const RAZORPAY_SECRET = c.env.RAZORPAY_SECRET_KEY
+      const isValid = verifyRazorpaySignature(
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+        RAZORPAY_SECRET
+      )
+
+      if (!isValid) {
+        return c.json({ error: 'Invalid Razorpay payment signature' }, 400)
+      }
+    }
+
+    // ✅ Only proceed to place order after verification
     let order_id: string
     while (true) {
       order_id = generateOrderId()
@@ -67,8 +105,10 @@ export async function placeOrder(c: Context) {
       total_amount,
       status: 'pending',
       payment_method: order.paymentMethod,
-      payment_status: 'pending',
-      stripe_payment_id: order.stripeToken ?? null,
+      payment_status: order.paymentMethod === 'razorpay' ? 'paid' : 'pending',
+      razorpay_order_id: order.razorpay_order_id ?? null,
+      razorpay_payment_id: order.razorpay_payment_id ?? null,
+      razorpay_signature: order.razorpay_signature ?? null,
       created_at,
     })
 

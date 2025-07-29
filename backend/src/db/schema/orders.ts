@@ -10,6 +10,8 @@ export const orders = sqliteTable("orders", {
   status: text("status").default("pending"),
   payment_method: text("payment_method"),
   payment_status: text("payment_status").default("pending"),
-  stripe_payment_id: text("stripe_payment_id"),
   created_at: text("created_at"),
+  razorpay_signature: text("razorpay_signature"),
+  razorpay_payment_id: text("razorpay_payment_id"),
+  razorpay_order_id: text("razorpay_order_id"),
 })
