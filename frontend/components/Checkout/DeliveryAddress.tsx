@@ -32,7 +32,7 @@ export default function DeliveryAddress({ address, onChangeAddress }: DeliveryAd
         aria-label={address ? 'Change delivery address' : 'Add delivery address'}
       >
         {/* Icon with better touch target */}
-        <div className="text-[var(--gold-crayola)] flex items-center justify-center rounded-lg bg-[var(--smoky-black-1)] shrink-0 size-10 active:bg-[var(--smoky-black-2)]">
+        <div className="text-[var(--gold-crayola)] flex items-center justify-center rounded-lg bg-[var(--smoky-black-1)] shrink-0 size-10 active:bg-[var(--smoky-black-2)] border border-[var(--gold-crayola)]">
           <MapPin size={18} />
         </div>
         
@@ -49,7 +49,7 @@ export default function DeliveryAddress({ address, onChangeAddress }: DeliveryAd
             </>
           ) : (
             <>
-              <p className="text-[var(--white)] text-sm font-semibold mb-1">
+              <p className="text-[var(--white)] text-sm font-semibold mb-1 ">
                 Add Delivery Address
               </p>
               <p className="text-[var(--quick-silver)] text-xs">
