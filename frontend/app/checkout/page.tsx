@@ -47,6 +47,10 @@ export default function CheckoutPage() {
         };
       }, []);
 
+      useEffect(() => {
+        api.get("/").catch((err) => console.error("Warm-up failed", err));
+      }, []);
+
     // Calculate totals from cart
     const { subtotal, deliveryFee, tax, total } = useMemo(() => {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
