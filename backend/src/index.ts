@@ -5,8 +5,11 @@ import adminRouter from './routes/admin.routes'
 import clientRouter from './routes/clients.routes'
 
 const app = new Hono()
-app.use("/api/*", cors())
-
+app.use('*', cors({
+  origin: 'https://lobango.vercel.app', 
+  allowMethods: ['GET', 'POST', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+}))
 app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
