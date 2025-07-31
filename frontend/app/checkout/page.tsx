@@ -116,7 +116,7 @@ export default function CheckoutPage() {
                 })),
             };
 
-            const res = await api.post("/api/v1/client/payment/create-order", orderData);
+            const res = await api.post("/api/v1/payment/create-order", orderData);
 
             const { razorpayOrderId, amount, currency, orderId: localOrderId, key_id } = res.data;
             
@@ -132,7 +132,6 @@ export default function CheckoutPage() {
                 handler: async function (response: any) {
                     console.log(response);
                     
-                    // Step 3: Verify payment and finalize order
                     const verifyRes = await api.post("/api/v1/client/order", {
                         ...orderData,
                         razorpay_payment_id: response.razorpay_payment_id,
