@@ -1,10 +1,10 @@
 'use client';
 
 import AddressModal from '@/components/AddressModal/AddressModal';
-import PaymentConfirmation from '@/components/Checkout/AfterOrder';
 import CheckoutHeader from '@/components/Checkout/CheckoutHeader';
 import DeliveryAddress from '@/components/Checkout/DeliveryAddress';
 import OrderSummary from '@/components/Checkout/OrderSummary';
+import PaymentConfirmation from '@/components/Checkout/PaymentConfirmation';
 import PaymentMethod from '@/components/Checkout/PaymentMethod';
 import PlaceOrderButton from '@/components/Checkout/PlaceOrderButton';
 import api from '@/lib/axios';
@@ -197,7 +197,7 @@ export default function CheckoutPage() {
                 fontFamily: 'var(--font-work-sans), var(--font-noto-sans), sans-serif',
             } as React.CSSProperties}
         >
-            {/* <CheckoutHeader onBack={handleBack} />
+            <CheckoutHeader onBack={handleBack} />
 
             <div className="max-w-4xl mx-auto px-6 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -238,9 +238,9 @@ export default function CheckoutPage() {
                 onClose={() => setIsAddressModalOpen(false)}
                 onSelectAddress={handleSelectAddress}
                 currentAddress={selectedAddress}
-            /> */}
+            />
 
-            {(
+            {showPaymentConfirmation && paymentData && (
                 <div className="fixed inset-0 z-50">
                     <PaymentConfirmation
                         paymentData={paymentData}

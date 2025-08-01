@@ -144,7 +144,7 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
               Thank you {customerName}!
             </p>
             <p className="text-[var(--quick-silver)] text-xs md:text-sm mb-4 md:mb-6 leading-relaxed">
-              Your order has been confirmed and we're preparing it with love
+              Your order has been confirmed and we&apos;re preparing it with love
             </p>
             
             {/* Payment Details Card */}
@@ -191,6 +191,10 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
               Continue Shopping
             </button>
             
+            {/* Subtle hint text */}
+            <p className="text-[var(--quick-silver)] text-2xs md:text-xs mt-2 md:mt-3 opacity-75">
+              Track your order in real-time
+            </p>
           </div>
         </div>
 
