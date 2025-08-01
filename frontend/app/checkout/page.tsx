@@ -1,7 +1,7 @@
 'use client';
 
-
 import AddressModal from '@/components/AddressModal/AddressModal';
+import PaymentConfirmation from '@/components/Checkout/AfterOrder';
 import CheckoutHeader from '@/components/Checkout/CheckoutHeader';
 import DeliveryAddress from '@/components/Checkout/DeliveryAddress';
 import OrderSummary from '@/components/Checkout/OrderSummary';
@@ -10,10 +10,15 @@ import PlaceOrderButton from '@/components/Checkout/PlaceOrderButton';
 import api from '@/lib/axios';
 import { useCartStore } from '@/store/useCartStore';
 import { Address } from '@/types/address';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
+interface PaymentData {
+    amount: number;
+    paymentId?: string;
+    orderId?: string;
+    customerName?: string;
+}
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -22,13 +27,12 @@ export default function CheckoutPage() {
     const [isClient, setIsClient] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(undefined);
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+    const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
+    const [paymentData, setPaymentData] = useState<PaymentData | undefined>(undefined);
 
-    // Handle client-side hydration
     useEffect(() => {
         setIsClient(true);
-        console.log(window);
         
-        // Load last selected address from localStorage
         if (typeof window !== 'undefined') {
             const savedAddress = localStorage.getItem('selected-address');
             if (savedAddress) {
@@ -43,19 +47,18 @@ export default function CheckoutPage() {
         script.async = true;
         document.body.appendChild(script);
         return () => {
-          document.body.removeChild(script);
+            document.body.removeChild(script);
         };
-      }, []);
+    }, []);
 
-      useEffect(() => {
+    useEffect(() => {
         api.get("/").catch((err) => console.error("Warm-up failed", err));
-      }, []);
+    }, []);
 
-    // Calculate totals from cart
     const { subtotal, deliveryFee, tax, total } = useMemo(() => {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const deliveryFee = subtotal > 50 ? 0 : 2.99; // Free delivery over $50
-        const taxRate = 0.08; // 8% tax
+        const deliveryFee = subtotal > 299 ? 0 : 30;
+        const taxRate = 0.08;
         const tax = subtotal * taxRate;
         const total = subtotal + deliveryFee + tax;
 
@@ -77,12 +80,11 @@ export default function CheckoutPage() {
 
     const handleSelectAddress = (address: Address) => {
         setSelectedAddress(address);
-        // Save selected address to localStorage
         localStorage.setItem('selected-address', JSON.stringify(address));
     };
 
     const handleChangePayment = () => {
-        // router.push('/payment');
+        // Payment method change logic here
     };
 
     const handleUpdateQuantity = (id: string, quantity: number) => {
@@ -117,11 +119,8 @@ export default function CheckoutPage() {
             };
 
             const res = await api.post("/api/v1/payment/create-order", orderData);
-
             const { razorpayOrderId, amount, currency, orderId: localOrderId, key_id } = res.data;
-            
-            console.log(res.data);
-            
+
             const options = {
                 key: key_id,
                 amount: amount.toString(),
@@ -130,8 +129,6 @@ export default function CheckoutPage() {
                 description: `Order ID: ${localOrderId}`,
                 order_id: razorpayOrderId,
                 handler: async function (response: any) {
-                    console.log(response);
-                    
                     const verifyRes = await api.post("/api/v1/client/order", {
                         ...orderData,
                         razorpay_payment_id: response.razorpay_payment_id,
@@ -142,7 +139,13 @@ export default function CheckoutPage() {
                     console.log("Final Order Saved ✅", verifyRes.data);
 
                     clearCart();
-                    router.push("/order-confirmation");
+                    setShowPaymentConfirmation(true);
+                    setPaymentData({
+                        amount: total,
+                        paymentId: response.razorpay_payment_id,
+                        orderId: localOrderId,
+                        customerName: userData.name
+                    });
                 },
                 prefill: {
                     name: userData.name,
@@ -154,9 +157,6 @@ export default function CheckoutPage() {
             };
 
             const razorpay = new (window as any).Razorpay(options);
-
-            console.log("FROM razorpay ============>>  ",razorpay);
-            
             razorpay.open();
 
         } catch (error) {
@@ -167,7 +167,14 @@ export default function CheckoutPage() {
         }
     };
 
-    // Show loading state during hydration
+    const handleViewOrder = () => {
+        router.push('/order-tracking');
+    };
+
+    const handleGoHome = () => {
+        router.push('/');
+    };
+
     if (!isClient) {
         return (
             <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center">
@@ -176,11 +183,12 @@ export default function CheckoutPage() {
         );
     }
 
-    // Redirect to cart if empty (only after client-side hydration)
-    if (cart.length === 0) {
-        router.push('/cart');
-        return null;
-    }
+    // if (cart.length === 0) {
+    //     router.push('/cart');
+    //     return null;
+    // }
+
+
 
     return (
         <div
@@ -189,11 +197,10 @@ export default function CheckoutPage() {
                 fontFamily: 'var(--font-work-sans), var(--font-noto-sans), sans-serif',
             } as React.CSSProperties}
         >
-            <CheckoutHeader onBack={handleBack} />
+            {/* <CheckoutHeader onBack={handleBack} />
 
             <div className="max-w-4xl mx-auto px-6 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Left Column - Address & Payment */}
                     <div className="lg:col-span-1 space-y-6">
                         <DeliveryAddress
                             address={selectedAddress}
@@ -201,12 +208,10 @@ export default function CheckoutPage() {
                         />
 
                         <PaymentMethod
-                            //   paymentMethod={samplePaymentMethod}
                             onChangePayment={handleChangePayment}
                         />
                     </div>
 
-                    {/* Right Column - Order Summary */}
                     <div className="lg:col-span-2">
                         <OrderSummary
                             items={cart}
@@ -228,13 +233,22 @@ export default function CheckoutPage() {
                 </div>
             </div>
 
-            {/* Address Modal */}
             <AddressModal
                 isOpen={isAddressModalOpen}
                 onClose={() => setIsAddressModalOpen(false)}
                 onSelectAddress={handleSelectAddress}
                 currentAddress={selectedAddress}
-            />
+            /> */}
+
+            {(
+                <div className="fixed inset-0 z-50">
+                    <PaymentConfirmation
+                        paymentData={paymentData}
+                        onViewOrder={handleViewOrder}
+                        onGoHome={handleGoHome}
+                    />
+                </div>
+            )}
         </div>
     );
 }

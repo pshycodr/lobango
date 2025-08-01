@@ -132,3 +132,82 @@ body {
 }
 
 
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes ripple-1 {
+  0% { transform: scale(0); opacity: 0.3; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+@keyframes ripple-2 {
+  0% { transform: scale(0); opacity: 0.2; }
+  100% { transform: scale(5); opacity: 0; }
+}
+
+@keyframes ripple-3 {
+  0% { transform: scale(0); opacity: 0.1; }
+  100% { transform: scale(7); opacity: 0; }
+}
+
+@keyframes confetti {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes bounce-once {
+  0% { transform: scale(0) rotate(-180deg); }
+  50% { transform: scale(1.2) rotate(-90deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes sparkle-1 {
+  0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1) rotate(180deg); opacity: 1; }
+}
+
+@keyframes sparkle-2 {
+  0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1) rotate(-180deg); opacity: 1; }
+}
+
+@keyframes sparkle-3 {
+  0%, 100% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1); opacity: 1; }
+}
+
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-ripple-1 { 
+  animation: ripple-1 1.5s ease-out;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+}
+.animate-ripple-2 { 
+  animation: ripple-2 1.5s ease-out 0.3s;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+}
+.animate-ripple-3 { 
+  animation: ripple-3 1.5s ease-out 0.6s;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+}
+.animate-confetti { animation: confetti 2s ease-out forwards; }
+.animate-bounce-once { animation: bounce-once 1s ease-out 0.5s both; }
+.animate-sparkle-1 { animation: sparkle-1 2s ease-in-out 1s infinite; }
+.animate-sparkle-2 { animation: sparkle-2 2s ease-in-out 1.5s infinite; }
+.animate-sparkle-3 { animation: sparkle-3 2s ease-in-out 2s infinite; }
+
+/* Responsive adjustments */
+@media (min-width: 640px) {
+  .animate-ripple-1, .animate-ripple-2, .animate-ripple-3 {
+    width: 50px;
+    height: 50px;
+  }
+}
