@@ -66,7 +66,6 @@ export async function placeOrder(c: Context) {
     const created_at = new Date().toISOString()
     const total_amount = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-    // 🛡️ Verify Razorpay signature if Razorpay is used
     if (order.paymentMethod === 'razorpay') {
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = order
 
@@ -86,7 +85,6 @@ export async function placeOrder(c: Context) {
       }
     }
 
-    // ✅ Only proceed to place order after verification
     let order_id: string
     while (true) {
       order_id = generateOrderId()
