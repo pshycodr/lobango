@@ -5,7 +5,6 @@ import { orders, orderItems } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
 const GetOrdersSchema = z.object({
-    ph_no: z.string().trim().min(8),
     order_id: z.string().trim(),
 });
 
@@ -39,9 +38,6 @@ export async function getOrders(c: Context) {
 
         const { order } = joined[0];
 
-        if (order.customer_phone !== data.ph_no) {
-            return c.json({ error: "Phone number does not match order." }, 403);
-        }
         const items = joined
             .filter((j): j is { order: typeof orders.$inferSelect; item: typeof orderItems.$inferSelect } => j.item !== null)
             .map(j => ({

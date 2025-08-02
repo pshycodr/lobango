@@ -32,7 +32,7 @@ export default function CheckoutPage() {
 
     useEffect(() => {
         setIsClient(true);
-        
+
         if (typeof window !== 'undefined') {
             const savedAddress = localStorage.getItem('selected-address');
             if (savedAddress) {
@@ -139,6 +139,7 @@ export default function CheckoutPage() {
                     console.log("Final Order Saved ✅", verifyRes.data);
 
                     clearCart();
+                    localStorage.setItem('orderId', `${localOrderId}`)
                     setShowPaymentConfirmation(true);
                     setPaymentData({
                         amount: total,
