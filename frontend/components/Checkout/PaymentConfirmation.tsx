@@ -39,14 +39,6 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
     };
   }, []);
 
-  const handleViewOrder = () => {
-    onViewOrder?.() || console.log("Navigate to order tracking");
-  };
-
-  const handleGoHome = () => {
-    onGoHome?.() || console.log("Navigate to home");
-  };
-
   return (
     <div className="min-h-screen bg-[var(--smoky-black-1)] relative overflow-hidden flex items-center justify-center p-4 md:p-6">
       {/* Animated Background Particles */}
@@ -176,7 +168,7 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
             showButton ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-95'
           }`}>
             <button
-              onClick={handleViewOrder}
+              onClick={onViewOrder}
               className="w-full bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] font-bold py-3 md:py-4 px-4 md:px-6 rounded-xl md:rounded-2xl hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 group shadow-lg active:scale-95"
             >
               <span className="text-sm md:text-base">View Order Status</span>
@@ -185,7 +177,7 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
             
             {/* Secondary Button */}
             <button
-              onClick={handleGoHome}
+              onClick={onGoHome}
               className="w-full bg-[var(--eerie-black-2)] border border-[var(--eerie-black-3)] text-[var(--quick-silver)] font-medium py-2.5 md:py-3 px-4 md:px-6 rounded-xl md:rounded-2xl hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)] transition-all duration-300 active:scale-95 text-sm md:text-base"
             >
               Continue Shopping

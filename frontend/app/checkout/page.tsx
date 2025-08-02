@@ -136,10 +136,9 @@ export default function CheckoutPage() {
                         razorpay_signature: response.razorpay_signature,
                     });
 
-                    console.log("Final Order Saved ✅", verifyRes.data);
-
                     clearCart();
-                    localStorage.setItem('orderId', `${localOrderId}`)
+                    
+                    localStorage.setItem('orderId', verifyRes.data.orderId)
                     setShowPaymentConfirmation(true);
                     setPaymentData({
                         amount: total,
@@ -173,7 +172,7 @@ export default function CheckoutPage() {
     };
 
     const handleGoHome = () => {
-        router.push('/');
+        router.push('/menu');
     };
 
     if (!isClient) {
