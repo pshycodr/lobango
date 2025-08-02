@@ -59,7 +59,7 @@ export default function ViewOrderPage() {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:8787/api/v1/client/getorders', {
+      const response = await api.post('/api/v1/client/getorders', {
         order_id: id
       });
 
