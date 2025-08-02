@@ -137,7 +137,7 @@ export default function CheckoutPage() {
                     });
 
                     clearCart();
-                    
+
                     localStorage.setItem('orderId', verifyRes.data.orderId)
                     setShowPaymentConfirmation(true);
                     setPaymentData({
@@ -223,12 +223,14 @@ export default function CheckoutPage() {
                             onRemoveItem={handleRemoveItem}
                         />
 
-                        <PlaceOrderButton
-                            onPlaceOrder={handlePlaceOrder}
-                            loading={loading}
-                            total={total}
-                            disabled={!selectedAddress}
-                        />
+                        <div className='flex justify-center w-ful h-15'>
+                            <PlaceOrderButton
+                                onPlaceOrder={handlePlaceOrder}
+                                loading={loading}
+                                total={total}
+                                disabled={!selectedAddress}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

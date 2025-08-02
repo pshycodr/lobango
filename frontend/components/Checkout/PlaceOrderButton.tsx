@@ -24,7 +24,7 @@ export default function PlaceOrderButton({
   const formatPrice = (price: number) => `${price.toFixed(2)}`;
 
   return (
-    <div className="p-6">
+    <div className="p-6 fixed bottom-0.5 w-full sm:w-xl z-10  backdrop-blur-sm rounded-xl">
       <button
         onClick={handleClick}
         onMouseDown={() => setIsPressed(true)}
@@ -36,8 +36,8 @@ export default function PlaceOrderButton({
           transition-all duration-200 transform cursor-pointer
           ${disabled || loading 
             ? 'bg-[var(--davys-grey)] text-[var(--quick-silver)] cursor-not-allowed' 
-            : `bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] hover:bg-[var(--gold-crayola)] hover:brightness-110 ${
-                isPressed ? 'scale-95 brightness-90' : 'hover:scale-[1.02]'
+            : `bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] hover:bg-[var(--gold-crayola)] hover:brightness-110 \${ 
+                isPressed ? 'scale-95 brightness-90' : 'hover:scale-[1.02]' 
               }`
           }
           shadow-lg hover:shadow-xl
@@ -49,4 +49,5 @@ export default function PlaceOrderButton({
       </button>
     </div>
   );
+  
 }
