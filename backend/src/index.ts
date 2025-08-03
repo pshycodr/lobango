@@ -7,8 +7,8 @@ import paymentRouter from './routes/payments.routes'
 
 const app = new Hono()
 app.use('*', cors({
-  // origin: 'https://lobango.vercel.app', 
-  origin: 'http://localhost:3000', 
+  origin: 'http://localhost:5173',           // ✅ Frontend dev server
+  credentials: true,                         // ✅ Allow cookies / credentials
   allowMethods: ['GET', 'POST', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
 }))
