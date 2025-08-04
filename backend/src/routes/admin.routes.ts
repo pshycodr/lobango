@@ -12,6 +12,6 @@ adminRouter.post('/login', adminLogin)
 adminRouter.post('/logout', adminLogout)
 
 adminRouter.get("/orders", adminCheck, viewOrders)
-adminRouter.patch("/orders/update-status", adminCheck, updateOrderStatus)
+adminRouter.post("/orders/update-status", adminCheck, updateOrderStatus)
 
 export default adminRouter

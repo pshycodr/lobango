@@ -1,109 +1,103 @@
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
-    ArrowLeft,
-    CreditCard,
-    DollarSign,
-    Edit3,
-    MapPin,
-    Phone,
-    ShoppingBag,
-    User
+  ArrowLeft,
+  CreditCard,
+  Edit3,
+  IndianRupee,
+  MapPin,
+  Phone,
+  ShoppingBag,
+  User
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InfoCard from '../components/Order/InfoCard';
 import OrderItemCard from '../components/Order/OrderItemCard';
 import StatusBadge from '../components/Order/OrderStatusBadge';
 import StatusUpdateModal from '../components/Order/StatusUpdateModal';
+import { Route } from '../routes/__root';
+import { useOrdersStore } from '../store/zustand/useOrdersStore';
 import type { Order } from '../types/orders';
-
-// Mock order data
-const mockOrder: Order = {
-  orderId: "ORD-001",
-  name: "John Doe",
-  phone: "+1 (555) 123-4567",
-  address: "123 Main Street, Apartment 4B, Downtown City, NY 10001",
-  total: 67.48,
-  paymentMethod: "card",
-  paymentStatus: "paid",
-  status: "pending",
-  createdAt: "2024-08-03T10:30:00Z",
-  notes: "Please ring the doorbell twice. Leave at door if no answer.",
-  items: [
-    {
-      item_id: 1,
-      name: "Margherita Pizza",
-      quantity: 2,
-      price: 18.99,
-      description: "Fresh mozzarella, tomato sauce, basil, olive oil"
-    },
-    {
-      item_id: 2,
-      name: "Caesar Salad",
-      quantity: 1,
-      price: 12.99,
-      description: "Romaine lettuce, parmesan cheese, croutons, caesar dressing"
-    },
-    {
-      item_id: 3,
-      name: "Garlic Bread",
-      quantity: 2,
-      price: 6.99,
-      description: "Freshly baked bread with garlic butter and herbs"
-    },
-    {
-      item_id: 4,
-      name: "Chocolate Cake",
-      quantity: 1,
-      price: 8.99,
-      description: "Rich chocolate cake with chocolate frosting"
-    }
-  ]
-};
+import api from '../lib/axios';
 
 const AdminOrderDetails: React.FC = () => {
-  const [order, setOrder] = useState<Order>(mockOrder);
+  const { orderId } = useSearch({ from: Route.id });
+  console.log(orderId);
+
+  const getOrderById = useOrdersStore(state => state.getOrderById);
+  const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetched = getOrderById(orderId);
+    setOrder(fetched || null);
+  }, [orderId, getOrderById]);
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return {
-      date: date.toLocaleDateString('en-US', { 
+      date: date.toLocaleDateString('en-US', {
         weekday: 'long',
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       }),
-      time: date.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
+      time: date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
         minute: '2-digit',
-        hour12: true 
+        hour12: true
       })
     };
   };
 
   const handleStatusUpdate = async (newStatus: Order['status']) => {
+    if (!order) return;
     setLoading(true);
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setOrder(prev => ({ ...prev, status: newStatus }));
-      console.log('Status updated to:', newStatus);
+      const payload = { status: newStatus, orderId };
+      console.log(payload);
+
+      const res = await api.post("/api/v1/admin/orders/update-status", payload);
+      const data = res.data;
+
+      if (!data.success) {
+        alert("Failed to update status");
+        return;
+      }
+
+      // Update local state
+      setOrder(prev => (prev ? { ...prev, status: newStatus } : null));
+
+      // Update Zustand store too
+      useOrdersStore.getState().setOrders(
+        useOrdersStore.getState().orders.map(o =>
+          o.orderId === orderId ? { ...o, status: newStatus } : o
+        )
+      );
     } catch (error) {
       console.error('Failed to update status:', error);
+      alert("Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }
   };
-
   const handleBack = () => {
-    // Navigate back to orders list
-    console.log('Navigate back to orders list');
+    navigate({ to: '/orders' })
   };
 
-  const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const taxes = subtotal * 0.08; // 8% tax
-  const deliveryFee = 5.00;
-//   const calculatedTotal = subtotal + taxes + deliveryFee;
+  if (!order) {
+    return (
+      <div className="text-center text-white p-10">
+        <p>Order not found.</p>
+      </div>
+    );
+  }
+
+  const subtotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const taxes = subtotal * 0.08;
+  const deliveryFee = 5.0;
 
   const { date, time } = formatDateTime(order.createdAt);
 
@@ -121,11 +115,12 @@ const AdminOrderDetails: React.FC = () => {
                 <ArrowLeft size={24} />
               </button>
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-[var(--white)]">Order #{order.orderId}</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-[var(--white)]">
+                  Order #{order.orderId}
+                </h1>
                 <p className="text-[var(--quick-silver)] text-sm">{date} • {time}</p>
               </div>
             </div>
-            
             <button
               onClick={() => setShowStatusModal(true)}
               disabled={loading}
@@ -139,7 +134,7 @@ const AdminOrderDetails: React.FC = () => {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-6">
-        {/* Status Section */}
+        {/* Order Status */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-[var(--white)]">Order Status</h2>
@@ -147,7 +142,7 @@ const AdminOrderDetails: React.FC = () => {
           </div>
         </div>
 
-        {/* Customer & Order Info */}
+        {/* Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <InfoCard
             icon={<User size={20} />}
@@ -166,7 +161,6 @@ const AdminOrderDetails: React.FC = () => {
               </div>
             }
           />
-
           <InfoCard
             icon={<CreditCard size={20} />}
             title="Payment Information"
@@ -178,24 +172,23 @@ const AdminOrderDetails: React.FC = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>Status:</span>
-                  <span className={`px-2 py-1 rounded text-xs ${
-                    order.paymentStatus === 'paid' 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-orange-500/20 text-orange-400'
-                  }`}>
+                  <span className={`px-2 py-1 rounded text-xs ${order.paymentStatus === 'paid'
+                    ? 'bg-green-500/20 text-green-400'
+                    : 'bg-orange-500/20 text-orange-400'
+                    }`}>
                     {order.paymentStatus}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Total:</span>
-                  <span className="text-[var(--gold-crayola)] font-semibold">${order.total.toFixed(2)}</span>
+                  <span className="text-[var(--gold-crayola)] font-semibold">₹{order.total.toFixed(2)}</span>
                 </div>
               </div>
             }
           />
         </div>
 
-        {/* Special Notes */}
+        {/* Notes */}
         {order.notes && (
           <div className="mb-6">
             <InfoCard
@@ -206,14 +199,13 @@ const AdminOrderDetails: React.FC = () => {
           </div>
         )}
 
-        {/* Order Items */}
+        {/* Items */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
             <ShoppingBag size={20} className="text-[var(--gold-crayola)]" />
             <h2 className="text-lg font-semibold text-[var(--white)]">Order Items</h2>
             <span className="text-[var(--quick-silver)] text-sm">({order.items.length} items)</span>
           </div>
-          
           <div className="space-y-3">
             {order.items.map(item => (
               <OrderItemCard key={item.item_id} item={item} />
@@ -221,37 +213,36 @@ const AdminOrderDetails: React.FC = () => {
           </div>
         </div>
 
-        {/* Order Summary */}
+        {/* Summary */}
         <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-lg p-4">
           <div className="flex items-center gap-3 mb-4">
-            <DollarSign size={20} className="text-[var(--gold-crayola)]" />
+            <IndianRupee size={20} className="text-[var(--gold-crayola)]" />
             <h3 className="text-lg font-semibold text-[var(--white)]">Order Summary</h3>
           </div>
-          
           <div className="space-y-3">
             <div className="flex justify-between text-[var(--quick-silver)]">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>₹{subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-[var(--quick-silver)]">
               <span>Taxes (8%)</span>
-              <span>${taxes.toFixed(2)}</span>
+              <span>₹{taxes.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-[var(--quick-silver)]">
               <span>Delivery Fee</span>
-              <span>${deliveryFee.toFixed(2)}</span>
+              <span>₹{deliveryFee.toFixed(2)}</span>
             </div>
             <div className="border-t border-[var(--eerie-black-4)] pt-3">
               <div className="flex justify-between text-lg font-semibold">
                 <span className="text-[var(--white)]">Total</span>
-                <span className="text-[var(--gold-crayola)]">${order.total.toFixed(2)}</span>
+                <span className="text-[var(--gold-crayola)]">₹{order.total.toFixed(2)}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Status Update Modal */}
+      {/* Modal */}
       <StatusUpdateModal
         currentStatus={order.status}
         isOpen={showStatusModal}

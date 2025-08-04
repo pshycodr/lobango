@@ -6,5 +6,6 @@ export const Route = createFileRoute('/Order')({
 })
 
 function RouteComponent() {
+
   return <OrderDetails />
 }

@@ -39,7 +39,7 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({ order, onC
             <div className="space-y-2 mb-4">
                 <div className="flex justify-between items-center">
                     <span className="text-[var(--quick-silver)] text-sm">Total Amount</span>
-                    <span className="text-[var(--gold-crayola)] font-semibold text-lg">${order.total.toFixed(2)}</span>
+                    <span className="text-[var(--gold-crayola)] font-semibold text-lg">₹{order.total.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between items-center">

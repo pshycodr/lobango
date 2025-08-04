@@ -12,13 +12,13 @@ const OrderItemCard: React.FC<{ item: OrderItem }> = ({ item }) => (
                 )}
             </div>
             <div className="text-right ml-4">
-                <div className="text-[var(--gold-crayola)] font-semibold">${item.price.toFixed(2)}</div>
+                <div className="text-[var(--gold-crayola)] font-semibold">₹{item.price}</div>
                 <div className="text-[var(--quick-silver)] text-sm">× {item.quantity}</div>
             </div>
         </div>
         <div className="flex justify-between items-center pt-2 border-t border-[var(--eerie-black-4)]">
             <span className="text-[var(--quick-silver)] text-sm">Subtotal</span>
-            <span className="text-[var(--white)] font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+            <span className="text-[var(--white)] font-medium">₹{(item.price * item.quantity)}</span>
         </div>
     </div>
 );

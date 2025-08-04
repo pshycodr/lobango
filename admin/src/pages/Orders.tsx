@@ -23,6 +23,7 @@ const AdminOrdersView: React.FC = () => {
     const orders = useOrdersStore((state) => state.orders)
     const navigate = useNavigate()
 
+
     useEffect(() => {
         const fetchOrders = async () => {
             setLoading(true)
@@ -61,8 +62,13 @@ const AdminOrdersView: React.FC = () => {
 
     const handleOrderClick = (order: Order) => {
         console.log('Order clicked:', order.orderId);
-        navigate({to: `/order?${order.orderId}`})
-        
+        navigate({
+            to: '/order',
+            search: {
+                orderId: order.orderId
+            }
+        })
+
     };
 
     if (loading) {
