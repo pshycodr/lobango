@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { OrderItem } from '../../types/orders'
 
 type Order = {
@@ -18,10 +19,19 @@ type OrdersState = {
   orders: Order[]
   setOrders: (orders: Order[]) => void
   clearOrders: () => void
+  getOrderById: (id: string) => Order | undefined
 }
 
-export const useOrdersStore = create<OrdersState>((set) => ({
-  orders: [],
-  setOrders: (orders) => set({ orders }),
-  clearOrders: () => set({ orders: [] }),
-}))
+export const useOrdersStore = create(
+  persist<OrdersState>(
+    (set, get) => ({
+      orders: [],
+      setOrders: (orders) => set({ orders }),
+      clearOrders: () => set({ orders: [] }),
+      getOrderById: (id) => get().orders.find(order => order.orderId === id),
+    }),
+    {
+      name: 'orders-storage',
+    }
+  )
+)
