@@ -20,7 +20,7 @@ const SignInForm: React.FC = () => {
         try {
             console.log(formData);
             
-            const res = await api.post("http://localhost:8787/api/v1/admin/login", formData);
+            const res = await api.post("/api/v1/admin/login", formData);
             if (!res.data.success) {
                 alert("Signin failed");
             } else {
