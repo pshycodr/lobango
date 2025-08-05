@@ -8,6 +8,7 @@ import { MenuSidebar } from '@/components/Menu/MenuSidebar';
 import { MenuContent } from '@/components/Menu/MenuContent';
 import { Category, MenuItem } from '@/types/menu';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
+import { FloatingCart } from '@/components/Menu/FloatingCart';
 
 const rubik = Rubik({ subsets: ['latin'] });
 
@@ -108,6 +109,7 @@ export default function MenuPage() {
               getDescription={getItemDescription} 
             />
           </div>
+          <FloatingCart />
         </div>
       </div>
     </>
