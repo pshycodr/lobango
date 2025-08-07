@@ -1,167 +1,180 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { smoothScrollTo } from '@/lib/utils'
-import type { HeroSlide } from '@/types/home'
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Forum } from "next/font/google"
 
-const heroSlides: HeroSlide[] = [
-  {
-    id: '1',
-    image: '/assets/images/hero-slider-1.jpg',
-    subtitle: 'Tradational & Hygine',
-    title: 'For the love of delicious food',
-    description: 'Come with family & feel and enjoy of mouthwatering food',
-    buttonText: 'View Our Menu',
-    buttonLink: '#menu'
-  },
-  {
-    id: '2',
-    image: '/assets/images/hero-slider-2.jpg',
-    subtitle: 'delightful experience',
-    title: 'Flavors Inspired by the Seasons',
-    description: 'Come with family & feel the joy of mouthwatering food',
-    buttonText: 'View Our Menu',
-    buttonLink: '#menu'
-  },
-  {
-    id: '3',
-    image: '/assets/images/hero-slider-3.jpg',
-    subtitle: 'amazing & delicious',
-    title: 'Where every flavor tells a story',
-    description: 'Come with family & feel the joy of mouthwatering food',
-    buttonText: 'View Our Menu',
-    buttonLink: '#menu'
-  }
-]
+const forum = Forum({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-forum',
+});
 
-export default function Hero() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoSliding, setIsAutoSliding] = useState(true)
+const HeroSection = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [autoSlideInterval, setAutoSlideInterval] = useState<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    if (!isAutoSliding) return
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-    }, 7000)
-
-    return () => clearInterval(interval)
-  }, [isAutoSliding])
+  const slides = [
+    {
+      image: '/assets/images/hero-slider-1.jpg',
+      subtitle: 'Tradational & Hygine',
+      title: 'For the love of delicious food',
+      text: 'Come with family & feel and enjoy of mouthwatering food'
+    },
+    {
+      image: '/assets/images/hero-slider-2.jpg',
+      subtitle: 'delightful experience',
+      title: 'Flavors Inspired by the Seasons',
+      text: 'Come with family & feel the joy of mouthwatering food'
+    },
+    {
+      image: '/assets/images/hero-slider-3.jpg',
+      subtitle: 'amazing & delicious',
+      title: 'Where every flavor tells a story',
+      text: 'Come with family & feel the joy of mouthwatering food'
+    }
+  ];
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-  }
+    setCurrentSlide((prev) => (prev >= slides.length - 1 ? 0 : prev + 1));
+  };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
-  }
+    setCurrentSlide((prev) => (prev <= 0 ? slides.length - 1 : prev - 1));
+  };
 
-  const handleMenuClick = () => {
-    smoothScrollTo('menu')
-  }
+  const startAutoSlide = () => {
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
+    const interval = setInterval(nextSlide, 7000);
+    setAutoSlideInterval(interval);
+  };
 
-  const handleBookTableClick = () => {
-    smoothScrollTo('reserv')
-  }
+  const stopAutoSlide = () => {
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+      setAutoSlideInterval(null);
+    }
+  };
+
+  useEffect(() => {
+    startAutoSlide();
+    return () => stopAutoSlide();
+  }, []);
 
   return (
-    <section className="hero text-center relative py-30 min-h-screen overflow-hidden z-1" id="home">
-      <ul className="hero-slider">
-        {heroSlides.map((slide, index) => (
-          <li 
-            key={slide.id}
-            className={`slider-item absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full grid place-content-center pt-25 transition-all duration-1000 z-1 ${
-              index === currentSlide ? 'opacity-100 visible' : 'opacity-0 invisible'
-            }`}
+    <section className="relative pt-32 h-screen overflow-hidden z-10 text-center" id="home">
+      {/* Slider Items */}
+      <ul className=" w-full h-full">
+        {slides.map((slide, index) => (
+          <li
+            key={index}
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full grid place-content-center pt-25 transition-all duration-1000 z-10 ${index === currentSlide ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
           >
-            <div className="slider-bg absolute inset-0 transform scale-100 pointer-events-none select-none -z-1">
+            {/* Background Image */}
+            <div className="absolute inset-0 pointer-events-none select-none -z-10">
               <Image
                 src={slide.image}
-                width={1880}
-                height={950}
+                fill
                 alt=""
-                className="img-cover animate-smooth-scale"
-                priority={index === 0}
+                className="object-cover"
+                quality={100}
+                style={{
+                  animation: index === currentSlide ? 'smoothScale 7s linear forwards' : 'none'
+                }}
               />
             </div>
 
-            <p className={`section-subtitle text-label-2 text-gold-crayola font-bold uppercase tracking-widest mb-3 transform translate-y-7 opacity-0 ${
-              index === currentSlide ? 'animate-slider-reveal' : ''
-            }`} style={{ animationDelay: '500ms' }}>
-              {slide.subtitle}
-            </p>
+            {/* Content */}
+            <div className={`space-y-4 ${index === currentSlide ? 'animate-fade-in-up' : ''}`}>
+              <p className="font-[var(--fontSize-label-2)] text-[var(--gold-crayola)]  uppercase tracking-[var(--letterSpacing-2)] relative after:content-[''] after:block after:w-25 after:mx-auto after:mt-1.5 after:bg-[url('/assets/images/separator.svg')] after:bg-no-repeat after:bg-center after:h-4">
+                {slide.subtitle}
+              </p>
 
-            <h1 className={`hero-title text-display-1 font-forum mb-4 transform translate-y-7 opacity-0 ${
-              index === currentSlide ? 'animate-slider-reveal' : ''
-            }`} style={{ animationDelay: '1000ms' }}>
-              {slide.title.split(' ').reduce((acc, word, i, arr) => {
-                if (i === Math.ceil(arr.length / 2)) {
-                  return acc + '<br>' + word
-                }
-                return acc + (i === 0 ? '' : ' ') + word
-              }, '')}
-            </h1>
+              <h1 className={`lg:text-8xl text-4xl text-white ${forum.className} leading-none`}>
+                {slide.title.split(' ').map((word, i, arr) => (
+                  <span key={i}>
+                    {word}
+                    {i === Math.floor(arr.length / 2) - 1 && <br />}
+                    {i < arr.length - 1 && i !== Math.floor(arr.length / 2) - 1 && ' '}
+                  </span>
+                ))}
+              </h1>
 
-            <p className={`hero-text text-body-2 my-10 transform translate-y-7 opacity-0 ${
-              index === currentSlide ? 'animate-slider-reveal' : ''
-            }`} style={{ animationDelay: '1500ms' }}>
-              {slide.description}
-            </p>
+              <p className="text-sm lg:text-lg text-amber-50 leading-[var(--lineHeight-4)] mb-10">
+                {slide.text}
+              </p>
 
-            <button
-              onClick={handleMenuClick}
-              className={`btn btn-primary mx-auto transform translate-y-7 opacity-0 ${
-                index === currentSlide ? 'animate-slider-reveal' : ''
-              }`}
-              style={{ animationDelay: '2000ms' }}
-            >
-              <span className="text text-1">{slide.buttonText}</span>
-              <span className="text text-2" aria-hidden="true">{slide.buttonText}</span>
-            </button>
+              <Link
+                href="/menu"
+                className="inline-block text-[var(--smoky-black-1)] bg-[var(--gold-crayola)] font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 rounded-lg mt-10"
+              >
+                Order Now
+              </Link>
+
+            </div>
           </li>
         ))}
       </ul>
 
-      <button 
-        className="slider-btn prev hidden md:grid absolute z-1 text-gold-crayola text-2xl border border-gold-crayola w-11 h-11 place-items-center top-1/2 left-7 transform -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-gold-crayola hover:text-black"
+      {/* Navigation Buttons */}
+      <button
+        className="hidden md:grid absolute z-10 text-[var(--gold-crayola)] text-2xl border border-[var(--gold-crayola)] w-11 h-11 place-items-center top-1/2 left-8 -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-[var(--gold-crayola)] hover:text-black"
         onClick={prevSlide}
-        onMouseEnter={() => setIsAutoSliding(false)}
-        onMouseLeave={() => setIsAutoSliding(true)}
+        onMouseEnter={stopAutoSlide}
+        onMouseLeave={startAutoSlide}
         aria-label="slide to previous"
       >
-        <ChevronLeft className="transform -rotate-45" />
-      </button>
-
-      <button 
-        className="slider-btn next hidden md:grid absolute z-1 text-gold-crayola text-2xl border border-gold-crayola w-11 h-11 place-items-center top-1/2 right-7 transform -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-gold-crayola hover:text-black"
-        onClick={nextSlide}
-        onMouseEnter={() => setIsAutoSliding(false)}
-        onMouseLeave={() => setIsAutoSliding(true)}
-        aria-label="slide to next"
-      >
-        <ChevronRight className="transform -rotate-45" />
+        <ChevronLeft className="-rotate-45" />
       </button>
 
       <button
-        onClick={handleBookTableClick}
-        className="hero-btn absolute bottom-4 right-4 z-2 bg-gold-crayola w-28 h-28 p-3 transform scale-60 md:scale-100 rounded-full"
+        className="hidden md:grid absolute z-10 text-[var(--gold-crayola)] text-2xl border border-[var(--gold-crayola)] w-11 h-11 place-items-center top-1/2 right-8 -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-[var(--gold-crayola)] hover:text-black"
+        onClick={nextSlide}
+        onMouseEnter={stopAutoSlide}
+        onMouseLeave={startAutoSlide}
+        aria-label="slide to next"
       >
-        <Image
-          src="/assets/images/hero-icon.png"
-          width={48}
-          height={48}
-          alt="booking icon"
-          className="mx-auto mb-1"
-        />
-        
-        <span className="text-center text-black font-bold uppercase tracking-wide leading-tight text-xs block">
+        <ChevronRight className="-rotate-45" />
+      </button>
+
+      {/* Book A Table Button */}
+      {/* <Link href="#reserv" className="absolute bottom-4 right-4 z-20 bg-[var(--gold-crayola)] w-28 h-28 p-3 scale-60 sm:scale-75 lg:bottom-12 lg:right-12 lg:scale-100 flex flex-col items-center justify-center text-center rounded-full  after:absolute after:inset-0 after:border after:border-[var(--gold-crayola)] after:rounded-full after:animate-spin" style={{ animationDuration: '15s' }}>
+        <Image src="/assets/images/hero-icon.png" width={48} height={48} alt="booking icon" className="mb-1.5" />
+        <span className="text-black font-bold uppercase tracking-[var(--letterSpacing-1)] leading-[var(--lineHeight-3)] text-xs">
           Book A Table
         </span>
+      </Link> */}
+
+      <style jsx>{`
+        @keyframes smoothScale {
+          0% { transform: scale(1); }
+          100% { transform: scale(1.15); }
+        }
         
-        <div className="absolute inset-0 border border-gold-crayola rounded-full animate-rotate360"></div>
-      </button>
+        @keyframes fade-in-up {
+          0% {
+            transform: translateY(30px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        
+        .animate-fade-in-up > * {
+          animation: fade-in-up 1s ease forwards;
+        }
+        
+        .animate-fade-in-up > *:nth-child(1) { animation-delay: 500ms; }
+        .animate-fade-in-up > *:nth-child(2) { animation-delay: 1000ms; }
+        .animate-fade-in-up > *:nth-child(3) { animation-delay: 1500ms; }
+        .animate-fade-in-up > *:nth-child(4) { animation-delay: 2000ms; }
+      `}</style>
     </section>
-  )
-}
+  );
+};
+
+export default HeroSection;

@@ -211,3 +211,102 @@ body {
     height: 50px;
   }
 }
+
+.move-anim { animation: move 5s linear infinite; }
+
+@keyframes move {
+  0%,
+  100% { transform: translateY(0); }
+
+  50% { transform: translateY(30px); }
+}
+
+.circle {
+  border-radius: 100%;
+  margin-block-end: 45px;
+  animation: rotate360 1s linear infinite;
+}
+
+@keyframes rotate360 {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(1turn); }
+}
+
+/* Entire DatePicker wrapper */
+.react-datepicker {
+  background-color: var(--smoky-black-1) !important;
+  border: none !important;
+  font-family: inherit;
+}
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+
+/* Header (Month & Year) */
+.react-datepicker__header {
+  background-color: var(--smoky-black-1) !important;
+  border-bottom: none !important;
+}
+
+/* Current Month Text */
+.react-datepicker__current-month {
+  color: var(--gold-crayola) !important;
+  font-weight: 600;
+}
+
+/* Weekdays (Su, Mo, etc.) */
+.react-datepicker__day-name {
+  color: var(--gold-crayola) !important;
+}
+
+/* Days Grid */
+.react-datepicker__day {
+  color: white !important;
+  background-color: transparent !important;
+  border-radius: 0.25rem;
+}
+
+/* Selected day */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: var(--gold-crayola) !important;
+  color: var(--smoky-black-1) !important;
+}
+
+/* Hover effect */
+.react-datepicker__day:not(.react-datepicker__day--disabled):hover {
+  background-color: var(--gold-crayola) !important;
+  color: var(--smoky-black-1) !important;
+}
+
+/* Disabled days */
+.react-datepicker__day--disabled {
+  color: var(--white-alpha-20) !important;
+  pointer-events: none;
+}
+
+/* Navigation arrows */
+.react-datepicker__navigation {
+  border-color: var(--gold-crayola) !important;
+}
+
+/* Remove arrow box shadow */
+.react-datepicker__triangle {
+  display: none !important;
+}
+
+ 
+.parallax-item {
+  transform: translate3d(0px, 0px, 0px);
+}
+
+
+.spin-slow {
+  animation: spin 15s linear infinite;
+}
+
+@keyframes spin{
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
