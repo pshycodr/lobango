@@ -70,7 +70,7 @@ const ReservationSection = () => {
     '10:00 PM', '10:30 PM',
     '11:00 PM'
   ];
-  
+
 
   return (
     <section className="relative" id="reserv">
@@ -114,7 +114,7 @@ const ReservationSection = () => {
             </div>
 
             {/* Person, Date, Time */}
-            <div className="grid gap-5 mb-5 md:grid-cols-3 overflow-hidden">
+            <div className="grid gap-5 mb-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {/* Person Select */}
               <div className="relative">
                 <User className="absolute top-1/2 left-4 -translate-y-1/2 w-4 h-4 pointer-events-none text-[var(--gold-crayola)]" />
@@ -134,7 +134,7 @@ const ReservationSection = () => {
               </div>
 
               {/* Date Picker */}
-              <div className="relative w-full">
+              <div className="relative min-w-full">
                 <CalenderIcon className="absolute z-10 top-1/2 left-4 -translate-y-1/2 w-4 h-4 pointer-events-none text-[var(--gold-crayola)]" />
                 <DatePicker
                   selected={startDate}
@@ -143,9 +143,9 @@ const ReservationSection = () => {
                   maxDate={maxDate}
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select date"
-                  className="bg-[var(--eerie-black-2)] text-white h-14 pl-10 pr-10 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] w-xl sm:w-lg lg:w-full  appearance-none cursor-pointer"
+                  className="!w-full bg-[var(--eerie-black-2)] text-white h-14 pl-12 pr-10 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] appearance-none cursor-pointer"
                   popperPlacement="bottom-start"
-                  calendarClassName="react-datepicker"
+                  calendarClassName="react-datepicker custom-datepicker"
                   dayClassName={(date) =>
                     date < today || date > maxDate
                       ? 'react-datepicker__day--disabled'
@@ -153,6 +153,7 @@ const ReservationSection = () => {
                   }
                 />
               </div>
+
 
               {/* Time Select */}
               <div className="relative">
