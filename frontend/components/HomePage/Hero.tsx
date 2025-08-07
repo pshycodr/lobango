@@ -88,11 +88,11 @@ const HeroSection = () => {
 
             {/* Content */}
             <div className={`space-y-4 ${index === currentSlide ? 'animate-fade-in-up' : ''}`}>
-              <p className="font-[var(--fontSize-label-2)] text-[var(--gold-crayola)]  uppercase tracking-[var(--letterSpacing-2)] relative after:content-[''] after:block after:w-25 after:mx-auto after:mt-1.5 after:bg-[url('/assets/images/separator.svg')] after:bg-no-repeat after:bg-center after:h-4">
+              <p className="text-sm text-[var(--gold-crayola)]  uppercase tracking-wide relative after:content-[''] after:block after:w-25 after:mx-auto after:mt-1.5 after:bg-[url('/assets/images/separator.svg')] after:bg-no-repeat after:bg-center after:h-4">
                 {slide.subtitle}
               </p>
 
-              <h1 className={`lg:text-8xl text-4xl text-white ${forum.className} leading-none`}>
+              <h1 className={`lg:text-8xl text-5xl text-white ${forum.className} leading-none`}>
                 {slide.title.split(' ').map((word, i, arr) => (
                   <span key={i}>
                     {word}

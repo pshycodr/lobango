@@ -40,11 +40,11 @@ const ServiceSection = () => {
           Flavors For Royalty
         </p>
 
-        <h2 className={`${forum.className} text-5xl text-white mb-4`}>
+        <h2 className={`${forum.className} text-4xl sm:text-5xl text-white mb-4`}>
           We Offer Top Notch
         </h2>
 
-        <p className="text-sm text-white leading-20 mb-10">
+        <p className="text-xs sm:text-sm text-white leading-10 mb-10">
           Lobanga Provide Best Quality and Hygienic Food
         </p>
 
