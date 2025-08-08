@@ -6,21 +6,30 @@ import clientRouter from './routes/clients.routes'
 import paymentRouter from './routes/payments.routes'
 
 const app = new Hono()
+
+const allowedOrigins = [
+  'https://adminlobango.vercel.app',
+  'https://lobango.vercel.app',
+  'https://admin.lobango.in',
+  'https://lobango.in',
+  'http://localhost:3000',
+  'http://localhost:5173',
+]
+
 app.use('*', cors({
-  origin: 'http://localhost:5173',           // ✅ Frontend dev server
-  credentials: true,                         // ✅ Allow cookies / credentials
+  origin: (origin) => {
+    if (!origin) return origin
+    return allowedOrigins.includes(origin) ? origin : ''
+  },
+  credentials: true,
   allowMethods: ['GET', 'POST', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
 }))
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
 
-
+app.get('/', (c) => c.text('Hello Hono!'))
 
 app.route("/api/v1/client", clientRouter)
 app.route("/api/v1/admin", adminRouter)
 app.route("/api/v1/payment", paymentRouter)
 
-
-export default app 
+export default app

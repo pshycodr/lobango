@@ -1,0 +1,131 @@
+import { useState } from 'react';
+import { FormData, SubmitStatus, BookingResponse } from '@/types/bookings'
+import { getErrorMessage, prepareBookingData, copyToClipboard } from '../utils/bookingUtils';
+import api from '@/lib/axios';
+
+export const useBooking = () => {
+    const [formData, setFormData] = useState<FormData>({
+        name: '',
+        phone: '',
+        email: '',
+        person: '1-person',
+        date: '',
+        time: '10:00am',
+        message: '',
+    });
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<SubmitStatus>({ type: null, message: '' });
+    const [showPopup, setShowPopup] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const [startDate, setStartDate] = useState<Date | null>(
+        formData.date ? new Date(formData.date) : null
+    );
+
+    const resetForm = () => {
+        setFormData({
+            name: '',
+            phone: '',
+            email: '',
+            person: '1-person',
+            date: '',
+            time: '10:00am',
+            message: '',
+        });
+        setStartDate(null);
+    };
+
+    const closePopup = () => {
+        setShowPopup(false);
+        setSubmitStatus({ type: null, message: '' });
+        setCopied(false);
+    };
+
+    const handleDateChange = (date: Date | null) => {
+        if (!date) return;
+        setStartDate(date);
+        setFormData(prev => ({ ...prev, date: date.toISOString().split("T")[0] }));
+    };
+
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleCopy = async (text: string) => {
+        const success = await copyToClipboard(text);
+        if (success) {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        try {
+            const bookingData = prepareBookingData(formData);
+            console.log(bookingData);
+
+            const response = await api.post('/api/v1/client/booking', bookingData);
+            const result: BookingResponse = response.data;
+
+            if (result.success) {
+                setSubmitStatus({
+                    type: 'success',
+                    message: 'Booking confirmed! We\'ll contact you soon.',
+                    bookingId: result.booking_id,
+                });
+                resetForm();
+            } else {
+                const errorMessage = getErrorMessage(response, result);
+                setSubmitStatus({
+                    type: 'error',
+                    message: errorMessage,
+                });
+            }
+        } catch (error: any) {
+            console.error('Booking error:', error);
+
+            if (error.response?.data) {
+                const errorResult = error.response.data;
+                const errorMessage = getErrorMessage(error.response, errorResult);
+                setSubmitStatus({
+                    type: 'error',
+                    message: errorMessage,
+                });
+            } else {
+                setSubmitStatus({
+                    type: 'error',
+                    message: 'Network error. Please check your connection and try again.',
+                });
+            }
+        } finally {
+            setIsSubmitting(false);
+            setShowPopup(true);
+        }
+    };
+
+    const isFormValid = formData.name && formData.phone && formData.email && formData.date;
+
+    return {
+        formData,
+        isSubmitting,
+        submitStatus,
+        showPopup,
+        copied,
+        startDate,
+        isFormValid,
+        handleDateChange,
+        handleInputChange,
+        handleSubmit,
+        handleCopy,
+        closePopup,
+    };
+};

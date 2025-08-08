@@ -55,15 +55,15 @@ export async function adminLogin(c: Context) {
         c.env.JWT_SECRET
     )
 
-
     setCookie(c, 'admin_token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // true in production, false in development
-        sameSite: 'Lax', // Changed from 'Strict' to 'Lax'
+        secure: true,
+        sameSite: 'None',       // 🔥 Must be 'None' for cross-site cookies
         path: '/',
         maxAge: 60 * 60 * 24,
-        domain: 'localhost' // Add this for local development
-    })
+        // ❌ Do not set `domain` for cross-origin setups like this
+      })
+      
 
     return c.json({ success: true })
 }
