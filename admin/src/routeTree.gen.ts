@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SigninRouteImport } from './routes/Signin'
+import { Route as SettingsRouteImport } from './routes/Settings'
 import { Route as OrdersRouteImport } from './routes/Orders'
 import { Route as OrderRouteImport } from './routes/Order'
 import { Route as HomeRouteImport } from './routes/Home'
@@ -19,6 +20,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const SigninRoute = SigninRouteImport.update({
   id: '/Signin',
   path: '/Signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/Settings',
+  path: '/Settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdersRoute = OrdersRouteImport.update({
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/Home': typeof HomeRoute
   '/Order': typeof OrderRoute
   '/Orders': typeof OrdersRoute
+  '/Settings': typeof SettingsRoute
   '/Signin': typeof SigninRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/Home': typeof HomeRoute
   '/Order': typeof OrderRoute
   '/Orders': typeof OrdersRoute
+  '/Settings': typeof SettingsRoute
   '/Signin': typeof SigninRoute
 }
 export interface FileRoutesById {
@@ -70,13 +78,28 @@ export interface FileRoutesById {
   '/Home': typeof HomeRoute
   '/Order': typeof OrderRoute
   '/Orders': typeof OrdersRoute
+  '/Settings': typeof SettingsRoute
   '/Signin': typeof SigninRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/Bookings' | '/Home' | '/Order' | '/Orders' | '/Signin'
+  fullPaths:
+    | '/'
+    | '/Bookings'
+    | '/Home'
+    | '/Order'
+    | '/Orders'
+    | '/Settings'
+    | '/Signin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/Bookings' | '/Home' | '/Order' | '/Orders' | '/Signin'
+  to:
+    | '/'
+    | '/Bookings'
+    | '/Home'
+    | '/Order'
+    | '/Orders'
+    | '/Settings'
+    | '/Signin'
   id:
     | '__root__'
     | '/'
@@ -84,6 +107,7 @@ export interface FileRouteTypes {
     | '/Home'
     | '/Order'
     | '/Orders'
+    | '/Settings'
     | '/Signin'
   fileRoutesById: FileRoutesById
 }
@@ -93,6 +117,7 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   OrderRoute: typeof OrderRoute
   OrdersRoute: typeof OrdersRoute
+  SettingsRoute: typeof SettingsRoute
   SigninRoute: typeof SigninRoute
 }
 
@@ -103,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/Signin'
       fullPath: '/Signin'
       preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Settings': {
+      id: '/Settings'
+      path: '/Settings'
+      fullPath: '/Settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Orders': {
@@ -149,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   OrderRoute: OrderRoute,
   OrdersRoute: OrdersRoute,
+  SettingsRoute: SettingsRoute,
   SigninRoute: SigninRoute,
 }
 export const routeTree = rootRouteImport
