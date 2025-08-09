@@ -58,12 +58,12 @@
   }
 }
 
-.header {
+body {
   padding-top: env(safe-area-inset-top);
 }
 
 @supports not (padding-top: env(safe-area-inset-top)) {
-  .header {
+  body {
     padding-top: 16px; /* fallback */
   }
 }
