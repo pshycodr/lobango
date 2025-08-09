@@ -6,12 +6,14 @@ import { adminLogout } from "./admin/adminLogout";
 import { updateOrderStatus } from "./admin/updateOrderStatus";
 import viewBookings from "./admin/viewBookings";
 import updateBookingStatus from "./admin/updateBookingStatus";
+import verifyAdmin from "./admin/verifyAdmin";
 
 
 const adminRouter = new Hono()
 
 adminRouter.post('/login', adminLogin)
 adminRouter.post('/logout', adminLogout)
+adminRouter.get('/verify', adminCheck, verifyAdmin)
 
 adminRouter.get("/orders", adminCheck, viewOrders)
 adminRouter.post("/order/update-status", adminCheck, updateOrderStatus)

@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../lib/axios";
 import Loader from "../Common/Loader";
 import InputField from "./Input";
@@ -13,13 +13,25 @@ const SignInForm: React.FC = () => {
     });
     const navigate = useNavigate()
 
+    useEffect(() => {
+        const checkAdmin = async () => {
+            const res = await api.get("/api/v1/admin/verify")
+            if (res.data.success) {
+                navigate({ to: "/home" })
+            }
+        }
+
+        checkAdmin()
+        
+    }, [])
+
     const handleSubmit = async () => {
         if (!isFormValid) return;
 
         setLoading(true);
         try {
             console.log(formData);
-            
+
             const res = await api.post("/api/v1/admin/login", formData);
             if (!res.data.success) {
                 alert("Signin failed");
