@@ -24,6 +24,7 @@ const addBooking = async (c: Context) => {
   try {
     const body = await c.req.json();
     const parseResult = AddBookingSchema.safeParse(body);
+    const created_at = new Date().toISOString()
 
     if (!parseResult.success) {
       return c.json(
@@ -65,6 +66,7 @@ const addBooking = async (c: Context) => {
       time: data.time,
       number_of_people: parseInt(data.peoples, 10),
       occasion: data.ocassion || "N/A",
+      created_at
     });
 
     return c.json({ success: true, booking_id }, 201);

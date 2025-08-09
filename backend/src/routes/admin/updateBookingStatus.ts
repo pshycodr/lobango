@@ -29,8 +29,6 @@ const updateBookingStatus = async (c: Context) => {
 
     return c.json({
       success: true,
-      updated: result.rowsAffected ?? 0,
-      message: result.rowsAffected ? "Status updated." : "Booking not found.",
     });
   } catch (error) {
     console.error("Booking status update failed:", error);

@@ -59,7 +59,7 @@ const AdminOrderDetails: React.FC = () => {
       const payload = { status: newStatus, orderId };
       console.log(payload);
 
-      const res = await api.post("/api/v1/admin/orders/update-status", payload);
+      const res = await api.post("/api/v1/admin/order/update-status", payload);
       const data = res.data;
 
       if (!data.success) {
