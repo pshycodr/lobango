@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 import Navigation from '../components/Common/Navigation'
 import { StatusBar, Style } from '@capacitor/status-bar'
+import { Capacitor } from '@capacitor/core'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -9,16 +10,16 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   React.useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).Capacitor) {
-      StatusBar.setStyle({ style: Style.Dark })
+    if (Capacitor.isNativePlatform()) {
       StatusBar.setBackgroundColor({ color: '#000000' })
+      StatusBar.setStyle({ style: Style.Dark })
     }
   }, [])
 
   return (
-    <React.Fragment>
+    <>
       <Outlet />
       <Navigation />
-    </React.Fragment>
+    </>
   )
 }
