@@ -57,3 +57,13 @@
                       var(--sb-track-color);
   }
 }
+
+.header {
+  padding-top: env(safe-area-inset-top);
+}
+
+@supports not (padding-top: env(safe-area-inset-top)) {
+  .header {
+    padding-top: 16px; /* fallback */
+  }
+}
