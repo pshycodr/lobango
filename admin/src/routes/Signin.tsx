@@ -10,11 +10,11 @@ function RouteComponent() {
   return (
     <>
       <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center p-6">
-      <div className="w-full max-w-lg">
-        <Header />
-        <SignInForm />
+        <div className="w-full max-w-lg">
+          <Header />
+          <SignInForm />
+        </div>
       </div>
-    </div>
     </>
   )
 }
