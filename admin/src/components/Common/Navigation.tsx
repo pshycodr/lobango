@@ -1,5 +1,5 @@
-import { useNavigate, useLocation } from "@tanstack/react-router";
-import { Home, FileText, Calendar, Bell, Settings } from "lucide-react";
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { Calendar, FileText, Home, Settings } from "lucide-react";
 
 interface NavigationProps {
   activeRoute?: string;
