@@ -33,7 +33,7 @@ const FooterSection = () => {
             <div className="absolute top-0 right-0 w-4 h-full bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
 
             <Link href="#" className="block max-w-max mx-auto mb-10">
-              <Image src="/assets/images/logo.svg" width={160} height={50} loading="lazy" alt="labanga home" />
+              <Image src="/assets/images/logo.png" width={160} height={50} loading="lazy" alt="labanga home" />
             </Link>
 
             <address className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] not-italic mb-2">

@@ -68,16 +68,22 @@ const HomeMenuSection = () => {
             <li key={index}>
               <div className="flex items-start gap-5 group">
                 <figure 
-                  className="flex-shrink-0 rounded-3xl bg-[var(--gold-crayola)] overflow-hidden"
-                  style={{ aspectRatio: '100 / 100' }}
+                  className="flex-shrink-0 rounded-2xl bg-[var(--gold-crayola)] overflow-hidden w-28 h-28 sm:w-32 sm:h-32 lg:w-28 lg:h-28"
+                  style={{ 
+                    minWidth: '7rem',
+                    minHeight: '7rem'
+                  }}
                 >
                   <Image 
                     src={item.image} 
-                    width={100} 
-                    height={100} 
+                    width={110} 
+                    height={110} 
                     loading="lazy" 
                     alt={item.title}
                     className="w-full h-full object-cover transition-all duration-500 group-hover:opacity-70 group-hover:scale-105"
+                    style={{
+                      borderRadius: '0.75rem'
+                    }}
                   />
                 </figure>
 
