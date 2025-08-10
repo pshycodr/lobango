@@ -9,6 +9,7 @@ import { MenuContent } from '@/components/Menu/MenuContent';
 import { Category, MenuItem } from '@/types/menu';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
 import { FloatingCart } from '@/components/Menu/FloatingCart';
+import { usePermissionsStore } from '@/store/usePermissionsStore';
 
 const rubik = Rubik({ subsets: ['latin'] });
 
@@ -17,6 +18,15 @@ export default function MenuPage() {
   const [filteredCategories, setFilteredCategories] = useState<Category[]>(menuData.menu);
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const { fetchPermissions } = usePermissionsStore();
+
+  useEffect(() => {
+    fetchPermissions()
+  },[])
+
+  // console.log(newOrders);
+  
 
   const sectionIds = filteredCategories.map(category => 
     category.category.replace(/\s+/g, '-').toLowerCase()

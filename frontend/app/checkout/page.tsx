@@ -9,6 +9,7 @@ import PaymentMethod from '@/components/Checkout/PaymentMethod';
 import PlaceOrderButton from '@/components/Checkout/PlaceOrderButton';
 import api from '@/lib/axios';
 import { useCartStore } from '@/store/useCartStore';
+import { usePermissionsStore } from '@/store/usePermissionsStore';
 import { Address } from '@/types/address';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -29,6 +30,12 @@ export default function CheckoutPage() {
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
     const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
     const [paymentData, setPaymentData] = useState<PaymentData | undefined>(undefined);
+
+    const { newOrders, fetchPermissions } = usePermissionsStore();
+
+    useEffect(() => {
+        fetchPermissions()
+    }, [])
 
     useEffect(() => {
         setIsClient(true);
@@ -198,6 +205,10 @@ export default function CheckoutPage() {
             } as React.CSSProperties}
         >
             <CheckoutHeader onBack={handleBack} />
+            {newOrders === false ? (
+                <div className='flex justify-center items-center w-full'>
+                    <p className="p-4 mt-5 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500 ">Online orders are currently closed.</p>
+                </div>) : ""}
 
             <div className="max-w-4xl mx-auto px-6 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

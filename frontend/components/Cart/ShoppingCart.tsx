@@ -1,16 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CartItemCard } from './CartItemCard';
 import { CartSummary } from './CartSummary';
 import { useCartStore } from '@/store/useCartStore';// adjust path if needed
 import { useRouter } from 'next/navigation';
+import { usePermissionsStore } from '@/store/usePermissionsStore';
 
 export const ShoppingCart: React.FC = () => {
   const cartItems = useCartStore((state) => state.cart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const router = useRouter()
+  const { newOrders, fetchPermissions } = usePermissionsStore();
+
+  useEffect(() => {
+    fetchPermissions()
+  }, [])
 
   const handleUpdateQuantity = (id: string, quantity: number) => {
     if (quantity === 0) {
@@ -48,6 +54,11 @@ export const ShoppingCart: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {newOrders === false ? (
+        <div className='flex justify-center items-center w-full'>
+          <p className="p-4 mt-5 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500 ">Online orders are currently closed.</p>
+        </div>) : ""}
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

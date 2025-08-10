@@ -31,7 +31,7 @@ export const StatusPopup = ({
 
                 <h3 className={`text-xl font-bold mb-2 ${submitStatus.type === 'success' ? 'text-green-400' : 'text-red-400'
                     }`}>
-                    {submitStatus.type === 'success' ? 'Booking Confirmed!' : 'Booking Failed'}
+                    {submitStatus.type === 'success' ? 'Request Placed!' : 'Booking Failed'}
                 </h3>
 
                 <p className="text-white/80 mb-4">

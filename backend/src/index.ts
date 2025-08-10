@@ -4,6 +4,7 @@ import orderRouter from './routes/clients.routes'
 import adminRouter from './routes/admin.routes'
 import clientRouter from './routes/clients.routes'
 import paymentRouter from './routes/payments.routes'
+import permissionsRouter from './routes/permissons.route'
 
 const app = new Hono()
 
@@ -31,5 +32,6 @@ app.get('/', (c) => c.text('Hello Hono!'))
 app.route("/api/v1/client", clientRouter)
 app.route("/api/v1/admin", adminRouter)
 app.route("/api/v1/payment", paymentRouter)
+app.route("/api/v1/permission", permissionsRouter )
 
 export default app

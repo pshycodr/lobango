@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormData, SubmitStatus, BookingResponse } from '@/types/bookings'
 import { getErrorMessage, prepareBookingData, copyToClipboard } from '../utils/bookingUtils';
 import api from '@/lib/axios';
@@ -18,9 +18,21 @@ export const useBooking = () => {
     const [submitStatus, setSubmitStatus] = useState<SubmitStatus>({ type: null, message: '' });
     const [showPopup, setShowPopup] = useState(false);
     const [copied, setCopied] = useState(false);
-    const [startDate, setStartDate] = useState<Date | null>(
-        formData.date ? new Date(formData.date) : null
-    );
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [isBookingAllowed, setIsBookingAllowed] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        const fetchPermission = async () => {
+            try {
+                const res = await api.get('/api/v1/permission/new-booking');
+                setIsBookingAllowed(res.data);
+            } catch (error) {
+                console.error('Failed to fetch booking permission:', error);
+                setIsBookingAllowed(false);
+            }
+        };
+        fetchPermission();
+    }, []);
 
     const resetForm = () => {
         setFormData({
@@ -47,9 +59,7 @@ export const useBooking = () => {
         setFormData(prev => ({ ...prev, date: date.toISOString().split("T")[0] }));
     };
 
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-    ) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -67,19 +77,25 @@ export const useBooking = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);
+        if (!isBookingAllowed) {
+            setSubmitStatus({
+                type: 'error',
+                message: 'Sorry, bookings are currently closed.',
+            });
+            setShowPopup(true);
+            return;
+        }
 
+        setIsSubmitting(true);
         try {
             const bookingData = prepareBookingData(formData);
-            console.log(bookingData);
-
             const response = await api.post('/api/v1/client/booking', bookingData);
             const result: BookingResponse = response.data;
 
             if (result.success) {
                 setSubmitStatus({
                     type: 'success',
-                    message: 'Booking confirmed! We\'ll contact you soon.',
+                    message: 'Booking Request placed! We\'ll contact you soon.',
                     bookingId: result.booking_id,
                 });
                 resetForm();
@@ -92,10 +108,8 @@ export const useBooking = () => {
             }
         } catch (error: any) {
             console.error('Booking error:', error);
-
             if (error.response?.data) {
-                const errorResult = error.response.data;
-                const errorMessage = getErrorMessage(error.response, errorResult);
+                const errorMessage = getErrorMessage(error.response, error.response.data);
                 setSubmitStatus({
                     type: 'error',
                     message: errorMessage,
@@ -122,6 +136,7 @@ export const useBooking = () => {
         copied,
         startDate,
         isFormValid,
+        isBookingAllowed,
         handleDateChange,
         handleInputChange,
         handleSubmit,

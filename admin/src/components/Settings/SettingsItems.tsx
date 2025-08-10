@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 import ToggleSwitch from "./ToggleSwitch";
 
 interface SettingItemProps {
@@ -10,6 +10,7 @@ interface SettingItemProps {
     onAction?: () => void;
     icon?: React.ReactNode;
     showBorder?: boolean;
+    loading?: boolean; // ← added
 }
 
 const SettingItem: React.FC<SettingItemProps> = ({
@@ -20,16 +21,17 @@ const SettingItem: React.FC<SettingItemProps> = ({
     onToggle,
     onAction,
     icon,
-    showBorder = true
+    showBorder = true,
+    loading = false // ← default false
 }) => {
     return (
         <div
             className={`
-          flex items-center justify-between py-4 px-1
-          ${showBorder ? 'border-b border-[var(--eerie-black-4)]' : ''}
-          ${type === 'action' ? 'cursor-pointer hover:bg-[var(--eerie-black-4)] hover:bg-opacity-30 rounded-lg transition-colors duration-200 -mx-1' : ''}
-        `}
-            onClick={type === 'action' ? onAction : undefined}
+                flex items-center justify-between py-4 px-1
+                ${showBorder ? 'border-b border-[var(--eerie-black-4)]' : ''}
+                ${type === 'action' && !loading ? 'cursor-pointer hover:bg-[var(--eerie-black-4)] hover:bg-opacity-30 rounded-lg transition-colors duration-200 -mx-1' : ''}
+            `}
+            onClick={type === 'action' && !loading ? onAction : undefined}
         >
             <div className="flex items-center gap-3">
                 {icon && (
@@ -52,7 +54,11 @@ const SettingItem: React.FC<SettingItemProps> = ({
 
             {type === 'action' && (
                 <div className="text-[var(--white)]">
-                    <Download size={20} />
+                    {loading ? (
+                        <Loader2 size={20} className="animate-spin" />
+                    ) : (
+                        <Download size={20} />
+                    )}
                 </div>
             )}
         </div>

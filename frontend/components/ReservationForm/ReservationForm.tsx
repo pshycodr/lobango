@@ -1,4 +1,4 @@
-import { User, Clock } from 'lucide-react';
+import { User, Clock, AlertCircle } from 'lucide-react';
 import { Forum } from 'next/font/google';
 import { TextInput, SelectInput, DatePickerInput, TextAreaInput } from './FormInputs';
 import { SubmitButton } from './SubmitButton';
@@ -15,6 +15,7 @@ interface ReservationFormProps {
     startDate: Date | null;
     isSubmitting: boolean;
     isFormValid: boolean;
+    isBookingAllowed: boolean;
     onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     onDateChange: (date: Date | null) => void;
     onSubmit: (e: React.FormEvent) => void;
@@ -25,6 +26,7 @@ export const ReservationForm = ({
     startDate,
     isSubmitting,
     isFormValid,
+    isBookingAllowed,
     onInputChange,
     onDateChange,
     onSubmit
@@ -35,6 +37,11 @@ export const ReservationForm = ({
 
     return (
         <form className="p-10 lg:p-16" onSubmit={onSubmit}>
+            {isBookingAllowed === false ? (
+                <div className="p-8 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500 mb-5">
+                    <p>Bookings are currently closed. Please check back later.</p>
+                </div>) : ""}
+
             <h2 className={`text-3xl text-white ${forum.className} text-center mb-6`}>
                 Online Reservation
             </h2>

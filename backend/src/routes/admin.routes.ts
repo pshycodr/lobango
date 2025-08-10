@@ -7,6 +7,8 @@ import { updateOrderStatus } from "./admin/updateOrderStatus";
 import viewBookings from "./admin/viewBookings";
 import updateBookingStatus from "./admin/updateBookingStatus";
 import verifyAdmin from "./admin/verifyAdmin";
+import { setNewOrderPermission } from "./admin/setNewOrderPermission";
+import { setNewBookingPermission } from "./admin/setNewBookingPermission";
 
 
 const adminRouter = new Hono()
@@ -20,5 +22,8 @@ adminRouter.post("/order/update-status", adminCheck, updateOrderStatus)
 
 adminRouter.get("/bookings", adminCheck, viewBookings)
 adminRouter.post("/booking/update-status", adminCheck, updateBookingStatus)
+
+adminRouter.post("/permission/update/new-orders", adminCheck, setNewOrderPermission)
+adminRouter.post("/permission/update/new-bookings", adminCheck, setNewBookingPermission)
 
 export default adminRouter

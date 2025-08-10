@@ -16,7 +16,7 @@ export const MenuSection = ({
   return (
     <section 
       id={sectionId}
-      className="mb-16 px-4 scroll-mt-24" // Added scroll-mt-24 for better scroll positioning
+      className="mb-16 px-4 scroll-mt-24" 
     >
       <div className="mb-10">
         <h2 className={`text-2xl md:text-3xl font-light text-[var(--white)] mb-3 ${playfair.className} tracking-wide`}>
