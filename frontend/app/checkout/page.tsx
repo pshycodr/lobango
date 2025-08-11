@@ -115,6 +115,7 @@ export default function CheckoutPage() {
             const orderData = {
                 customerName: userData.name,
                 customerPhone: userData.phone,
+                customerEmail: userData.email,
                 customerAddress: userData.address,
                 paymentMethod: "razorpay",
                 amount: Math.ceil(total),

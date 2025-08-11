@@ -6,6 +6,7 @@ export const orders = sqliteTable("orders", {
   customer_name: text("customer_name").notNull(),
   customer_phone: text("customer_phone").notNull(),
   customer_address: text("customer_address").notNull(),
+  customer_email: text("customer_email").notNull(),
   longitude: text("longitude").default("none"),
   latitude: text("latitude").default("none"),
   total_amount: real("total_amount").notNull(),

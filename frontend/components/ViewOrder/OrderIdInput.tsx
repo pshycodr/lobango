@@ -59,7 +59,7 @@ export default function OrderIdInput({ onSubmit }: OrderIdInputProps) {
 
         <div className="mt-6 p-4 bg-[var(--smoky-black-3)] rounded-lg border border-[var(--white-alpha-10)]">
           <p className="text-[var(--quick-silver)] text-xs leading-relaxed">
-            Your order ID was sent via SMS or email when you placed your order.
+            Your order ID was sent via email when you placed your order.
           </p>
         </div>
       </div>

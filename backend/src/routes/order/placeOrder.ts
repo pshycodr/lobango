@@ -6,12 +6,12 @@ import { getDB } from '../../db/db'
 import { orderItems } from '../../db/schema/orderItems'
 import { orders } from '../../db/schema/orders'
 import crypto from 'crypto'
+import { sendOrderEmail } from '../../utils/sendEmail'
 
 export interface Env {
   DB: D1Database
 }
 
-// 👇 Replace this with your actual Razorpay TEST secret securely in production
 
 const OrderItemSchema = z.object({
   id: z.number().optional(),
@@ -23,6 +23,7 @@ const OrderItemSchema = z.object({
 const OrderRequestSchema = z.object({
   customerName: z.string().min(1),
   customerPhone: z.string().min(8),
+  customerEmail: z.email(),
   customerAddress: z.string().min(5),
   paymentMethod: z.enum(['razorpay', 'cash_on_delivery']),
   items: z.array(OrderItemSchema).min(1, "At least one item is required"),
@@ -54,7 +55,7 @@ export async function placeOrder(c: Context) {
   try {
     const body = await c.req.json()
     console.log(body);
-    
+
     const parsed = OrderRequestSchema.safeParse(body)
 
     if (!parsed.success) {
@@ -101,6 +102,7 @@ export async function placeOrder(c: Context) {
       customer_phone: order.customerPhone,
       customer_address: order.customerAddress.trim(),
       total_amount,
+      customer_email: order.customerEmail,
       status: 'pending',
       payment_method: order.paymentMethod,
       payment_status: order.paymentMethod === 'razorpay' ? 'paid' : 'pending',
@@ -121,6 +123,16 @@ export async function placeOrder(c: Context) {
 
     // Execute batch
     await db.batch([insertOrderQuery, ...insertItemQueries])
+
+    await sendOrderEmail(
+      c.env,
+      order.customerEmail,
+      order.customerName,
+      total_amount.toString(),
+      order_id,
+      order.customerPhone,
+      order.customerAddress.trim()
+    )
 
     return c.json({
       success: true,

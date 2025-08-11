@@ -6,7 +6,15 @@ import clientRouter from './routes/clients.routes'
 import paymentRouter from './routes/payments.routes'
 import permissionsRouter from './routes/permissons.route'
 
-const app = new Hono()
+type Env = {
+  BREVO_API_KEY: string
+  BREVO_SENDER_EMAIL: string
+  BREVO_SENDER_NAME: string
+}
+
+const app = new Hono<{
+  Bindings: Env
+}>()
 
 const allowedOrigins = [
   'https://adminlobango.vercel.app',

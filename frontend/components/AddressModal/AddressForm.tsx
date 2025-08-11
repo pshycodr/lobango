@@ -19,6 +19,7 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
     label: initialData?.label || '',
     name: initialData?.name || '',
     phone: initialData?.phone || '',
+    email: initialData?.phone || '',
     address: initialData?.address || '',
     city: initialData?.city || '',
     state: initialData?.state || '',
@@ -34,6 +35,7 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
 
     if (!formData.name.trim()) errors.name = 'Full name is required';
     if (!formData.phone.trim()) errors.phone = 'Phone number is required';
+    if (!formData.email.trim()) errors.phone = 'Email is required';
     if (!formData.address.trim()) errors.address = 'Street address is required';
     if (!formData.city.trim()) errors.city = 'City is required';
     if (!formData.state.trim()) errors.state = 'State is required';
@@ -51,12 +53,16 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
   const handleUseCurrentLocation = useCallback(async () => {
     try {
       const { latitude, longitude } = await getCurrentLocation();
+      console.log(latitude, longitude);
+      
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
       );
       if (!response.ok) throw new Error('Failed to fetch address');
 
       const data = await response.json();
+      console.log(data);
+      
       setFormData((prev) => ({
         ...prev,
         address: data.display_name || '',
@@ -77,6 +83,7 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
       label: formData.label || formData.type.charAt(0).toUpperCase() + formData.type.slice(1),
       name: formData.name,
       phone: formData.phone,
+      email: formData.email,
       address: formData.address,
       city: formData.city,
       state: formData.state,
@@ -100,15 +107,23 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
             label="Full Name *"
             value={formData.name}
             onChange={(val) => handleFieldChange('name', val)}
-            placeholder="John Doe"
+            placeholder="your full name"
             error={formErrors.name}
           />
           <FormInput
             label="Phone Number *"
             value={formData.phone}
             onChange={(val) => handleFieldChange('phone', val)}
-            placeholder="+1 (123) 456-7890"
+            placeholder="+91 1234567890"
             type="tel"
+            error={formErrors.phone}
+          />
+          <FormInput
+            label="Valid Email *"
+            value={formData.email}
+            onChange={(val) => handleFieldChange('email', val)}
+            placeholder="your@mail.com"
+            type="email"
             error={formErrors.phone}
           />
         </div>
