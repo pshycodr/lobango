@@ -66,7 +66,7 @@ export function AddressList({ addresses, currentAddress, onSelectAddress, onDele
                                     e.stopPropagation();
                                     onDeleteAddress(address.id);
                                 }}
-                                className="text-gray-400 hover:text-red-400 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                className="text-gray-400 hover:text-red-400 p-1 rounded duration-200"
                             >
                                 <X size={16} />
                             </button>
