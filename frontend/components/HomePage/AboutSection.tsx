@@ -25,9 +25,7 @@ const AboutSection = () => {
             </h2>
 
             <p className="text-white leading-[var(--lineHeight-5)] mb-8">
-              Lorem Ipsum is simply dummy text of the printingand typesetting industry lorem Ipsum has been the
-              industrys standard dummy text ever since the when an unknown printer took a galley of type and scrambled
-              it to make a type specimen book It has survived not only five centuries, but also the leap into.
+            At Lobango, every meal is a celebration of flavor and tradition. Born from a love of authentic ingredients and heartfelt cooking, Lobango brings people together to share unforgettable moments. Step inside, and you’re not just a guest—you’re part of our family. Welcome to Lobango, where great food and warm memories are made.
             </p>
 
             <div className="font-bold mb-2 text-amber-50 items-center mx-auto">Book Through Call</div>
