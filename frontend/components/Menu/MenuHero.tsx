@@ -19,7 +19,7 @@ export const MenuHero = () => {
         <div className="w-1 h-1 bg-[var(--gold-crayola)] rounded-full opacity-60"></div>
         <div className="h-px w-12 bg-[var(--gold-crayola)] opacity-40"></div>
       </div>
-{newOrders === false ? (
+      {newOrders === false ? (
         <div className='flex justify-center items-center w-full'>
           <p className="p-4 mt-5 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500 ">Online orders are currently closed.</p>
         </div>) : ""}
