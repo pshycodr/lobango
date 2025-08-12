@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, Check, CreditCard, Download } from 'lucide-react'
+import { Check, CreditCard, Download } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import SectionHeader from '../components/Settings/SectionHeader'
 import SettingsCard from '../components/Settings/SettingsCard'
@@ -70,9 +70,6 @@ const AdminSettingsPage: React.FC = () => {
         <div className="min-h-screen bg-[var(--smoky-black-1)] text-[var(--white)]">
             <header className="sticky top-0 z-40 bg-[var(--smoky-black-1)] bg-opacity-95 backdrop-blur-md border-b border-[var(--eerie-black-4)]">
                 <div className="flex items-center p-4 pb-3 justify-between max-w-4xl mx-auto">
-                    {/* <button className="text-[var(--white)] flex size-10 shrink-0 items-center justify-center hover:bg-[var(--eerie-black-4)] rounded-lg transition-colors duration-200">
-                        <ArrowLeft size={20} />
-                    </button> */}
                     <h1 className="text-lg md:text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">
                         Settings
                     </h1>
