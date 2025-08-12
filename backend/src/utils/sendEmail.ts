@@ -43,7 +43,7 @@ export async function sendOrderEmail(
 
     Status: ORDER CONFIRMED
 
-    Track your order: http://lobango.vercel.app/order-tracking/?orderId=${orderId}
+    Track your order: https://lobango.in/order-tracking/?orderId=${orderId}
 
     Thank you for choosing Lobango.
 

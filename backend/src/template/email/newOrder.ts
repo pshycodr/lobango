@@ -17,22 +17,6 @@ export const newOrderHtmlTemplate = ({ name, total, orderId, customerAddress, cu
     <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0d0d0d; line-height: 1.6;">
         
         <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
-            
-            <!-- Header -->
-            <div style="background: linear-gradient(135deg, #c2a572 0%, #a89660 100%); padding: 60px 40px; text-align: center;" class="mobile-padding">
-                <h1 style="margin: 0; color: #0d0d0d; font-size: 28px; font-weight: 300; letter-spacing: 2px;">
-                    LOBANGO
-                </h1>
-                <table style="width: 40px; margin: 20px auto;">
-                    <tr>
-                        <td style="height: 2px; background-color: #0d0d0d; opacity: 0.7;"></td>
-                    </tr>
-                </table>
-                <p style="margin: 0; color: #0d0d0d; font-size: 16px; opacity: 0.8; font-weight: 300;">
-                    Order Confirmation
-                </p>
-            </div>
-
             <!-- Main Content -->
             <div style="padding: 50px 40px; background-color: #ffffff;" class="mobile-content-padding">
                 
@@ -124,7 +108,7 @@ export const newOrderHtmlTemplate = ({ name, total, orderId, customerAddress, cu
 
                 <!-- Track Order Button -->
                 <div style="text-align: center; margin-bottom: 40px;">
-                    <a href="http://lobango.vercel.app/order-tracking/?orderId=${orderId}" style="display: inline-block; background-color: #0d0d0d; color: #ffffff; padding: 16px 32px; text-decoration: none; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                    <a href="https://lobango.in/order-tracking/?orderId=${orderId}" style="display: inline-block; background-color: #0d0d0d; color: #ffffff; padding: 16px 32px; text-decoration: none; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease;">
                         TRACK YOUR ORDER
                     </a>
                 </div>
@@ -159,7 +143,7 @@ export const newOrderHtmlTemplate = ({ name, total, orderId, customerAddress, cu
                 </div>
                 <p style="margin: 0 0 15px 0; color: #a6a6a6; font-size: 13px; line-height: 1.5;">
                     Questions about your order?<br>
-                    Contact us at support@lobango.in
+                    Contact us at lobangorestaurent@gmail.com
                 </p>
                 <div style="width: 30px; height: 1px; background-color: #c2a572; margin: 20px auto; opacity: 0.5;"></div>
                 <p style="margin: 0; color: #666666; font-size: 11px; opacity: 0.7;">
