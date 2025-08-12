@@ -11,9 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SigninRouteImport } from './routes/Signin'
 import { Route as SettingsRouteImport } from './routes/Settings'
-import { Route as OrdersRouteImport } from './routes/Orders'
 import { Route as OrderRouteImport } from './routes/Order'
-import { Route as HomeRouteImport } from './routes/Home'
 import { Route as BookingsRouteImport } from './routes/Bookings'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -27,19 +25,9 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/Settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrdersRoute = OrdersRouteImport.update({
-  id: '/Orders',
-  path: '/Orders',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const OrderRoute = OrderRouteImport.update({
   id: '/Order',
   path: '/Order',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/Home',
-  path: '/Home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookingsRoute = BookingsRouteImport.update({
@@ -56,18 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/Bookings': typeof BookingsRoute
-  '/Home': typeof HomeRoute
   '/Order': typeof OrderRoute
-  '/Orders': typeof OrdersRoute
   '/Settings': typeof SettingsRoute
   '/Signin': typeof SigninRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/Bookings': typeof BookingsRoute
-  '/Home': typeof HomeRoute
   '/Order': typeof OrderRoute
-  '/Orders': typeof OrdersRoute
   '/Settings': typeof SettingsRoute
   '/Signin': typeof SigninRoute
 }
@@ -75,48 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/Bookings': typeof BookingsRoute
-  '/Home': typeof HomeRoute
   '/Order': typeof OrderRoute
-  '/Orders': typeof OrdersRoute
   '/Settings': typeof SettingsRoute
   '/Signin': typeof SigninRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/Bookings'
-    | '/Home'
-    | '/Order'
-    | '/Orders'
-    | '/Settings'
-    | '/Signin'
+  fullPaths: '/' | '/Bookings' | '/Order' | '/Settings' | '/Signin'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/Bookings'
-    | '/Home'
-    | '/Order'
-    | '/Orders'
-    | '/Settings'
-    | '/Signin'
-  id:
-    | '__root__'
-    | '/'
-    | '/Bookings'
-    | '/Home'
-    | '/Order'
-    | '/Orders'
-    | '/Settings'
-    | '/Signin'
+  to: '/' | '/Bookings' | '/Order' | '/Settings' | '/Signin'
+  id: '__root__' | '/' | '/Bookings' | '/Order' | '/Settings' | '/Signin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookingsRoute: typeof BookingsRoute
-  HomeRoute: typeof HomeRoute
   OrderRoute: typeof OrderRoute
-  OrdersRoute: typeof OrdersRoute
   SettingsRoute: typeof SettingsRoute
   SigninRoute: typeof SigninRoute
 }
@@ -137,25 +95,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/Orders': {
-      id: '/Orders'
-      path: '/Orders'
-      fullPath: '/Orders'
-      preLoaderRoute: typeof OrdersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/Order': {
       id: '/Order'
       path: '/Order'
       fullPath: '/Order'
       preLoaderRoute: typeof OrderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Home': {
-      id: '/Home'
-      path: '/Home'
-      fullPath: '/Home'
-      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Bookings': {
@@ -178,9 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookingsRoute: BookingsRoute,
-  HomeRoute: HomeRoute,
   OrderRoute: OrderRoute,
-  OrdersRoute: OrdersRoute,
   SettingsRoute: SettingsRoute,
   SigninRoute: SigninRoute,
 }

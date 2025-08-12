@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Calendar, FileText, Home, Settings } from "lucide-react";
+import { Calendar, FileText, Settings } from "lucide-react";
 
 interface NavigationProps {
   activeRoute?: string;
@@ -10,8 +10,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeRoute }) => {
   const location = useLocation();
 
   const navItems = [
-    { icon: Home, label: 'Home', route: '/', key: 'home' },
-    { icon: FileText, label: 'Orders', route: '/orders', key: 'orders' },
+    { icon: FileText, label: 'Orders', route: '/', key: 'orders' },
     { icon: Calendar, label: 'Bookings', route: '/bookings', key: 'bookings' },
     { icon: Settings, label: 'Settings', route: '/settings', key: 'settings' },
   ];

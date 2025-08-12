@@ -17,7 +17,7 @@ const SignInForm: React.FC = () => {
         const checkAdmin = async () => {
             const res = await api.get("/api/v1/admin/verify")
             if (res.data.success) {
-                navigate({ to: "/home" })
+                navigate({ to: "/" })
             }
         }
 
@@ -36,7 +36,7 @@ const SignInForm: React.FC = () => {
             if (!res.data.success) {
                 alert("Signin failed");
             } else {
-                navigate({ to: "/home" });
+                navigate({ to: "/" });
             }
         } catch (error) {
             console.error("Login error:", error);

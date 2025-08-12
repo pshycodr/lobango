@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import api from '../lib/axios'
+import AdminOrdersView from '../pages/Orders'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -26,5 +27,5 @@ function RouteComponent() {
 
   }, [])
 
-  return <div>Hello "/"!</div>
+  return <AdminOrdersView />
 }
