@@ -19,7 +19,9 @@ function RootComponent() {
   return (
     <>
       <Outlet />
-      <Navigation />
+      <div className='mt-20'>
+        <Navigation />
+      </div>
     </>
   )
 }

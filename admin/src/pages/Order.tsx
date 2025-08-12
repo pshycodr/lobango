@@ -84,7 +84,7 @@ const AdminOrderDetails: React.FC = () => {
     }
   };
   const handleBack = () => {
-    navigate({ to: '/orders' })
+    navigate({ to: '/' })
   };
 
   if (!order) {
