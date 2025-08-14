@@ -1,22 +1,33 @@
 import { Context } from "hono";
 import { getDB } from "../../db/db";
 import { orders, orderItems } from "../../db/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc, gte, lt, and } from "drizzle-orm";
 
 export async function viewOrders(c: Context) {
     try {
         const db = getDB(c.env.DB);
-
-        // LEFT JOIN orders with orderItems
+        
+        const now = new Date();
+        const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const startOfTomorrow = new Date(startOfToday);
+        startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
+        
+        // LEFT JOIN orders with orderItems, filtered for today's orders only, sorted by created_at DESC
         const joined = await db
             .select({
                 order: orders,
                 item: orderItems,
             })
             .from(orders)
-            .leftJoin(orderItems, eq(orders.order_id, orderItems.order_id));
+            .leftJoin(orderItems, eq(orders.order_id, orderItems.order_id))
+            .where(
+                and(
+                    gte(orders.created_at, startOfToday.toISOString()),
+                    lt(orders.created_at, startOfTomorrow.toISOString())
+                )
+            )
+            .orderBy(desc(orders.created_at));
 
-        // Group by order_id
         const ordersMap = new Map<
             string,
             {
@@ -33,7 +44,6 @@ export async function viewOrders(c: Context) {
                     items: [],
                 });
             }
-
             if (row.item) {
                 ordersMap.get(orderId)!.items.push({
                     name: row.item.name,
