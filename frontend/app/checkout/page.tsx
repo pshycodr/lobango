@@ -1,48 +1,46 @@
 'use client';
 
-import AddressModal from '@/components/AddressModal/AddressModal';
-import CheckoutHeader from '@/components/Checkout/CheckoutHeader';
-import DeliveryAddress from '@/components/Checkout/DeliveryAddress';
-import OrderSummary from '@/components/Checkout/OrderSummary';
-import PaymentConfirmation from '@/components/Checkout/PaymentConfirmation';
-import PaymentMethod from '@/components/Checkout/PaymentMethod';
-import PlaceOrderButton from '@/components/Checkout/PlaceOrderButton';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
-import LocationCheck from '@/components/LocationCheck/LocationCheck';
-import api from '@/lib/axios';
-import { useCartStore } from '@/store/useCartStore';
-import { usePermissionsStore } from '@/store/usePermissionsStore';
-import { useLocationCheck } from '@/hooks/useLocationCheck';
-import { Address } from '@/types/address';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import AddressModal from "@/components/AddressModal/AddressModal";
+import CheckoutHeader from "@/components/Checkout/CheckoutHeader";
+import { CheckoutLoadingScreen } from "@/components/Checkout/CheckoutLoadingScreen";
+import { CheckoutMainContent } from "@/components/Checkout/CheckoutMainContent";
+import { CheckoutSidebar } from "@/components/Checkout/CheckoutSidebar";
+import PaymentConfirmation from "@/components/Checkout/PaymentConfirmation";
+import { PaymentLoadingOverlay } from "@/components/Checkout/PaymentLoadingOverlay";
+import LocationCheck from "@/components/LocationCheck/LocationCheck";
+import { useCheckoutState } from "@/hooks/useCheckoutState";
+import { useLocationCheck } from "@/hooks/useLocationCheck";
+import { useOrderCalculations } from "@/hooks/useOrderCalculations";
+import { useRazorpay } from "@/hooks/useRazorpay";
+import api from "@/lib/axios";
+import { useCartStore } from "@/store/useCartStore";
+import { usePermissionsStore } from "@/store/usePermissionsStore";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-interface PaymentData {
-    amount: number;
-    paymentId?: string;
-    orderId?: string;
-    customerName?: string;
-}
 
-interface LoadingState {
-    type: 'page' | 'payment' | 'verification' | 'none';
-    message: string;
-}
 
 export default function CheckoutPage() {
     const router = useRouter();
     const { cart, updateQuantity, removeItem, clearCart } = useCartStore();
-    const [loadingState, setLoadingState] = useState<LoadingState>({ type: 'page', message: 'Loading checkout...' });
-    const [isClient, setIsClient] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(undefined);
-    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-    const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
-    const [paymentData, setPaymentData] = useState<PaymentData | undefined>(undefined);
-    const [canCheckoutByLocation, setCanCheckoutByLocation] = useState<boolean>(false);
-
     const { newOrders, fetchPermissions } = usePermissionsStore();
     
-    // Location check hook
+    // Custom hooks
+    const {
+        loadingState,
+        setLoadingState,
+        selectedAddress,
+        handleSelectAddress,
+        isAddressModalOpen,
+        setIsAddressModalOpen,
+        showPaymentConfirmation,
+        setShowPaymentConfirmation,
+        paymentData,
+        setPaymentData
+    } = useCheckoutState();
+    
+    const { subtotal, deliveryFee, tax, total } = useOrderCalculations(cart);
+    
     const {
         canCheckout: locationAllowsCheckout,
         shouldBlockCheckout: locationBlocksCheckout,
@@ -50,24 +48,27 @@ export default function CheckoutPage() {
         error: locationError
     } = useLocationCheck({ autoCheck: true });
 
+    const { loadRazorpayScript, initiatePayment } = useRazorpay({
+        cart,
+        total,
+        setLoadingState,
+        clearCart,
+        onPaymentSuccess: (data) => {
+            setShowPaymentConfirmation(true);
+            setPaymentData(data);
+        }
+    });
+
     useEffect(() => {
-        fetchPermissions()
+        fetchPermissions();
     }, [])
 
+    // Initialize checkout
     useEffect(() => {
         const initializeCheckout = async () => {
             setLoadingState({ type: 'page', message: 'Initializing checkout...' });
             
             try {
-                setIsClient(true);
-
-                if (typeof window !== 'undefined') {
-                    const savedAddress = localStorage.getItem('selected-address');
-                    if (savedAddress) {
-                        setSelectedAddress(JSON.parse(savedAddress));
-                    }
-                }
-
                 // Load Razorpay script
                 setLoadingState({ type: 'page', message: 'Loading payment gateway...' });
                 await loadRazorpayScript();
@@ -86,60 +87,13 @@ export default function CheckoutPage() {
         initializeCheckout();
     }, []);
 
-    const loadRazorpayScript = (): Promise<void> => {
-        return new Promise((resolve, reject) => {
-            // Check if already loaded
-            if (window && (window as any).Razorpay) {
-                resolve();
-                return;
-            }
-
-            const script = document.createElement("script");
-            script.src = "https://checkout.razorpay.com/v1/checkout.js";
-            script.async = true;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error('Failed to load Razorpay script'));
-            document.body.appendChild(script);
-        });
-    };
-
-    const { subtotal, deliveryFee, tax, total } = useMemo(() => {
-        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const deliveryFee = subtotal > 299 ? 0 : 30;
-        const taxRate = 0.08;
-        const tax = subtotal * taxRate;
-        const total = subtotal + deliveryFee + tax;
-
-        return {
-            subtotal,
-            deliveryFee,
-            tax,
-            total
-        };
-    }, [cart]);
-
-    // Determine if checkout is allowed
-    const isCheckoutAllowed = useMemo(() => {
-        return (
-            selectedAddress && 
-            locationAllowsCheckout && 
-            newOrders !== false && 
-            !isLocationLoading &&
-            loadingState.type === 'none'
-        );
-    }, [selectedAddress, locationAllowsCheckout, newOrders, isLocationLoading, loadingState.type]);
-
+    // Event handlers
     const handleBack = () => {
         router.back();
     };
 
     const handleChangeAddress = () => {
         setIsAddressModalOpen(true);
-    };
-
-    const handleSelectAddress = (address: Address) => {
-        setSelectedAddress(address);
-        localStorage.setItem('selected-address', JSON.stringify(address));
     };
 
     const handleChangePayment = () => {
@@ -154,10 +108,6 @@ export default function CheckoutPage() {
         removeItem(id);
     };
 
-    const handleLocationChange = (canCheckout: boolean) => {
-        setCanCheckoutByLocation(canCheckout);
-    };
-
     const handlePlaceOrder = async () => {
         if (!selectedAddress) {
             alert('Please select a delivery address');
@@ -170,86 +120,8 @@ export default function CheckoutPage() {
         }
 
         try {
-            setLoadingState({ type: 'payment', message: 'Creating payment order...' });
-            
-            const userData: Address = selectedAddress;
-
-            const orderData = {
-                customerName: userData.name,
-                customerPhone: userData.phone,
-                customerEmail: userData.email,
-                customerAddress: userData.address,
-                paymentMethod: "razorpay",
-                amount: Math.ceil(total),
-                items: cart.map(item => ({
-                    name: item.name,
-                    price: item.price,
-                    quantity: item.quantity,
-                })),
-            };
-
-            const res = await api.post("/api/v1/payment/create-order", orderData);
-            const { razorpayOrderId, amount, currency, orderId: localOrderId, key_id } = res.data;
-
-            setLoadingState({ type: 'payment', message: 'Opening payment gateway...' });
-
-            const options = {
-                key: key_id,
-                amount: amount.toString(),
-                currency,
-                name: "Lobango",
-                description: `Order ID: ${localOrderId}`,
-                order_id: razorpayOrderId,
-                handler: async function (response: any) {
-                    try {
-                        setLoadingState({ type: 'verification', message: 'Verifying payment...' });
-                        
-                        const verifyRes = await api.post("/api/v1/client/order", {
-                            ...orderData,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature,
-                        });
-
-                        setLoadingState({ type: 'verification', message: 'Finalizing order...' });
-
-                        clearCart();
-                        localStorage.setItem('orderId', verifyRes.data.orderId);
-                        
-                        setLoadingState({ type: 'none', message: '' });
-                        setShowPaymentConfirmation(true);
-                        setPaymentData({
-                            amount: total,
-                            paymentId: response.razorpay_payment_id,
-                            orderId: localOrderId,
-                            customerName: userData.name
-                        });
-                    } catch (error) {
-                        console.error("Payment verification failed:", error);
-                        setLoadingState({ type: 'none', message: '' });
-                        alert("Payment verification failed. Please contact support if amount was debited.");
-                    }
-                },
-                modal: {
-                    ondismiss: function() {
-                        setLoadingState({ type: 'none', message: '' });
-                    }
-                },
-                prefill: {
-                    name: userData.name,
-                    contact: userData.phone,
-                },
-                theme: {
-                    color: "#F37254",
-                },
-            };
-
-            const razorpay = new (window as any).Razorpay(options);
-            razorpay.open();
-
+            await initiatePayment(selectedAddress);
         } catch (error) {
-            console.error("Error placing order:", error);
-            setLoadingState({ type: 'none', message: '' });
             alert("Failed to create order. Please try again.");
         }
     };
@@ -262,22 +134,10 @@ export default function CheckoutPage() {
         router.push('/menu');
     };
 
-    // Show loading spinner for page initialization
+    // Show loading screen during page initialization
     if (loadingState.type === 'page') {
-        return (
-            <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center">
-                <div className="text-center">
-                    <LoadingSpinner />
-                    <p className="text-white mt-4">{loadingState.message}</p>
-                </div>
-            </div>
-        );
+        return <CheckoutLoadingScreen message={loadingState.message} />;
     }
-
-    // if (cart.length === 0) {
-    //     router.push('/cart');
-    //     return null;
-    // }
 
     return (
         <div
@@ -291,74 +151,51 @@ export default function CheckoutPage() {
             {/* Location Check */}
             <div className="max-w-4xl mx-auto px-6 pt-4">
                 <LocationCheck 
-                    onLocationChange={handleLocationChange}
+                    onLocationChange={(canCheckout) => {
+                        // Handle location change if needed
+                    }}
                     className="mb-4"
                 />
             </div>
             
             {/* Orders closed message */}
-            {newOrders === false ? (
+            {newOrders === false && (
                 <div className='flex justify-center items-center w-full'>
                     <p className="p-4 mt-5 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500">
                         Online orders are currently closed.
                     </p>
                 </div>
-            ) : null}
+            )}
 
             <div className="max-w-4xl mx-auto px-6 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-1 space-y-6">
-                        <DeliveryAddress
-                            address={selectedAddress}
-                            onChangeAddress={handleChangeAddress}
-                        />
+                    <CheckoutSidebar
+                        selectedAddress={selectedAddress}
+                        onChangeAddress={handleChangeAddress}
+                        onChangePayment={handleChangePayment}
+                    />
 
-                        <PaymentMethod
-                            onChangePayment={handleChangePayment}
-                        />
-                    </div>
-
-                    <div className="lg:col-span-2">
-                        <OrderSummary
-                            items={cart}
-                            subtotal={subtotal}
-                            deliveryFee={deliveryFee}
-                            tax={tax}
-                            total={total}
-                            onUpdateQuantity={handleUpdateQuantity}
-                            onRemoveItem={handleRemoveItem}
-                        />
-
-                        <div className='flex justify-center w-full h-15'>
-                            <PlaceOrderButton
-                                onPlaceOrder={handlePlaceOrder}
-                                loading={loadingState.type === 'payment'}
-                                total={total}
-                                disabled={!isCheckoutAllowed}
-                            />
-                            
-                            {/* Show why checkout is disabled */}
-                            {!isCheckoutAllowed && (
-                                <div className="mt-2 text-center">
-                                    {!selectedAddress && (
-                                        <p className="text-sm text-gray-400">Please select a delivery address</p>
-                                    )}
-                                    {locationBlocksCheckout && (
-                                        <p className="text-sm text-red-400">Outside delivery area</p>
-                                    )}
-                                    {newOrders === false && (
-                                        <p className="text-sm text-red-400">Online orders are currently closed</p>
-                                    )}
-                                    {isLocationLoading && (
-                                        <p className="text-sm text-blue-400">Checking location...</p>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <CheckoutMainContent
+                        cart={cart}
+                        subtotal={subtotal}
+                        deliveryFee={deliveryFee}
+                        tax={tax}
+                        total={total}
+                        onUpdateQuantity={handleUpdateQuantity}
+                        onRemoveItem={handleRemoveItem}
+                        onPlaceOrder={handlePlaceOrder}
+                        isPaymentLoading={loadingState.type === 'payment'}
+                        selectedAddress={selectedAddress}
+                        locationAllowsCheckout={locationAllowsCheckout}
+                        locationBlocksCheckout={locationBlocksCheckout}
+                        newOrders={newOrders}
+                        isLocationLoading={isLocationLoading}
+                        loadingState={loadingState}
+                    />
                 </div>
             </div>
 
+            {/* Modals and Overlays */}
             <AddressModal
                 isOpen={isAddressModalOpen}
                 onClose={() => setIsAddressModalOpen(false)}
@@ -378,25 +215,10 @@ export default function CheckoutPage() {
 
             {/* Payment/Verification Loading Overlay */}
             {(loadingState.type === 'payment' || loadingState.type === 'verification') && (
-                <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-8 max-w-sm w-full mx-4 text-center">
-                        <LoadingSpinner />
-                        <h3 className="text-lg font-semibold mt-4 mb-2">
-                            {loadingState.type === 'payment' ? 'Processing Payment' : 'Verifying Payment'}
-                        </h3>
-                        <p className="text-gray-600">{loadingState.message}</p>
-                        {loadingState.type === 'payment' && (
-                            <p className="text-sm text-gray-500 mt-2">
-                                Please complete the payment to continue
-                            </p>
-                        )}
-                        {loadingState.type === 'verification' && (
-                            <p className="text-sm text-gray-500 mt-2">
-                                Please wait while we confirm your payment
-                            </p>
-                        )}
-                    </div>
-                </div>
+                <PaymentLoadingOverlay
+                    type={loadingState.type as 'payment' | 'verification'}
+                    message={loadingState.message}
+                />
             )}
         </div>
     );
