@@ -215,10 +215,10 @@ export default function OrderStatusTracker({ currentStatus }: OrderStatusTracker
                             <div className="flex-1 min-w-0 pb-2">
                                 <div className="flex items-center justify-between mb-2">
                                     <h3 className={`font-bold text-lg ${step.isRejected
-                                            ? 'text-red-400'
-                                            : step.isCompleted || step.isActive
-                                                ? 'text-white'
-                                                : 'text-[var(--quick-silver)]'
+                                        ? 'text-red-400'
+                                        : step.isCompleted || step.isActive
+                                            ? 'text-white'
+                                            : 'text-[var(--quick-silver)]'
                                         }`}>
                                         {step.label}
                                     </h3>
@@ -235,10 +235,10 @@ export default function OrderStatusTracker({ currentStatus }: OrderStatusTracker
                                     )}
                                 </div>
                                 <p className={`text-sm ${step.isRejected
-                                        ? 'text-red-300'
-                                        : step.isCompleted || step.isActive
-                                            ? 'text-[var(--quick-silver)]'
-                                            : 'text-[var(--davys-grey)]'
+                                    ? 'text-red-300'
+                                    : step.isCompleted || step.isActive
+                                        ? 'text-[var(--quick-silver)]'
+                                        : 'text-[var(--davys-grey)]'
                                     }`}>
                                     {step.description}
                                 </p>
@@ -263,15 +263,20 @@ export default function OrderStatusTracker({ currentStatus }: OrderStatusTracker
             )}
 
             {isRejected && (
-                <div className="mt-8 bg-red-500/10 rounded-xl p-6 border border-red-500/20">
+                <div className="mt-8 bg-yellow-500/10 rounded-xl p-6 border border-yellow-500/20">
                     <div className="text-center">
-                        <div className="w-12 h-12 mx-auto mb-3 bg-red-500 rounded-full flex items-center justify-center">
+                        <div className="w-12 h-12 mx-auto mb-3 bg-yellow-500 rounded-full flex items-center justify-center">
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
                             </svg>
                         </div>
-                        <h3 className="text-red-400 font-bold text-lg mb-2">Order Not Processed</h3>
-                        <p className="text-[var(--quick-silver)] text-sm">Please contact support for assistance.</p>
+                        <h3 className="text-yellow-400 font-bold text-lg mb-2">Order Cancelled</h3>
+                        <p className="text-[var(--quick-silver)] text-sm">
+                            Your payment will be refunded within 3–5 business days.
+                        </p>
+                        <p className="text-white text-sm mt-3">
+                            Need help? Call <span className="font-semibold">+91 6296832453</span>
+                        </p>
                     </div>
                 </div>
             )}
