@@ -8,6 +8,7 @@ import { CheckoutSidebar } from "@/components/Checkout/CheckoutSidebar";
 import PaymentConfirmation from "@/components/Checkout/PaymentConfirmation";
 import { PaymentLoadingOverlay } from "@/components/Checkout/PaymentLoadingOverlay";
 import LocationCheck from "@/components/LocationCheck/LocationCheck";
+import LocationPermissionModal from "@/components/Checkout/LocationPermissionModal";
 import { useCheckoutState } from "@/hooks/useCheckoutState";
 import { useLocationCheck } from "@/hooks/useLocationCheck";
 import { useOrderCalculations } from "@/hooks/useOrderCalculations";
@@ -16,7 +17,7 @@ import api from "@/lib/axios";
 import { useCartStore } from "@/store/useCartStore";
 import { usePermissionsStore } from "@/store/usePermissionsStore";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 
@@ -24,6 +25,10 @@ export default function CheckoutPage() {
     const router = useRouter();
     const { cart, updateQuantity, removeItem, clearCart } = useCartStore();
     const { newOrders, fetchPermissions } = usePermissionsStore();
+    
+    // Location permission state
+    const [showLocationModal, setShowLocationModal] = useState(false);
+    const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
     
     // Custom hooks
     const {
@@ -46,7 +51,7 @@ export default function CheckoutPage() {
         shouldBlockCheckout: locationBlocksCheckout,
         isLoading: isLocationLoading,
         error: locationError
-    } = useLocationCheck({ autoCheck: true });
+    } = useLocationCheck({ autoCheck: locationPermissionGranted });
 
     const { loadRazorpayScript, initiatePayment } = useRazorpay({
         cart,
@@ -59,12 +64,36 @@ export default function CheckoutPage() {
         }
     });
 
+    // Check for location permission on page load
     useEffect(() => {
-        fetchPermissions();
-    }, [])
+        const checkLocationPermission = async () => {
+            try {
+                if ('geolocation' in navigator) {
+                    const permission = await navigator.permissions.query({ name: 'geolocation' });
+                    
+                    if (permission.state === 'granted') {
+                        setLocationPermissionGranted(true);
+                    } else if (permission.state === 'prompt' || permission.state === 'denied') {
+                        setShowLocationModal(true);
+                    }
+                } else {
+                    // Fallback for browsers that don't support permissions API
+                    setShowLocationModal(true);
+                }
+            } catch (error) {
+                // If permissions API fails, show modal as fallback
+                setShowLocationModal(true);
+            }
+        };
 
-    // Initialize checkout
+        checkLocationPermission();
+        fetchPermissions();
+    }, []);
+
+    // Initialize checkout after location permission is granted
     useEffect(() => {
+        if (!locationPermissionGranted) return;
+
         const initializeCheckout = async () => {
             setLoadingState({ type: 'page', message: 'Initializing checkout...' });
             
@@ -85,7 +114,7 @@ export default function CheckoutPage() {
         };
 
         initializeCheckout();
-    }, []);
+    }, [locationPermissionGranted]);
 
     // Event handlers
     const handleBack = () => {
@@ -134,9 +163,31 @@ export default function CheckoutPage() {
         router.push('/menu');
     };
 
+    // Location permission handlers
+    const handleLocationPermissionGranted = () => {
+        setLocationPermissionGranted(true);
+        setShowLocationModal(false);
+    };
+
+    const handleLocationPermissionDenied = () => {
+        setShowLocationModal(true);
+        // Keep modal open until permission is granted
+    };
+
+    // Show location modal if permission not granted
+    if (showLocationModal && !locationPermissionGranted) {
+        return (
+            <LocationPermissionModal
+                isOpen={showLocationModal}
+                onPermissionGranted={handleLocationPermissionGranted}
+                onPermissionDenied={handleLocationPermissionDenied}
+            />
+        );
+    }
+
     // Show loading screen during page initialization
-    if (loadingState.type === 'page') {
-        return <CheckoutLoadingScreen message={loadingState.message} />;
+    if (loadingState.type === 'page' || !locationPermissionGranted) {
+        return <CheckoutLoadingScreen message={loadingState.message || 'Initializing...'} />;
     }
 
     return (
