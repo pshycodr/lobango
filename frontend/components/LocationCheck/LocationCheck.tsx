@@ -41,23 +41,7 @@ export default function LocationCheck({ onLocationChange, className = '' }: Loca
       );
 
     case 'within_range':
-      return (
-        <div className={`${wrapperClass} bg-green-50 border-green-400`}>
-          <CheckCircle className="h-5 w-5 text-green-400 mr-3" />
-          <div className="flex-1">
-            <p className="text-sm font-medium text-green-800">Delivery available in your area</p>
-            <p className="text-sm text-green-600">
-              You are {getDistanceText()} from our store
-            </p>
-          </div>
-          <button
-            onClick={recheckLocation}
-            className="text-green-600 hover:text-green-800 text-xs underline"
-          >
-            Recheck
-          </button>
-        </div>
-      );
+      return 
 
     case 'outside_range':
       return (
