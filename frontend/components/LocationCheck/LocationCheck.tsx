@@ -1,6 +1,6 @@
-import React from 'react';
-import { MapPin, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
 import { useLocationCheck } from '@/hooks/useLocationCheck';
+import { AlertCircle, MapPin, RefreshCw } from 'lucide-react';
+import React from 'react';
 
 interface LocationCheckProps {
   onLocationChange?: (canCheckout: boolean) => void;
