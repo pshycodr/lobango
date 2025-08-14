@@ -1,13 +1,14 @@
 'use client';
 
 import { Address, ADDRESS_TYPES } from '@/types/address';
-import { MapPin, X } from 'lucide-react';
+import { MapPin, X, Edit } from 'lucide-react';
 
 interface AddressListProps {
     addresses: Address[];
     currentAddress?: Address;
     onSelectAddress: (address: Address) => void;
     onDeleteAddress: (id: string) => void;
+    onEditAddress: (address: Address) => void;
     onAddNewAddress: () => void;
 }
 
@@ -21,7 +22,7 @@ const formatFullAddress = (address: Address) => {
     return `${address.name}, ${address.phone}, ${address.address}`;
 };
 
-export function AddressList({ addresses, currentAddress, onSelectAddress, onDeleteAddress, onAddNewAddress }: AddressListProps) {
+export function AddressList({ addresses, currentAddress, onSelectAddress, onDeleteAddress, onEditAddress, onAddNewAddress }: AddressListProps) {
     return (
         <div className="p-6">
             {/* Add New Address Button */}
@@ -61,15 +62,26 @@ export function AddressList({ addresses, currentAddress, onSelectAddress, onDele
                                     </p>
                                 </div>
                             </div>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onDeleteAddress(address.id);
-                                }}
-                                className="text-gray-400 hover:text-red-400 p-1 rounded duration-200"
-                            >
-                                <X size={16} />
-                            </button>
+                            <div className="flex items-center gap-1">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onEditAddress(address);
+                                    }}
+                                    className="text-gray-400 hover:text-white p-1 rounded duration-200"
+                                >
+                                    <Edit size={16} />
+                                </button>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onDeleteAddress(address.id);
+                                    }}
+                                    className="text-gray-400 hover:text-red-400 p-1 rounded duration-200"
+                                >
+                                    <X size={16} />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}

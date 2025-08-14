@@ -10,16 +10,17 @@ import LocationButton from './LocationButton';
 
 interface AddressFormProps {
   initialData?: Partial<Address>;
-  onSave: (address: Omit<Address, 'id'>) => void;
+  onSave: (address: Omit<Address, 'id'> | Address) => void;
   onCancel: () => void;
+  isEditing?: boolean;
 }
 
-export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps) {
+export function AddressForm({ initialData, onSave, onCancel, isEditing = false }: AddressFormProps) {
   const [formData, setFormData] = useState({
     label: initialData?.label || '',
     name: initialData?.name || '',
     phone: initialData?.phone || '',
-    email: initialData?.phone || '',
+    email: initialData?.email || '',
     address: initialData?.address || '',
     city: initialData?.city || '',
     state: initialData?.state || '',
@@ -35,7 +36,7 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
 
     if (!formData.name.trim()) errors.name = 'Full name is required';
     if (!formData.phone.trim()) errors.phone = 'Phone number is required';
-    if (!formData.email.trim()) errors.phone = 'Email is required';
+    if (!formData.email.trim()) errors.email = 'Email is required';
     if (!formData.address.trim()) errors.address = 'Street address is required';
     if (!formData.city.trim()) errors.city = 'City is required';
     if (!formData.state.trim()) errors.state = 'State is required';
@@ -79,7 +80,7 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
   const handleSubmit = useCallback(() => {
     if (!validateForm()) return;
 
-    const newAddress: Omit<Address, 'id'> = {
+    const addressData = {
       label: formData.label || formData.type.charAt(0).toUpperCase() + formData.type.slice(1),
       name: formData.name,
       phone: formData.phone,
@@ -91,8 +92,12 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
       type: formData.type,
     };
 
-    onSave(newAddress);
-  }, [formData, onSave, validateForm]);
+    if (isEditing && initialData?.id) {
+      onSave({ ...addressData, id: initialData.id } as Address);
+    } else {
+      onSave(addressData);
+    }
+  }, [formData, onSave, validateForm, isEditing, initialData]);
 
   return (
     <div className="p-4 md:p-6 space-y-6">
@@ -124,7 +129,7 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
             onChange={(val) => handleFieldChange('email', val)}
             placeholder="your@mail.com"
             type="email"
-            error={formErrors.phone}
+            error={formErrors.email}
           />
         </div>
       </section>
@@ -191,28 +196,30 @@ export function AddressForm({ initialData, onSave, onCancel }: AddressFormProps)
       </section>
 
       {/* Section: Use Current Location */}
-      <section className="space-y-4">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-600" />
+      {!isEditing && (
+        <section className="space-y-4">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-600" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="px-2 bg-gray-900 text-xs uppercase tracking-widest text-gray-500">OR</span>
+            </div>
           </div>
-          <div className="relative flex justify-center">
-            <span className="px-2 bg-gray-900 text-xs uppercase tracking-widest text-gray-500">OR</span>
-          </div>
-        </div>
 
-        <LocationButton
-          isLoading={isLoadingLocation}
-          onClick={handleUseCurrentLocation}
-          error={locationError}
-        />
-      </section>
+          <LocationButton
+            isLoading={isLoadingLocation}
+            onClick={handleUseCurrentLocation}
+            error={locationError}
+          />
+        </section>
+      )}
 
       {/* Section: Actions */}
       <FormActions
         onCancel={onCancel}
         onSubmit={handleSubmit}
-        submitLabel="Save Address"
+        submitLabel={isEditing ? "Update Address" : "Save Address"}
       />
     </div>
   );
