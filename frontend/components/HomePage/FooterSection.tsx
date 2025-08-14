@@ -41,17 +41,17 @@ const FooterSection = () => {
             </address>
 
             <a
-              href="mailto:debabratadan6@gmail.com"
+              href="mailto: lobangorestaurant@gmail.com"
               className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] block my-1.5 transition-colors hover:text-[var(--gold-crayola)]"
             >
-              info@lobango.in
+              lobangorestaurant@gmail.com
             </a>
 
             <a
-              href="tel:+919547061233"
+              href="tel:+916296832453"
               className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] block my-1.5 transition-colors hover:text-[var(--gold-crayola)]"
             >
-              Booking Request : +919547061233
+              Booking Request : +91 6296832453
             </a>
 
             <p className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] mb-10">

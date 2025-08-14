@@ -33,10 +33,10 @@ export const ContactInfo = () => (
                 title="Booking Request"
                 content={
                     <a
-                        href="tel:+919547061233"
+                        href="tel:+916296832453"
                         className="font-[var(--fontSize-body-1)] text-[var(--gold-crayola)] max-w-max mx-auto block mb-5 transition-colors hover:underline"
                     >
-                        +919547061233
+                        +91 6296832453
                     </a>
                 }
             />
