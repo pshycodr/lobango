@@ -7,6 +7,8 @@ export interface Address {
     email: string;
     phone: string;
     address: string;
+    longitude: string;
+    latitude: string;
     city: string;
     state: string;
     zipCode: string;

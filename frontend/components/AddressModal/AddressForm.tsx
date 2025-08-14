@@ -25,10 +25,13 @@ export function AddressForm({ initialData, onSave, onCancel, isEditing = false }
     city: initialData?.city || '',
     state: initialData?.state || '',
     zipCode: initialData?.zipCode || '',
+    longitude: initialData?.longitude || '',
+    latitude: initialData?.latitude || '',
     type: initialData?.type || 'home',
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [coordinates, setCoordinates] = useState({ longitude: "N/A", latitude: "N/A" })
   const { getCurrentLocation, isLoading: isLoadingLocation, error: locationError } = useGeolocation();
 
   const validateForm = useCallback(() => {
@@ -54,8 +57,9 @@ export function AddressForm({ initialData, onSave, onCancel, isEditing = false }
   const handleUseCurrentLocation = useCallback(async () => {
     try {
       const { latitude, longitude } = await getCurrentLocation();
+      setCoordinates({ latitude: longitude.toString(), longitude: latitude.toString() })
       console.log(latitude, longitude);
-      
+
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
       );
@@ -63,13 +67,15 @@ export function AddressForm({ initialData, onSave, onCancel, isEditing = false }
 
       const data = await response.json();
       console.log(data);
-      
+
       setFormData((prev) => ({
         ...prev,
         address: data.display_name || '',
         city: data.address.village || data.address.city || '',
         state: data.address.state || '',
         zipCode: data.address.postcode || '',
+        longitude: longitude.toString(),
+        latitude: latitude.toString(),
         label: prev.label || 'Current Location',
       }));
     } catch (err) {
@@ -77,9 +83,11 @@ export function AddressForm({ initialData, onSave, onCancel, isEditing = false }
     }
   }, [getCurrentLocation]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
+    const { latitude, longitude } = await getCurrentLocation();
+    
+    
     if (!validateForm()) return;
-
     const addressData = {
       label: formData.label || formData.type.charAt(0).toUpperCase() + formData.type.slice(1),
       name: formData.name,
@@ -90,6 +98,8 @@ export function AddressForm({ initialData, onSave, onCancel, isEditing = false }
       state: formData.state,
       zipCode: formData.zipCode,
       type: formData.type,
+      longitude: longitude.toString(),
+      latitude: latitude.toString(),
     };
 
     if (isEditing && initialData?.id) {

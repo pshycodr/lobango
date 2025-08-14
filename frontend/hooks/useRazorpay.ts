@@ -56,6 +56,8 @@ export function useRazorpay({
                 customerPhone: selectedAddress.phone,
                 customerEmail: selectedAddress.email,
                 customerAddress: selectedAddress.address,
+                longitude: selectedAddress.longitude,
+                latitude: selectedAddress.latitude,
                 paymentMethod: "razorpay",
                 amount: Math.ceil(total),
                 items: cart.map(item => ({
@@ -65,6 +67,8 @@ export function useRazorpay({
                 })),
             };
 
+            console.log("here is order data: ",orderData);
+            
             const res = await api.post("/api/v1/payment/create-order", orderData);
             const { razorpayOrderId, amount, currency, orderId: localOrderId, key_id } = res.data;
 
