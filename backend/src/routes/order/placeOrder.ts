@@ -124,15 +124,15 @@ export async function placeOrder(c: Context) {
     // Execute batch
     await db.batch([insertOrderQuery, ...insertItemQueries])
 
-    await sendOrderEmail(
-      c.env,
-      order.customerEmail,
-      order.customerName,
-      total_amount.toString(),
-      order_id,
-      order.customerPhone,
-      order.customerAddress.trim()
-    )
+    await sendOrderEmail({
+      env: c.env,
+      to: order.customerEmail,
+      name: order.customerName,
+      total: total_amount.toString(),
+      orderId: order_id,
+      customerPhone: order.customerPhone,
+      customerAddress: order.customerAddress.trim()
+    })
 
     return c.json({
       success: true,

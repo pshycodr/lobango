@@ -1,13 +1,35 @@
 interface NewOrderHtmlTemplate {
-    name: string,
-    total: string,
-    orderId: string,
-    customerPhone: string,
-    customerAddress: string
+    name: string;
+    total: string;
+    orderId: string;
+    customerPhone: string;
+    customerAddress: string;
 }
 
-export const newOrderHtmlTemplate = ({ name, total, orderId, customerAddress, customerPhone }: NewOrderHtmlTemplate) => (`
-    <!DOCTYPE html>
+export const newOrderHtmlTemplate = ({ name, total, orderId, customerAddress, customerPhone }: NewOrderHtmlTemplate) => {
+    
+    const textContent = `LOBANGO - Order Confirmation
+
+Hello ${name},
+
+Thank you for your order. We have received your request and our team is preparing your meal.
+
+Order Details:
+- Order ID: ${orderId}
+- Total Amount: ₹${total}
+- Contact: ${customerPhone}
+- Delivery Address: ${customerAddress}
+
+Status: ORDER CONFIRMED
+
+Track your order: https://lobango.in/order-tracking/?orderId=${orderId}
+
+Thank you for choosing Lobango.
+
+---
+Questions? Contact us at lobangorestaurent@gmail.com`;
+
+    const htmlContent = `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -144,6 +166,7 @@ export const newOrderHtmlTemplate = ({ name, total, orderId, customerAddress, cu
                 <p style="margin: 0 0 15px 0; color: #a6a6a6; font-size: 13px; line-height: 1.5;">
                     Questions about your order?<br>
                     Contact us at lobangorestaurent@gmail.com
+                    Ph: <a href="tel:+916296832453"> +91 62968 32453 </a>
                 </p>
                 <div style="width: 30px; height: 1px; background-color: #c2a572; margin: 20px auto; opacity: 0.5;"></div>
                 <p style="margin: 0; color: #666666; font-size: 11px; opacity: 0.7;">
@@ -182,5 +205,10 @@ export const newOrderHtmlTemplate = ({ name, total, orderId, customerAddress, cu
             }
         </style>
     </body>
-    </html>
-  `)
+    </html>`;
+
+    return {
+        text: textContent,
+        html: htmlContent
+    };
+};
