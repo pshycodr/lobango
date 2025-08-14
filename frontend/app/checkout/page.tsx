@@ -8,9 +8,11 @@ import PaymentConfirmation from '@/components/Checkout/PaymentConfirmation';
 import PaymentMethod from '@/components/Checkout/PaymentMethod';
 import PlaceOrderButton from '@/components/Checkout/PlaceOrderButton';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import LocationCheck from '@/components/LocationCheck/LocationCheck';
 import api from '@/lib/axios';
 import { useCartStore } from '@/store/useCartStore';
 import { usePermissionsStore } from '@/store/usePermissionsStore';
+import { useLocationCheck } from '@/hooks/useLocationCheck';
 import { Address } from '@/types/address';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -36,8 +38,17 @@ export default function CheckoutPage() {
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
     const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
     const [paymentData, setPaymentData] = useState<PaymentData | undefined>(undefined);
+    const [canCheckoutByLocation, setCanCheckoutByLocation] = useState<boolean>(false);
 
     const { newOrders, fetchPermissions } = usePermissionsStore();
+    
+    // Location check hook
+    const {
+        canCheckout: locationAllowsCheckout,
+        shouldBlockCheckout: locationBlocksCheckout,
+        isLoading: isLocationLoading,
+        error: locationError
+    } = useLocationCheck({ autoCheck: true });
 
     useEffect(() => {
         fetchPermissions()
@@ -107,6 +118,17 @@ export default function CheckoutPage() {
         };
     }, [cart]);
 
+    // Determine if checkout is allowed
+    const isCheckoutAllowed = useMemo(() => {
+        return (
+            selectedAddress && 
+            locationAllowsCheckout && 
+            newOrders !== false && 
+            !isLocationLoading &&
+            loadingState.type === 'none'
+        );
+    }, [selectedAddress, locationAllowsCheckout, newOrders, isLocationLoading, loadingState.type]);
+
     const handleBack = () => {
         router.back();
     };
@@ -132,9 +154,18 @@ export default function CheckoutPage() {
         removeItem(id);
     };
 
+    const handleLocationChange = (canCheckout: boolean) => {
+        setCanCheckoutByLocation(canCheckout);
+    };
+
     const handlePlaceOrder = async () => {
         if (!selectedAddress) {
             alert('Please select a delivery address');
+            return;
+        }
+
+        if (!locationAllowsCheckout) {
+            alert('Sorry, we cannot deliver to your current location. Please check if you are within our delivery area.');
             return;
         }
 
@@ -257,6 +288,14 @@ export default function CheckoutPage() {
         >
             <CheckoutHeader onBack={handleBack} />
             
+            {/* Location Check */}
+            <div className="max-w-4xl mx-auto px-6 pt-4">
+                <LocationCheck 
+                    onLocationChange={handleLocationChange}
+                    className="mb-4"
+                />
+            </div>
+            
             {/* Orders closed message */}
             {newOrders === false ? (
                 <div className='flex justify-center items-center w-full'>
@@ -295,8 +334,26 @@ export default function CheckoutPage() {
                                 onPlaceOrder={handlePlaceOrder}
                                 loading={loadingState.type === 'payment'}
                                 total={total}
-                                disabled={!selectedAddress || loadingState.type !== 'none'}
+                                disabled={!isCheckoutAllowed}
                             />
+                            
+                            {/* Show why checkout is disabled */}
+                            {!isCheckoutAllowed && (
+                                <div className="mt-2 text-center">
+                                    {!selectedAddress && (
+                                        <p className="text-sm text-gray-400">Please select a delivery address</p>
+                                    )}
+                                    {locationBlocksCheckout && (
+                                        <p className="text-sm text-red-400">Outside delivery area</p>
+                                    )}
+                                    {newOrders === false && (
+                                        <p className="text-sm text-red-400">Online orders are currently closed</p>
+                                    )}
+                                    {isLocationLoading && (
+                                        <p className="text-sm text-blue-400">Checking location...</p>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -322,7 +379,7 @@ export default function CheckoutPage() {
             {/* Payment/Verification Loading Overlay */}
             {(loadingState.type === 'payment' || loadingState.type === 'verification') && (
                 <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-                    <div className="bg-[var(--smoky-black-1)] rounded-lg p-8 max-w-sm w-full mx-4 text-center">
+                    <div className="bg-white rounded-lg p-8 max-w-sm w-full mx-4 text-center">
                         <LoadingSpinner />
                         <h3 className="text-lg font-semibold mt-4 mb-2">
                             {loadingState.type === 'payment' ? 'Processing Payment' : 'Verifying Payment'}
