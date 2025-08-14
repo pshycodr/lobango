@@ -15,6 +15,7 @@ const forum = Forum({
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoSlideInterval, setAutoSlideInterval] = useState<NodeJS.Timeout | null>(null);
+  const [isOrderId, setIsOrderid] = useState<boolean>(false)
 
   const slides = [
     {
@@ -63,6 +64,11 @@ const HeroSection = () => {
     return () => stopAutoSlide();
   }, []);
 
+  useEffect(() => {
+    const orderId = localStorage.getItem("orderId")
+    setIsOrderid(Boolean(orderId))
+  }, [])
+
   return (
     <section className="relative pt-32 h-screen overflow-hidden z-10 text-center" id="home">
       {/* Slider Items */}
@@ -106,12 +112,22 @@ const HeroSection = () => {
                 {slide.text}
               </p>
 
-              <Link
-                href="/menu"
-                className="inline-block text-[var(--smoky-black-1)] bg-[var(--gold-crayola)] font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 rounded-lg mt-10"
-              >
-                Order Now
-              </Link>
+              <div className='flex gap-5  justify-center items-center flex-wrap '>
+                <Link
+                  href="/menu"
+                  className="inline-block text-[var(--smoky-black-1)] bg-[var(--gold-crayola)] font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 rounded-lg mt-5"
+                >
+                  Order Now
+                </Link>
+                {isOrderId ?
+                  <Link
+                    href="/order-tracking"
+                    className="inline-block text-[var(--gold-crayola)] bg-[var(--smoky-black-1)]  font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 rounded-lg mt-5"
+                  >
+                    View Order
+                  </Link>
+                  : ""}
+              </div>
 
             </div>
           </li>
