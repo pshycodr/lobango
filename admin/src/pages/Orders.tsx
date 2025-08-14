@@ -1,41 +1,48 @@
+import { useNavigate } from '@tanstack/react-router';
 import { Filter, Package } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import LoadingSpinner from '../components/Common/Loader';
 import FilterButton from '../components/Orders/FilterButton';
 import OrderCard from '../components/Orders/OrderCard';
 import Header from '../components/Orders/OrdersHeader';
-import type { Order } from '../types/orders';
-import { useOrdersStore } from '../store/zustand/useOrdersStore';
 import api from '../lib/axios';
-import { useNavigate } from '@tanstack/react-router';
+import { useOrdersStore } from '../store/zustand/useOrdersStore';
+import type { Order } from '../types/orders';
 
 type OrderResponse = {
-    success: boolean
-    count: number
-    orders: Order[]
-}
+    success: boolean;
+    count: number;
+    orders: Order[];
+};
 
 const AdminOrdersView: React.FC = () => {
     const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
     const [activeFilter, setActiveFilter] = useState<'all' | Order['status']>('all');
     const [loading, setLoading] = useState(true);
-    const setOrders = useOrdersStore((state) => state.setOrders)
-    const orders = useOrdersStore((state) => state.orders)
-    const navigate = useNavigate()
+    const setOrders = useOrdersStore((state) => state.setOrders);
+    const orders = useOrdersStore((state) => state.orders);
+    const navigate = useNavigate();
 
+    console.log(orders);
 
     useEffect(() => {
         const fetchOrders = async () => {
-            setLoading(true)
-            const res = await api.get<OrderResponse>('/api/v1/admin/orders')
-            const { orders: fetchedOrders } = res.data
-            setOrders(fetchedOrders)
-            setFilteredOrders(fetchedOrders)
-            setLoading(false)
-        }
+            try {
+                setLoading(true);
+                const res = await api.get<OrderResponse>('/api/v1/admin/orders');
+                const { orders: fetchedOrders } = res.data;
+                setOrders(fetchedOrders);
+                setFilteredOrders(fetchedOrders);
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+                // You might want to show an error toast here
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        fetchOrders()
-    }, [])
+        fetchOrders();
+    }, [setOrders]);
 
     // Filter orders
     useEffect(() => {
@@ -46,7 +53,7 @@ const AdminOrdersView: React.FC = () => {
         }
     }, [activeFilter, orders]);
 
-    const getOrderCountByStatus = (status: Order['status'] | 'all') => {
+    const getOrderCountByStatus = (status: Order['status'] | 'all'): number => {
         if (status === 'all') return orders.length;
         return orders.filter(order => order.status === status).length;
     };
@@ -67,8 +74,7 @@ const AdminOrdersView: React.FC = () => {
             search: {
                 orderId: order.orderId
             }
-        })
-
+        });
     };
 
     if (loading) {

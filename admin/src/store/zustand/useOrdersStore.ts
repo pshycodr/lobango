@@ -7,6 +7,8 @@ type Order = {
   name: string
   phone: string
   address: string
+  longitude: string
+  latitude: string
   total: number
   paymentMethod: string
   paymentStatus: string

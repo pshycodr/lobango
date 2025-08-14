@@ -10,6 +10,8 @@ export interface OrderItem {
 
 
 export interface Order {
+    longitude: string;
+    latitude: string;
     orderId: string;
     name: string;
     phone: string;

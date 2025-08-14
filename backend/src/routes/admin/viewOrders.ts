@@ -48,6 +48,8 @@ export async function viewOrders(c: Context) {
             name: order.customer_name,
             phone: order.customer_phone,
             address: order.customer_address,
+            longitude: order.longitude,
+            latitude: order.latitude,
             total: order.total_amount,
             paymentMethod: order.payment_method,
             paymentStatus: order.payment_status,
