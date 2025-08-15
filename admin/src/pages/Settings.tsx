@@ -104,6 +104,44 @@ const AdminSettingsPage: React.FC = () => {
         window.URL.revokeObjectURL(url)
     }
 
+    const downloadForMobile = async (workbook: XLSX.WorkBook, filename: string) => {
+        try {
+            const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'base64' })
+            
+            if (window.Capacitor) {
+                const { Filesystem, Directory } = await import('@capacitor/filesystem')
+                const { Share } = await import('@capacitor/share')
+                
+                const result = await Filesystem.writeFile({
+                    path: filename,
+                    data: wbout,
+                    directory: Directory.Documents,
+                })
+
+                await Share.share({
+                    title: 'Customer Data Export',
+                    text: 'Customer data exported successfully',
+                    url: result.uri,
+                    dialogTitle: 'Share Customer Data'
+                })
+            } else {
+                const blob = new Blob([new Uint8Array(atob(wbout).split('').map(char => char.charCodeAt(0)))], 
+                    { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+                const url = window.URL.createObjectURL(blob)
+                const link = document.createElement('a')
+                link.href = url
+                link.download = filename
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+                window.URL.revokeObjectURL(url)
+            }
+        } catch (error) {
+            console.error('Mobile download error:', error)
+            alert('Download failed. Please try again.')
+        }
+    }
+
     const handleDataDownload = async () => {
         setDownloading(true)
         try {
@@ -181,7 +219,14 @@ const AdminSettingsPage: React.FC = () => {
             const dateStr = now.toISOString().split('T')[0]
             const filename = `customer-data-${dateStr}.xlsx`
 
-            downloadForWeb(workbook, filename)
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                           window.Capacitor?.isNativePlatform()
+
+            if (isMobile) {
+                await downloadForMobile(workbook, filename)
+            } else {
+                downloadForWeb(workbook, filename)
+            }
 
         } catch (error) {
             console.error('Download error:', error)
