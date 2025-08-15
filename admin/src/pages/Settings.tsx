@@ -2,10 +2,36 @@
 
 import { Check, CreditCard, Download } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import * as XLSX from 'xlsx'
 import SectionHeader from '../components/Settings/SectionHeader'
 import SettingsCard from '../components/Settings/SettingsCard'
 import SettingItem from '../components/Settings/SettingsItems'
+import api from '../lib/axios'
 import { usePermissionsStore } from '../store/zustand/usePermissionsStore'
+
+declare global {
+    interface Window {
+        Capacitor?: any;
+    }
+}
+
+interface CustomerData {
+    name: string;
+    email: string;
+    phone: string;
+}
+
+interface CustomerWithSource extends CustomerData {
+    source: 'Orders' | 'Bookings' | 'Orders/Bookings';
+}
+
+interface DownloadResponse {
+    success: boolean;
+    customers: CustomerWithSource[];
+    orders: CustomerData[];
+    bookings: CustomerData[];
+    error?: string;
+}
 
 const AdminSettingsPage: React.FC = () => {
     const {
@@ -26,6 +52,8 @@ const AdminSettingsPage: React.FC = () => {
         orders: false,
         bookings: false,
     })
+
+    const [downloading, setDownloading] = useState(false)
 
     useEffect(() => {
         fetchPermissions()
@@ -62,8 +90,105 @@ const AdminSettingsPage: React.FC = () => {
             }
         }
 
-    const handleDataDownload = () => {
-        console.log('Downloading data...')
+    const downloadForWeb = (workbook: XLSX.WorkBook, filename: string) => {
+        const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+        
+        const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+    }
+
+    const handleDataDownload = async () => {
+        setDownloading(true)
+        try {
+            const response = await api.get<DownloadResponse>('/api/v1/admin/download-data')
+            
+            if (!response.data.success) {
+                throw new Error(response.data.error || 'Failed to fetch data')
+            }
+
+            const { customers, orders: ordersData, bookings: bookingsData } = response.data
+
+            const customerMap = new Map<string, CustomerWithSource>()
+            
+            customers.forEach(customer => {
+                if (customer.phone) {
+                    const phone = customer.phone
+                    const existingCustomer = customerMap.get(phone)
+                    
+                    if (existingCustomer) {
+                        if (existingCustomer.source !== customer.source) {
+                            customerMap.set(phone, {
+                                name: existingCustomer.name || customer.name,
+                                email: existingCustomer.email || customer.email,
+                                phone: phone,
+                                source: 'Orders/Bookings'
+                            })
+                        }
+                    } else {
+                        customerMap.set(phone, customer)
+                    }
+                }
+            })
+
+            const uniqueCustomersList = Array.from(customerMap.values())
+
+            const workbook = XLSX.utils.book_new()
+
+            const customerSheet = XLSX.utils.json_to_sheet(
+                uniqueCustomersList.map((customer, index) => ({
+                    'S.No': index + 1,
+                    'Name': customer.name || 'N/A',
+                    'Email': customer.email || 'N/A',
+                    'Phone': customer.phone || 'N/A',
+                    'Source': customer.source
+                }))
+            )
+
+            XLSX.utils.book_append_sheet(workbook, customerSheet, 'Customer Data')
+
+            if (ordersData.length > 0) {
+                const ordersSheet = XLSX.utils.json_to_sheet(
+                    ordersData.map((customer, index) => ({
+                        'S.No': index + 1,
+                        'Name': customer.name || 'N/A',
+                        'Email': customer.email || 'N/A',
+                        'Phone': customer.phone || 'N/A'
+                    }))
+                )
+                XLSX.utils.book_append_sheet(workbook, ordersSheet, 'Orders')
+            }
+
+            if (bookingsData.length > 0) {
+                const bookingsSheet = XLSX.utils.json_to_sheet(
+                    bookingsData.map((customer, index) => ({
+                        'S.No': index + 1,
+                        'Name': customer.name || 'N/A',
+                        'Email': customer.email || 'N/A',
+                        'Phone': customer.phone || 'N/A'
+                    }))
+                )
+                XLSX.utils.book_append_sheet(workbook, bookingsSheet, 'Bookings')
+            }
+
+            const now = new Date()
+            const dateStr = now.toISOString().split('T')[0]
+            const filename = `customer-data-${dateStr}.xlsx`
+
+            downloadForWeb(workbook, filename)
+
+        } catch (error) {
+            console.error('Download error:', error)
+            alert('Failed to download data. Please try again.')
+        } finally {
+            setDownloading(false)
+        }
     }
 
     return (
@@ -127,12 +252,13 @@ const AdminSettingsPage: React.FC = () => {
                         <SectionHeader title="Data Download" />
                         <SettingsCard>
                             <SettingItem
-                                title="Download Data"
-                                description="Export order and booking data (.csv)"
+                                title="Download Customer Data"
+                                description="Export customer data from orders and bookings (.xlsx)"
                                 type="action"
                                 onAction={handleDataDownload}
                                 icon={<Download size={20} />}
                                 showBorder={false}
+                                loading={downloading}
                             />
                         </SettingsCard>
                     </section>

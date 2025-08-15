@@ -9,6 +9,7 @@ import updateBookingStatus from "./admin/updateBookingStatus";
 import verifyAdmin from "./admin/verifyAdmin";
 import { setNewOrderPermission } from "./admin/setNewOrderPermission";
 import { setNewBookingPermission } from "./admin/setNewBookingPermission";
+import { downloadData } from "./admin/downLoadData";
 
 
 const adminRouter = new Hono()
@@ -26,4 +27,5 @@ adminRouter.post("/booking/update-status", adminCheck, updateBookingStatus)
 adminRouter.post("/permission/update/new-orders", adminCheck, setNewOrderPermission)
 adminRouter.post("/permission/update/new-bookings", adminCheck, setNewBookingPermission)
 
+adminRouter.get("/download-data", adminCheck, downloadData)
 export default adminRouter
