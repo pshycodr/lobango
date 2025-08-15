@@ -5,6 +5,7 @@ import FilterDropdown from '../components/Bookings/FilterDropdown';
 import StatusChangeModal from '../components/Bookings/StatusModal';
 import type { Booking, FilterOption, StatusCounts } from '../types/bookings';
 import api from '../lib/axios';
+import LoadingSpinner from '../components/Common/Loader';
 
 const BookingsAdminPage: React.FC = () => {
     const [bookings, setBookings] = useState<Booking[]>([]);
@@ -104,10 +105,7 @@ const BookingsAdminPage: React.FC = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--gold-crayola)] mx-auto mb-4"></div>
-                    <p className="text-[var(--white)]">Loading bookings...</p>
-                </div>
+                <LoadingSpinner />
             </div>
         );
     }
