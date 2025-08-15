@@ -10,12 +10,12 @@ import type { Order } from '../../types/orders';
 interface StatusBadgeProps {
     status: Order['status'];
     size?: 'sm' | 'lg',
-    onClick: () => void;
-    disabled: boolean
+    onClick?: () => void;
+    disabled?: boolean
 }
 
 
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'sm', onClick, disabled }) => {
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'sm', onClick, disabled=false }) => {
     const getStatusConfig = (status: Order['status']) => {
         switch (status) {
             case 'pending':

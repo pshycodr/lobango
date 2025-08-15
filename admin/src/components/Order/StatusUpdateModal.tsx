@@ -61,7 +61,7 @@ const StatusUpdateModal: React.FC<{
                                 />
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <StatusBadge status={status.key} />
+                                        <StatusBadge status={status.key}  disabled={false} />
                                     </div>
                                     <p className="text-[var(--quick-silver)] text-sm">{status.description}</p>
                                 </div>
