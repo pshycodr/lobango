@@ -108,37 +108,62 @@ const AdminSettingsPage: React.FC = () => {
         try {
             const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'base64' })
             
-            if (window.Capacitor) {
-                const { Filesystem, Directory } = await import('@capacitor/filesystem')
-                const { Share } = await import('@capacitor/share')
-                
-                const result = await Filesystem.writeFile({
-                    path: filename,
-                    data: wbout,
-                    directory: Directory.Documents,
-                })
+            if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+                try {
+                    const { Filesystem, Directory } = await import('@capacitor/filesystem')
+                    
+                    await Filesystem.writeFile({
+                        path: filename,
+                        data: wbout,
+                        directory: Directory.Documents,
+                    })
 
-                await Share.share({
-                    title: 'Customer Data Export',
-                    text: 'Customer data exported successfully',
-                    url: result.uri,
-                    dialogTitle: 'Share Customer Data'
-                })
+                    alert(`File saved successfully to Downloads/${filename}`)
+                    
+                } catch (capacitorError) {
+                    console.error('Capacitor filesystem error:', capacitorError)
+                    throw capacitorError
+                }
             } else {
-                const blob = new Blob([new Uint8Array(atob(wbout).split('').map(char => char.charCodeAt(0)))], 
-                    { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+                const byteCharacters = atob(wbout)
+                const byteNumbers = new Array(byteCharacters.length)
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i)
+                }
+                const byteArray = new Uint8Array(byteNumbers)
+                const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+                
+                if ('download' in document.createElement('a')) {
+                    const url = window.URL.createObjectURL(blob)
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.download = filename
+                    link.style.display = 'none'
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+                    window.URL.revokeObjectURL(url)
+                } else {
+                    const url = window.URL.createObjectURL(blob)
+                    window.open(url, '_blank')
+                    setTimeout(() => window.URL.revokeObjectURL(url), 1000)
+                }
+            }
+        } catch (error) {
+            console.error('Mobile download error:', error)
+            
+            try {
+                const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+                const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
                 const url = window.URL.createObjectURL(blob)
                 const link = document.createElement('a')
                 link.href = url
                 link.download = filename
-                document.body.appendChild(link)
                 link.click()
-                document.body.removeChild(link)
                 window.URL.revokeObjectURL(url)
+            } catch (fallbackError) {
+                alert('Download failed. Please try again or contact support.')
             }
-        } catch (error) {
-            console.error('Mobile download error:', error)
-            alert('Download failed. Please try again.')
         }
     }
 
