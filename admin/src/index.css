@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+* {
+  -webkit-user-drag: none;
+}
+
+html, body, #root {
+  background: var(--eerie-black-2) !important;
+}
 
 :root{
   
@@ -68,4 +75,13 @@
     padding-top: 16px;
     background-color: var(--smoky-black-1);
   }
+}
+::selection {
+  background: rgba(255, 215, 0, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(255, 215, 0, 0.3);
+  color: white;
 }
