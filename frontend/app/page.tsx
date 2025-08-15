@@ -5,6 +5,7 @@ import FooterSection from '@/components/HomePage/FooterSection';
 import Header from '@/components/HomePage/Header';
 import HeroSection from '@/components/HomePage/Hero';
 import HomeMenuSection from '@/components/HomePage/HomeMenuSection';
+import Preloader from '@/components/HomePage/PreLoader';
 import ReservationSection from '@/components/HomePage/ReservationTable';
 import ServiceSection from '@/components/HomePage/ServiceSection';
 import TestimonialSection from '@/components/HomePage/TestimonialSection';
@@ -26,6 +27,7 @@ const forum = Forum({
 export default function Home() {
   return (
     <div className={`${dmSans.variable} ${forum.variable}`}>
+      <Preloader />
       <Header />
       
       <main className='bg-[var(--eerie-black-1)]'>
