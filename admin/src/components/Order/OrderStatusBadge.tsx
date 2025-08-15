@@ -7,9 +7,15 @@ import {
 } from 'lucide-react';
 import type { Order } from '../../types/orders';
 
+interface StatusBadgeProps {
+    status: Order['status'];
+    size?: 'sm' | 'lg',
+    onClick: () => void;
+    disabled: boolean
+}
 
 
-const StatusBadge: React.FC<{ status: Order['status']; size?: 'sm' | 'lg' }> = ({ status, size = 'sm' }) => {
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'sm', onClick, disabled }) => {
     const getStatusConfig = (status: Order['status']) => {
         switch (status) {
             case 'pending':
@@ -68,10 +74,10 @@ const StatusBadge: React.FC<{ status: Order['status']; size?: 'sm' | 'lg' }> = (
     const textSize = size === 'sm' ? 'text-xs' : 'text-sm';
 
     return (
-        <div className={`inline-flex items-center gap-2 ${padding} rounded-full border ${config.bgColor} ${config.textColor} ${config.borderColor} ${textSize} font-medium`}>
+        <button className={`inline-flex items-center gap-2 ${padding} rounded-full border ${config.bgColor} ${config.textColor} ${config.borderColor} ${textSize} font-medium`} onClick={onClick} disabled={disabled}>
             {config.icon}
             {config.text}
-        </div>
+        </button>
     );
 };
 

@@ -29,7 +29,7 @@ interface OrderSearchParams {
 const AdminOrderDetails: React.FC = () => {
   const searchParams = useSearch({ from: Route.id }) as OrderSearchParams;
   const orderId = searchParams.orderId;
-  
+
   const getOrderById = useOrdersStore(state => state.getOrderById);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
@@ -71,7 +71,7 @@ const AdminOrderDetails: React.FC = () => {
 
     try {
       const payload = { status: newStatus, orderId };
-      
+
       const res = await api.post("/api/v1/admin/order/update-status", payload);
       const data = res.data;
 
@@ -166,17 +166,6 @@ const AdminOrderDetails: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button
-              onClick={() => setShowStatusModal(true)}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-lg text-[var(--white)] hover:bg-[var(--eerie-black-3)] hover:border-[var(--gold-crayola)]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Edit3 size={16} />
-              <span className="hidden sm:inline">Update Status</span>
-              {loading && (
-                <div className="w-4 h-4 border-2 border-[var(--gold-crayola)] border-t-transparent rounded-full animate-spin" />
-              )}
-            </button>
           </div>
         </div>
       </div>
@@ -186,7 +175,12 @@ const AdminOrderDetails: React.FC = () => {
         <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-[var(--white)]">Order Status</h2>
-            <StatusBadge status={order.status} size="lg" />
+            <StatusBadge
+              status={order.status}
+              size="lg"
+              onClick={() => setShowStatusModal(true)}
+              disabled={loading}
+            />
           </div>
         </div>
 
@@ -213,7 +207,7 @@ const AdminOrderDetails: React.FC = () => {
               </div>
             }
           />
-          
+
           <InfoCard
             icon={<CreditCard size={20} />}
             title="Payment Information"
@@ -227,11 +221,10 @@ const AdminOrderDetails: React.FC = () => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-[var(--quick-silver)]">Status:</span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    order.paymentStatus === 'paid'
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${order.paymentStatus === 'paid'
                       ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                       : 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                  }`}>
+                    }`}>
                     {order.paymentStatus || 'pending'}
                   </span>
                 </div>
@@ -283,7 +276,7 @@ const AdminOrderDetails: React.FC = () => {
               </p>
             </div>
           </div>
-          
+
           <div className="p-6">
             {order.items && order.items.length > 0 ? (
               <div className="space-y-4">
@@ -308,7 +301,7 @@ const AdminOrderDetails: React.FC = () => {
             </div>
             <h3 className="text-lg font-semibold text-[var(--white)]">Order Summary</h3>
           </div>
-          
+
           <div className="p-6">
             <div className="space-y-4">
               <div className="flex justify-between items-center text-[var(--quick-silver)]">
