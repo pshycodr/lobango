@@ -38,7 +38,7 @@ export const MenuItemCard = ({
   };
 
   return (
-    <div className="bg-[var(--eerie-black-2)] rounded-xl shadow-md transition-all duration-300 overflow-hidden border border-[var(--white-alpha-10)] hover:border-[var(--white-alpha-20)] group flex items-start justify-between p-4 mb-4">
+    <div className="bg-[var(--eerie-black-2)] rounded-xl shadow-md transition-all duration-300 overflow-hidden border border-[var(--white-alpha-10)] hover:border-[var(--white-alpha-20)] group flex items-start justify-between p-4 mb-4 ">
       {/* LEFT SIDE */}
       <div className="flex-1 pr-4">
         <div className="flex items-center gap-2 mb-2">
@@ -78,7 +78,7 @@ export const MenuItemCard = ({
 
         {newOrders && (
           quantity > 0 ? (
-            <div className="absolute scale-80 bottom-0 right-0.5 flex items-center justify-between gap- bg-[var(--gold-crayola)] bg-opacity-10 border border-[var(--gold-crayola)] border-opacity-60 text-[var(--smoky-black-1)] text-sm font-medium px-3 py-2 rounded-lg shadow-sm backdrop-blur-sm transition-all duration-200 min-w-[90px]">
+            <div className="absolute scale-90 -bottom-4 right-0.5 flex items-center justify-between gap- bg-[var(--gold-crayola)] bg-opacity-10 border border-[var(--gold-crayola)] border-opacity-60 text-[var(--smoky-black-1)] text-sm font-medium px-3 py-2 rounded-lg shadow-sm backdrop-blur-sm transition-all duration-200 min-w-[90px]">
               <button
                 className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[var(--gold-crayola)] hover:bg-opacity-20 transition-all duration-200"
                 onClick={handleDecrease}
@@ -100,7 +100,7 @@ export const MenuItemCard = ({
           ) : (
             <button
               onClick={handleAdd}
-              className="absolute bottom-0.5 right-5.5 bg-[var(--gold-crayola)] bg-opacity-10 text-[var(--smoky-black-1)] border border-[var(--gold-crayola)] border-opacity-60 hover:bg-opacity-20 text-xs font-semibold px-3 py-1.5 rounded-md transition-all duration-200"
+              className="absolute -bottom-3 right-5.5 bg-[var(--gold-crayola)] bg-opacity-10 text-[var(--smoky-black-1)] border border-[var(--gold-crayola)] border-opacity-60 hover:bg-opacity-20 text-sm font-semibold px-3 py-1.5 rounded-md transition-all duration-200"
             >
               ADD +
             </button>
