@@ -13,44 +13,50 @@ const forum = Forum({
 const HomeMenuSection = () => {
   const menuItems = [
     {
-      image: '/assets/images/menu-1.png',
-      title: 'Greek Salad',
-      price: '₹25.50',
-      badge: 'Seasonal',
-      description: 'Tomatoes, green bell pepper, sliced cucumber onion, olives, and feta cheese.'
+      "image": "/assets/images/tandorisnacks/tandoorichicken.jpg",
+      "title": "Tandoori Chicken (1pc)",
+      "price": "₹130",
+      "badge": "Non-Veg",
+      "description": "Chicken marinated in yogurt & spices, roasted in a tandoor for a smoky flavor."
     },
     {
-      image: '/assets/images/menu-2.png',
-      title: 'Lasagne',
-      price: '₹40.00',
-      description: 'Vegetables, cheeses, ground meats, tomato sauce, seasonings and spices'
+      "image": "/assets/images/roll/chicken roll.jpg",
+      "title": "Chicken Roll",
+      "price": "₹50",
+      "badge": "Non-Veg",
+      "description": "Spiced chicken wrapped in paratha with onions, chutney & lime."
     },
     {
-      image: '/assets/images/menu-3.png',
-      title: 'Butternut Pumpkin',
-      price: '₹10.00',
-      description: 'Typesetting industry lorem Lorem Ipsum is simply dummy text of the priand.'
+      "image": "/assets/images/indianchineaseveg/PaneerButterMasala.jpg",
+      "title": "Paneer Butter Masala",
+      "price": "₹190",
+      "badge": "Veg",
+      "description": "Soft paneer in a creamy, buttery tomato gravy."
     },
     {
-      image: '/assets/images/menu-4.png',
-      title: 'Tokusen Wagyu',
-      price: '₹39.00',
-      badge: 'New',
-      description: 'Vegetables, cheeses, ground meats, tomato sauce, seasonings and spices.'
+      "image": "/assets/images/nonvegstarters/chickenlolipop.jpg",
+      "title": "Chicken Lollipop",
+      "price": "₹180",
+      "badge": "Non-Veg",
+      "description": "Crispy chicken wings marinated in spices & deep-fried."
     },
     {
-      image: '/assets/images/menu-5.png',
-      title: 'Olivas Rellenas',
-      price: '₹25.00',
-      description: 'Avocados with crab meat, red onion, crab salad stuffed red bell pepper and green bell pepper.'
+      "image": "/assets/images/momo/vegmomo.jpg",
+      "title": "Veg Momo",
+      "price": "₹50",
+      "badge": "Veg",
+      "description": "Steamed dumplings filled with vegetables & spices."
     },
     {
-      image: '/assets/images/menu-6.png',
-      title: 'Opu Fish',
-      price: '₹49.00',
-      description: 'Vegetables, cheeses, ground meats, tomato sauce, seasonings and spices'
+      "image": "/assets/images/cocktail/bluelagun.jpg",
+      "title": "Blue Lagoon",
+      "price": "₹99",
+      "badge": "Veg",
+      "description": "Refreshing mocktail with blue curaçao, lemonade & soda."
     }
-  ];
+  ]
+  ;
+  
 
   return (
     <section className="relative py-15 p-5 sm:px-25 overflow-hidden z-10" aria-label="menu-label" id="menu">
@@ -67,18 +73,18 @@ const HomeMenuSection = () => {
           {menuItems.map((item, index) => (
             <li key={index}>
               <div className="flex items-start gap-5 group">
-                <figure 
+                <figure
                   className="flex-shrink-0 rounded-2xl bg-[var(--gold-crayola)] overflow-hidden w-28 h-28 sm:w-32 sm:h-32 lg:w-28 lg:h-28"
-                  style={{ 
+                  style={{
                     minWidth: '7rem',
                     minHeight: '7rem'
                   }}
                 >
-                  <Image 
-                    src={item.image} 
-                    width={110} 
-                    height={110} 
-                    loading="lazy" 
+                  <Image
+                    src={item.image}
+                    width={110}
+                    height={110}
+                    loading="lazy"
                     alt={item.title}
                     className="w-full h-full object-cover transition-all duration-500 group-hover:opacity-70 group-hover:scale-105"
                     style={{
@@ -116,7 +122,7 @@ const HomeMenuSection = () => {
         </ul>
 
         <p className="text-center text-[var(--white)] mb-7">
-          During winter daily from <span className="text-[var(--gold-crayola)]">7:00 pm</span> to <span className="text-[var(--gold-crayola)]">9:00 pm</span>
+          Home Delivery From <span className="text-[var(--gold-crayola)]">8:00 am</span> to <span className="text-[var(--gold-crayola)]">10:00 pm</span>
         </p>
 
         <Link href="/menu" className="relative mx-auto block w-max text-[var(--gold-crayola)] font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 overflow-hidden z-10 transition-all duration-500 hover:text-[var(--smoky-black-1)] group">
@@ -126,21 +132,13 @@ const HomeMenuSection = () => {
         </Link>
 
         {/* Decorative Shapes */}
-        <Image 
-          src="/assets/images/shape-5.png" 
-          width={921} 
-          height={1036} 
-          loading="lazy" 
+        <Image
+          src="/assets/images/shape-5.png"
+          width={921}
+          height={1036}
+          loading="lazy"
           alt="shape"
-          className="hidden lg:block absolute top-0 left-0   -z-10 w-1/2 move-anim"
-        />
-        <Image 
-          src="/assets/images/shape-6.png" 
-          width={343} 
-          height={345} 
-          loading="lazy" 
-          alt="shape"
-          className="hidden lg:block absolute top-0 left-0   -z-10 w-1/2 move-anim"
+          className="absolute top-0 left-0   -z-10 w-1/2 move-anim"
         />
       </div>
 
