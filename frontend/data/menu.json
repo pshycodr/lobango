@@ -236,7 +236,7 @@
         { "id": "rice-8", "name": "Egg Chicken Rice", "price": 180, "image": "/assets/images/rice/eggchickenrice.jpg", "isVeg": false },
         { "id": "rice-9", "name": "Egg Chicken Schezwan Rice", "price": 200, "image": "/assets/images/", "isVeg": false },
         { "id": "rice-10", "name": "Mixed Rice", "price": 240, "image": "/assets/images/rice/mixedfriedrice.jpg", "isVeg": false },
-        { "id": "rice-11", "name": "Mixed Schezwan Rice", "price": 260, "image": "/assets/images/rice/vegs.jpg", "isVeg": false },
+        { "id": "rice-11", "name": "Mixed Schezwan Rice", "price": 260, "image": "/assets/images/rice/MixedSchezwanRice.jpg", "isVeg": false },
         { "id": "rice-12", "name": "Hong Kong Rice", "price": 280, "image": "/assets/images/rice/hong.jpg", "isVeg": false },
         { "id": "rice-13", "name": "Kolhapuri Rice", "price": 290, "image": "/assets/images/rice/kolapuririce.jpg", "isVeg": false },
         { "id": "rice-14", "name": "Singapuri Rice", "price": 289, "image": "/assets/images/rice/singapuririce.jpg", "isVeg": false },
