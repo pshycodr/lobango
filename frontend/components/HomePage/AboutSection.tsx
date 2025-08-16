@@ -31,10 +31,10 @@ const AboutSection = () => {
             <div className="font-bold mb-2 text-amber-50 items-center mx-auto">Book Through Call</div>
 
             <a
-              href="tel:+919547061233"
+              href="tel:+916296832453"
               className="text-[var(--gold-crayola)]  mx-auto block mb-7 transition-colors hover:underline lg:mx-0 items-center"
             >
-              +919547061233
+            +91 6296832453
             </a>
           </div>
 
