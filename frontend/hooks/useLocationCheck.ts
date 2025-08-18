@@ -27,8 +27,9 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
 
   // Shop location coordinates
   const SHOP_LOCATION = {
-    lat: 23.403513,
-    lng: 87.923624
+    lat: 23.6439598,
+    lng: 88.125675
+    // 23.1845829 87.9579848
   };
 
   const [locationState, setLocationState] = useState<LocationState>({
