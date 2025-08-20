@@ -122,7 +122,7 @@ const HomeMenuSection = () => {
         </ul>
 
         <p className="text-center text-[var(--white)] mb-7">
-          Home Delivery From <span className="text-[var(--gold-crayola)]">8:00 am</span> to <span className="text-[var(--gold-crayola)]">10:00 pm</span>
+          Home Delivery From <span className="text-[var(--gold-crayola)]">11:00 am</span> to <span className="text-[var(--gold-crayola)]">10:00 pm</span>
         </p>
 
         <Link href="/menu" className="relative mx-auto block w-max text-[var(--gold-crayola)] font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 overflow-hidden z-10 transition-all duration-500 hover:text-[var(--smoky-black-1)] group">

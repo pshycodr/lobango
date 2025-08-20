@@ -58,7 +58,7 @@ export const ContactInfo = () => (
                 content={
                     <p className="font-[var(--fontSize-body-4)] text-[var(--quick-silver)] leading-[var(--lineHeight-3)] mb-6">
                         Monday to Sunday <br />
-                        11.30 am - 2.30pm
+                        11.00 am - 2.30pm
                     </p>
                 }
             />

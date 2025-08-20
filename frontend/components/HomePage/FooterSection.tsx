@@ -55,7 +55,7 @@ const FooterSection = () => {
             </a>
 
             <p className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] mb-10">
-              Open : 08:00 am - 10:00 pm
+              Open : 11:00 am - 10:00 pm
             </p>
 
             <div className="flex justify-center gap-0.5 mb-6">
