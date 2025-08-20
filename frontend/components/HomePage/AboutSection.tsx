@@ -21,7 +21,7 @@ const AboutSection = () => {
             </p>
 
             <h2 className={`text-white ${forum.className} mb-4 text-4xl lg:text-5xl`}>
-              Every Fla vor Tells a Story
+              Every Flavour Tells a Story
             </h2>
 
             <p className="text-white leading-[var(--lineHeight-5)] mb-8">
