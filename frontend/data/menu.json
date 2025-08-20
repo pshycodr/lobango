@@ -214,7 +214,7 @@
     {
       "category": "Soups (Non-Veg)",
       "items": [
-        { "id": "soup-n-1", "name": "Chicken Clear Soup", "price": 160, "image": "/assets/images/soup/chicken soup.jpg", "isVeg": false },
+        { "id": "soup-n-1", "name": "Chicken Clear Soup", "price": 160, "image": "/assets/images/soup/chickensoup.jpg", "isVeg": false },
         { "id": "soup-n-2", "name": "Chicken Manchow Soup", "price": 160, "image": "/assets/images/soup/chickenmanchusoup.jpg", "isVeg": false },
         { "id": "soup-n-3", "name": "Chicken Hot & Sour Soup", "price": 160, "image": "/assets/images/soup/chs.jpg", "isVeg": false },
         { "id": "soup-n-4", "name": "Chicken Cream Soup", "price": 160, "image": "/assets/images/soup/creamsoup.jpg", "isVeg": false },
@@ -230,11 +230,11 @@
         { "id": "rice-2", "name": "Veg Fried Rice", "price": 130, "image": "/assets/images/rice/vegfriedrice.jpg", "isVeg": true },
         { "id": "rice-3", "name": "Veg Schezwan Rice", "price": 150, "image": "/assets/images/rice/vegsezwan rice.jpg", "isVeg": true },
         { "id": "rice-4", "name": "Egg Fried Rice", "price": 140, "image": "/assets/images/rice/eggfriedrice.jpg", "isVeg": false },
-        { "id": "rice-5", "name": "Egg Schezwan Rice", "price": 160, "image": "/assets/images/", "isVeg": false },
+        { "id": "rice-5", "name": "Egg Schezwan Rice", "price": 160, "image": "/assets/images/rice/EggSchezwanRice.jpg", "isVeg": false },
         { "id": "rice-6", "name": "Chicken Fried Rice", "price": 160, "image": "/assets/images/rice/ChickenFriedRice.jpg", "isVeg": false },
         { "id": "rice-7", "name": "Chicken Schezwan Rice", "price": 180, "image": "/assets/images/rice/chickensezwanrice.jpg", "isVeg": false },
         { "id": "rice-8", "name": "Egg Chicken Rice", "price": 180, "image": "/assets/images/rice/eggchickenrice.jpg", "isVeg": false },
-        { "id": "rice-9", "name": "Egg Chicken Schezwan Rice", "price": 200, "image": "/assets/images/", "isVeg": false },
+        { "id": "rice-9", "name": "Egg Chicken Schezwan Rice", "price": 200, "image": "/assets/images/rice/EggChickenSchezwanRice.jpg", "isVeg": false },
         { "id": "rice-10", "name": "Mixed Rice", "price": 240, "image": "/assets/images/rice/mixedfriedrice.jpg", "isVeg": false },
         { "id": "rice-11", "name": "Mixed Schezwan Rice", "price": 260, "image": "/assets/images/rice/MixedSchezwanRice.jpg", "isVeg": false },
         { "id": "rice-12", "name": "Hong Kong Rice", "price": 280, "image": "/assets/images/rice/hong.jpg", "isVeg": false },
