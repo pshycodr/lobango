@@ -10,13 +10,25 @@ const FooterSection = () => {
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle subscription logic here
     console.log('Subscribed with email:', email);
     setEmail('');
   };
 
-  const footerLinks1 = ['Home', 'Menus', 'About Us', 'Our Chefs', 'Contact'];
-  const footerLinks2 = ['Facebook', 'Instagram', 'Twitter', 'Youtube', 'Google Map'];
+  const footerLinks1 = [
+    { label: 'Home', href: '/' },
+    { label: 'Menus', href: '/menu' },
+    // { label: 'About Us', href: '/about' },
+    // { label: 'Our Chefs', href: '/chefs' },
+    // { label: 'Contact', href: '/contact' },
+  ];
+
+  const footerLinks2 = [
+    { label: 'Facebook', href: 'https://www.facebook.com/share/1Bg5DX8X8R/' },
+    // { label: 'Instagram', href: 'https://instagram.com' },
+    // { label: 'Twitter', href: 'https://twitter.com' },
+    // { label: 'Youtube', href: 'https://youtube.com' },
+    { label: 'Google Map', href: 'https://maps.app.goo.gl/a5KSt8Dzzffy7Kd66' },
+  ];
 
   return (
     <footer
@@ -27,12 +39,11 @@ const FooterSection = () => {
         <div className="grid gap-10 mb-[70px] lg:grid-cols-[0.45fr_1fr_0.45fr] lg:items-center">
 
           {/* Footer Brand */}
-          <div className="relative py-12 px-10 bg-[var(--smoky-black-1)] bg-[url('/assets/images/footer-form-bg.png')]  bg-top bg-repeat lg:order-1 lg:py-25 lg:px-15">
-            {/* Side Patterns */}
+          <div className="relative py-12 px-10 bg-[var(--smoky-black-1)] bg-[url('/assets/images/footer-form-bg.png')] bg-top bg-repeat lg:order-1 lg:py-25 lg:px-15">
             <div className="absolute top-0 left-0 w-4 h-full bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
             <div className="absolute top-0 right-0 w-4 h-full bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
 
-            <Link href="#" className="block max-w-max mx-auto mb-10">
+            <Link href="/" className="block max-w-max mx-auto mb-10">
               <Image src="/assets/images/logo.png" width={160} height={50} loading="lazy" alt="labanga home" />
             </Link>
 
@@ -65,14 +76,12 @@ const FooterSection = () => {
             </div>
 
             <p className="text-white font-[var(--fontFamily-forum)] mb-8">
-              Like our  <span className='text-[var(--gold-crayola)]'>Service!</span> Drop a <span className='text-[var(--gold-crayola)]'>Review</span>
+              Like our <span className="text-[var(--gold-crayola)]">Service!</span> Drop a <span className="text-[var(--gold-crayola)]">Review</span>
             </p>
 
             <textarea
               name="message"
               placeholder="Message"
-              // value={formData.message}
-              // onChange={handleInputChange}
               className="bg-[var(--eerie-black-2)] text-white h-35 p-5 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] w-full resize-none leading-none mb-5 placeholder:text-white"
             ></textarea>
 
@@ -109,18 +118,17 @@ const FooterSection = () => {
                 </span>
               </button>
             </form>
-
           </div>
 
           {/* Footer Links 1 */}
           <ul className="grid gap-5">
-            {footerLinks1.map((link, index) => (
+            {footerLinks1.map((item, index) => (
               <li key={index}>
                 <Link
-                  href="#"
+                  href={item.href}
                   className="text-[var(--quick-silver)] font-bold uppercase tracking-[var(--letterSpacing-4)] mx-auto transition-colors hover:text-[var(--gold-crayola)] block max-w-max"
                 >
-                  {link}
+                  {item.label}
                 </Link>
               </li>
             ))}
@@ -128,14 +136,16 @@ const FooterSection = () => {
 
           {/* Footer Links 2 */}
           <ul className="grid gap-5 lg:order-2">
-            {footerLinks2.map((link, index) => (
+            {footerLinks2.map((item, index) => (
               <li key={index}>
-                <Link
-                  href="#"
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-[var(--quick-silver)] font-bold uppercase tracking-[var(--letterSpacing-4)] mx-auto transition-colors hover:text-[var(--gold-crayola)] block max-w-max"
                 >
-                  {link}
-                </Link>
+                  {item.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -145,17 +155,16 @@ const FooterSection = () => {
         <div className="pt-6 border-t border-[var(--white-alpha-20)]">
           <p className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)]">
             &copy; 2025 labanga. All Rights Reserved | Crafted by{' '}
-            <Link
-              href="#"
+            <a
+              href="https://webcheap.in"
               target="_blank"
               className="text-[var(--gold-crayola)] underline"
             >
               webcheap.in
-            </Link>
+            </a>
           </p>
         </div>
       </div>
-
     </footer>
   );
 };
