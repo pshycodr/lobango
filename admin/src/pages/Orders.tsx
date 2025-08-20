@@ -26,9 +26,13 @@ const AdminOrdersView: React.FC = () => {
     console.log(orders);
 
     useEffect(() => {
-        const fetchOrders = async () => {
+        let intervalId: NodeJS.Timeout;
+    
+        const fetchOrders = async (isBackground = false) => {
             try {
-                setLoading(true);
+                if (!isBackground) {
+                    setLoading(true); 
+                }
                 const res = await api.get<OrderResponse>('/api/v1/admin/orders');
                 const { orders: fetchedOrders } = res.data;
                 setOrders(fetchedOrders);
@@ -36,12 +40,20 @@ const AdminOrdersView: React.FC = () => {
                 console.error('Error fetching orders:', error);
                 // error toast here
             } finally {
-                setLoading(false);
+                if (!isBackground) {
+                    setLoading(false);
+                }
             }
         };
-
-        fetchOrders();
+    
+        fetchOrders(false);
+    
+        intervalId = setInterval(() => fetchOrders(true), 60 * 1000);
+    
+        return () => clearInterval(intervalId);
     }, [setOrders]);
+    
+    
 
     // Search and filter orders
     const filteredOrders = useMemo(() => {
