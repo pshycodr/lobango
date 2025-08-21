@@ -8,7 +8,6 @@ interface CheckoutMainContentProps {
     cart: CartItem[];
     subtotal: number;
     deliveryFee: number;
-    tax: number;
     total: number;
     onUpdateQuantity: (id: string, quantity: number) => void;
     onRemoveItem: (id: string) => void;
@@ -27,7 +26,6 @@ export function CheckoutMainContent({
     cart,
     subtotal,
     deliveryFee,
-    tax,
     total,
     onUpdateQuantity,
     onRemoveItem,
@@ -54,7 +52,6 @@ export function CheckoutMainContent({
                 items={cart}
                 subtotal={subtotal}
                 deliveryFee={deliveryFee}
-                tax={tax}
                 total={total}
                 onUpdateQuantity={onUpdateQuantity}
                 onRemoveItem={onRemoveItem}

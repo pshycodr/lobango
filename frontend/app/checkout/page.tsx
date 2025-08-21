@@ -44,7 +44,7 @@ export default function CheckoutPage() {
         setPaymentData
     } = useCheckoutState();
     
-    const { subtotal, deliveryFee, tax, total } = useOrderCalculations(cart);
+    const { subtotal, deliveryFee, total } = useOrderCalculations(cart);
     
     const {
         canCheckout: locationAllowsCheckout,
@@ -230,7 +230,6 @@ export default function CheckoutPage() {
                         cart={cart}
                         subtotal={subtotal}
                         deliveryFee={deliveryFee}
-                        tax={tax}
                         total={total}
                         onUpdateQuantity={handleUpdateQuantity}
                         onRemoveItem={handleRemoveItem}

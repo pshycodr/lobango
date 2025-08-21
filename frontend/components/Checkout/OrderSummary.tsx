@@ -14,7 +14,6 @@ interface OrderSummaryProps {
   items: OrderItem[];
   subtotal: number;
   deliveryFee: number;
-  tax: number;
   total: number;
   onUpdateQuantity: (id: string, quantity: number) => void;
   onRemoveItem: (id: string) => void;
@@ -24,7 +23,6 @@ export default function OrderSummary({
   items, 
   subtotal, 
   deliveryFee, 
-  tax, 
   total,
   onUpdateQuantity,
   onRemoveItem
@@ -133,16 +131,7 @@ export default function OrderSummary({
             {formatPrice(deliveryFee)}
           </p>
         </div>
-        
-        <div className="flex items-center justify-between">
-          <p className="text-[var(--quick-silver)] text-sm">
-            Tax
-          </p>
-          <p className="text-[var(--white)] text-sm">
-            {formatPrice(tax)}
-          </p>
-        </div>
-        
+                
         <div className="flex items-center justify-between pt-3 border-t border-[var(--eerie-black-3)]">
           <p className="text-[var(--white)] text-base font-bold">
             Total

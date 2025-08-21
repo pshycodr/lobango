@@ -3,13 +3,14 @@ import React from 'react';
 
 interface CartSummaryProps {
   subtotal: number;
+  total: number;
+  deliveryFee: number;
   itemCount: number;
   onCheckout: () => void;
 }
 
-export const CartSummary: React.FC<CartSummaryProps> = ({ subtotal, itemCount, onCheckout }) => {
-  const tax = subtotal * 0.08;
-  const total = subtotal + tax;
+export const CartSummary: React.FC<CartSummaryProps> = ({ subtotal, total, deliveryFee, itemCount, onCheckout }) => {
+
 
   const { newOrders } = usePermissionsStore()
 
@@ -26,8 +27,8 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ subtotal, itemCount, o
         </div>
 
         <div className="flex justify-between items-center text-sm">
-          <span className="text-[var(--quick-silver)] font-inter">Tax</span>
-          <span className="text-[var(--white)] font-inter">₹{tax.toFixed(0)}</span>
+          <span className="text-[var(--quick-silver)] font-inter">Delivery Fee</span>
+          <span className="text-[var(--white)] font-inter">₹{deliveryFee.toFixed(0)}</span>
         </div>
 
         <div className="border-t border-[var(--white-alpha-20)] pt-2">

@@ -6,11 +6,13 @@ import { CartSummary } from './CartSummary';
 import { useCartStore } from '@/store/useCartStore';// adjust path if needed
 import { useRouter } from 'next/navigation';
 import { usePermissionsStore } from '@/store/usePermissionsStore';
+import { useOrderCalculations } from '@/hooks/useOrderCalculations';
 
 export const ShoppingCart: React.FC = () => {
   const cartItems = useCartStore((state) => state.cart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
+  const { cart } = useCartStore()
   const router = useRouter()
   const { newOrders, fetchPermissions } = usePermissionsStore();
 
@@ -26,10 +28,8 @@ export const ShoppingCart: React.FC = () => {
     }
   };
 
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const { subtotal, deliveryFee, total } = useOrderCalculations(cart);
+
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const handleCheckout = () => {
@@ -95,6 +95,8 @@ export const ShoppingCart: React.FC = () => {
             {cartItems.length > 0 && (
               <CartSummary
                 subtotal={subtotal}
+                total={total}
+                deliveryFee={deliveryFee}
                 itemCount={itemCount}
                 onCheckout={handleCheckout}
               />

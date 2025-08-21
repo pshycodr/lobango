@@ -137,8 +137,8 @@ const AdminOrderDetails: React.FC = () => {
   }
 
   const subtotal = order.items?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
-  const taxes = subtotal * 0.08;
-  const deliveryFee = 5.0;
+  // const taxes = subtotal * 0.08;
+  // const deliveryFee = 5.0;
 
   const { date, time } = formatDateTime(order.createdAt);
 
@@ -308,14 +308,14 @@ const AdminOrderDetails: React.FC = () => {
                 <span>Subtotal</span>
                 <span>₹{subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between items-center text-[var(--quick-silver)]">
+              {/* <div className="flex justify-between items-center text-[var(--quick-silver)]">
                 <span>Taxes (8%)</span>
                 <span>₹{taxes.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center text-[var(--quick-silver)]">
                 <span>Delivery Fee</span>
                 <span>₹{deliveryFee.toFixed(2)}</span>
-              </div>
+              </div> */}
               <div className="border-t border-[var(--eerie-black-4)] pt-4">
                 <div className="flex justify-between items-center text-xl font-bold">
                   <span className="text-[var(--white)]">Total</span>
