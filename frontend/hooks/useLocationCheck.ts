@@ -27,9 +27,8 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
 
   // Shop location coordinates
   const SHOP_LOCATION = {
-    lat: 23.6439598,
-    lng: 88.125675
-    // 23.1845829 87.9579848
+    lat: 23.406513,
+    lng:  87.923624
   };
 
   const [locationState, setLocationState] = useState<LocationState>({
@@ -47,7 +46,7 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
     lat2: number,
     lng2: number
   ): number => {
-    const R = 6371; // Earth's radius in kilometers
+    const R = 6371; // Earth's radius in kbudnilometers
     const dLat = toRadians(lat2 - lat1);
     const dLng = toRadians(lng2 - lng1);
     
