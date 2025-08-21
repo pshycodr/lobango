@@ -1,15 +1,16 @@
-import { Hono } from "hono";
-import { viewOrders } from "./admin/viewOrders";
-import { adminCheck } from "../middleware/adminAuth";
-import { adminLogin } from "./admin/adminLogin";
-import { adminLogout } from "./admin/adminLogout";
-import { updateOrderStatus } from "./admin/updateOrderStatus";
-import viewBookings from "./admin/viewBookings";
-import updateBookingStatus from "./admin/updateBookingStatus";
-import verifyAdmin from "./admin/verifyAdmin";
-import { setNewOrderPermission } from "./admin/setNewOrderPermission";
-import { setNewBookingPermission } from "./admin/setNewBookingPermission";
-import { downloadData } from "./admin/downLoadData";
+import { Hono } from "hono"
+import { adminCheck } from "../middleware/adminAuth"
+import { adminLogin } from "./admin/auth/adminLogin"
+import { adminLogout } from "./admin/auth/adminLogout"
+import updateBookingStatus from "./admin/booking/updateBookingStatus"
+import viewBookings from "./admin/booking/viewBookings"
+import { downloadData } from "./admin/downLoadData"
+import { updateOrderStatus } from "./admin/orders/updateOrderStatus"
+import { viewOrders } from "./admin/orders/viewOrders"
+import { setNewBookingPermission } from "./admin/permissions/setNewBookingPermission"
+import { setNewOrderPermission } from "./admin/permissions/setNewOrderPermission"
+import verifyAdmin from "./admin/auth/verifyAdmin"
+
 
 
 const adminRouter = new Hono()

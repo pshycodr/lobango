@@ -1,8 +1,8 @@
 import { Context } from "hono";
-import { getDB } from "../../db/db";
-import { permissions } from "../../db/schema/permissions";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { getDB } from "../../../db/db";
+import { permissions } from "../../../db/schema/permissions";
 
 const bodySchema = z.object({
   value: z.boolean(), // must be true or false

@@ -1,9 +1,9 @@
 import { Context } from "hono";
-import { getDB } from "../../db/db";
-import { bookings } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import z from "zod";
-import { sendBookingEmail } from "../../utils/sendEmail";
+import { getDB } from "../../../db/db";
+import { bookings } from "../../../db/schema";
+import { sendBookingEmail } from "../../../utils/sendEmail";
 
 const UpdateBookingSchema = z.object({
   booking_id: z.string(),

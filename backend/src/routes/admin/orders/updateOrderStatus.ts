@@ -1,7 +1,7 @@
 import { Context } from "hono";
 import z from "zod";
-import { getDB } from "../../db/db";
-import { orders } from "../../db/schema";
+import { getDB } from "../../../db/db";
+import { orders } from "../../../db/schema";
 import { eq } from "drizzle-orm";
 
 const OrderStatusUpdateProps = z.object({

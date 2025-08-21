@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { getDB } from "../../db/db";
-import { bookings } from "../../db/schema";
+import { getDB } from "../../../db/db";
+import { bookings } from "../../../db/schema";
 
 const viewBookings = async (c: Context) => {
   try {

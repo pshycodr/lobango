@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import { Context } from "hono";
 import { sign } from "hono/jwt";
-import { getDB } from "../../db/db";
-import { admin } from "../../db/schema";
+import { getDB } from "../../../db/db";
+import { admin } from "../../../db/schema";
 import { eq } from "drizzle-orm";
 import { setCookie } from "hono/cookie";
 import z, { infer } from "zod"

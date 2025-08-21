@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { getDB } from "../../db/db";
-import { orders, orderItems } from "../../db/schema";
+import { getDB } from "../../../db/db";
+import { orders, orderItems } from "../../../db/schema";
 import { eq, desc, gte, lt, and } from "drizzle-orm";
 
 export async function viewOrders(c: Context) {
