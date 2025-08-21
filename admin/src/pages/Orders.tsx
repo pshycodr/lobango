@@ -1,10 +1,12 @@
 import { useNavigate } from '@tanstack/react-router';
-import { Filter, Package, X } from 'lucide-react';
+import { Calendar, Filter, Package } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import LoadingSpinner from '../components/Common/Loader';
+import CalendarPicker from '../components/Orders/CalendarPicker';
 import FilterButton from '../components/Orders/FilterButton';
 import OrderCard from '../components/Orders/OrderCard';
 import Header from '../components/Orders/OrdersHeader';
+import SearchResultsInfo from '../components/Orders/SearchResultsInfo';
 import api from '../lib/axios';
 import { useOrdersStore } from '../store/zustand/useOrdersStore';
 import type { Order } from '../types/orders';
@@ -18,42 +20,69 @@ type OrderResponse = {
 const AdminOrdersView: React.FC = () => {
     const [activeFilter, setActiveFilter] = useState<'all' | Order['status']>('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [showAllOrders, setShowAllOrders] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showCalendar, setShowCalendar] = useState(false);
+
     const setOrders = useOrdersStore((state) => state.setOrders);
     const orders = useOrdersStore((state) => state.orders);
     const navigate = useNavigate();
 
-    console.log(orders);
+    // Get today's date in YYYY-MM-DD format (timezone safe)
+    const getTodayDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
 
+    // Initialize with today's date
+    useEffect(() => {
+        if (!selectedDate && !showAllOrders) {
+            setSelectedDate(getTodayDate());
+        }
+    }, []);
+
+    // Fetch orders based on current state
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
-    
+
         const fetchOrders = async (isBackground = false) => {
             try {
                 if (!isBackground) {
-                    setLoading(true); 
+                    setLoading(true);
                 }
-                const res = await api.get<OrderResponse>('/api/v1/admin/orders');
+
+                let url = '/api/v1/admin/orders';
+                if (!showAllOrders && selectedDate) {
+                    url += `?date=${selectedDate}`;
+                }
+
+                const res = await api.get<OrderResponse>(url);
                 const { orders: fetchedOrders } = res.data;
                 setOrders(fetchedOrders);
             } catch (error) {
                 console.error('Error fetching orders:', error);
-                // error toast here
+                // TODO: Add error toast here
             } finally {
                 if (!isBackground) {
                     setLoading(false);
                 }
             }
         };
-    
-        fetchOrders(false);
-    
-        intervalId = setInterval(() => fetchOrders(true), 60 * 1000);
-    
-        return () => clearInterval(intervalId);
-    }, [setOrders]);
-    
-    
+
+        if (selectedDate || showAllOrders) {
+            fetchOrders(false);
+            // 1-minute polling interval
+            intervalId = setInterval(() => fetchOrders(true), 60 * 1000);
+        }
+
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+        };
+    }, [setOrders, selectedDate, showAllOrders]);
 
     // Search and filter orders
     const filteredOrders = useMemo(() => {
@@ -68,30 +97,15 @@ const AdminOrdersView: React.FC = () => {
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase().trim();
             filtered = filtered.filter(order => {
-                // Search in order ID
-                if (order.orderId.toLowerCase().includes(query)) return true;
-                
-                // Search in customer name
-                if (order.name.toLowerCase().includes(query)) return true;
-                
-                // Search in phone number
-                if (order.phone.includes(query)) return true;
-                
-                // Search in address
-                if (order.address.toLowerCase().includes(query)) return true;
-                
-                // Search in payment method
-                if (order.paymentMethod.toLowerCase().includes(query)) return true;
-                
-                // Search in status
-                if (order.status.toLowerCase().includes(query)) return true;
-                
-                // Search in item names
-                if (order.items.some(item => 
-                    item.name.toLowerCase().includes(query)
-                )) return true;
-
-                return false;
+                return (
+                    order.orderId.toLowerCase().includes(query) ||
+                    order.name.toLowerCase().includes(query) ||
+                    order.phone.includes(query) ||
+                    order.address.toLowerCase().includes(query) ||
+                    order.paymentMethod.toLowerCase().includes(query) ||
+                    order.status.toLowerCase().includes(query) ||
+                    order.items.some(item => item.name.toLowerCase().includes(query))
+                );
             });
         }
 
@@ -99,8 +113,7 @@ const AdminOrdersView: React.FC = () => {
     }, [orders, activeFilter, searchQuery]);
 
     const getOrderCountByStatus = (status: Order['status'] | 'all'): number => {
-        // Count based on search results, not all orders
-        const baseOrders = searchQuery.trim() 
+        const baseOrders = searchQuery.trim()
             ? orders.filter(order => {
                 const query = searchQuery.toLowerCase().trim();
                 return (
@@ -146,6 +159,32 @@ const AdminOrdersView: React.FC = () => {
         setSearchQuery('');
     };
 
+    const handleDateSelect = (date: string | null) => {
+        setSelectedDate(date || getTodayDate());
+        setShowAllOrders(false);
+        setActiveFilter('all');
+    };
+
+    const handleShowAllOrders = () => {
+        setShowAllOrders(true);
+        setSelectedDate(null);
+        setActiveFilter('all');
+    };
+
+    const formatDisplayDate = (dateStr: string) => {
+        const date = new Date(dateStr + 'T00:00:00'); // Add time to avoid timezone issues
+
+        // Compare dates properly
+        const isToday = dateStr === getTodayDate();
+
+        if (isToday) return 'Today';
+
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
     if (loading) {
         return (
             <div className='bg-[var(--smoky-black-1)] h-screen flex justify-center items-center'>
@@ -157,41 +196,74 @@ const AdminOrdersView: React.FC = () => {
     return (
         <div className="min-h-screen bg-[var(--smoky-black-1)] p-4">
             <div className="max-w-7xl mx-auto">
-                <Header 
-                    totalOrders={orders.length} 
+                <Header
+                    totalOrders={orders.length}
                     searchQuery={searchQuery}
                     onSearchChange={handleSearchChange}
                 />
 
                 {/* Search Results Info */}
-                {searchQuery.trim() && (
-                    <div className="mb-4 flex items-center justify-between bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-lg p-3">
-                        <div className="flex items-center gap-2">
-                            <span className="text-[var(--white)] text-sm">
-                                Showing {filteredOrders.length} result{filteredOrders.length !== 1 ? 's' : ''} for 
-                            </span>
-                            <span className="text-[var(--gold-crayola)] font-medium text-sm">"{searchQuery}"</span>
-                        </div>
+                <SearchResultsInfo searchQuery={searchQuery} resultCount={filteredOrders.length} onClearSearch={clearSearch} />
+
+                {/* Date Filter - 3 Options Only */}
+                <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Calendar size={18} className="text-[var(--quick-silver)]" />
+                        <span className="text-[var(--quick-silver)] text-sm font-medium">Date filter</span>
+                    </div>
+
+                    <div className="flex gap-2 overflow-x-auto pb-2">
+                        {/* Today */}
                         <button
-                            onClick={clearSearch}
-                            className="flex items-center gap-1 text-[var(--quick-silver)] hover:text-[var(--white)] text-sm transition-colors"
+                            onClick={() => {
+                                const today = getTodayDate();
+                                setSelectedDate(today);
+                                setShowAllOrders(false);
+                                setActiveFilter('all');
+                            }}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${!showAllOrders && selectedDate === getTodayDate()
+                                    ? 'bg-[var(--gold-crayola)] text-[var(--smoky-black-1)]'
+                                    : 'bg-[var(--eerie-black-2)] text-[var(--quick-silver)] hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)]'
+                                }`}
                         >
-                            <X size={16} />
-                            Clear search
+                            Today
+                            {!showAllOrders && selectedDate === getTodayDate() && orders.length > 0 && ` (${orders.length})`}
+                        </button>
+
+                        {/* All Orders */}
+                        <button
+                            onClick={handleShowAllOrders}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${showAllOrders
+                                    ? 'bg-[var(--gold-crayola)] text-[var(--smoky-black-1)]'
+                                    : 'bg-[var(--eerie-black-2)] text-[var(--quick-silver)] hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)]'
+                                }`}
+                        >
+                            All Orders
+                            {showAllOrders && orders.length > 0 && ` (${orders.length})`}
+                        </button>
+
+                        {/* Select Date */}
+                        <button
+                            onClick={() => setShowCalendar(true)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${!showAllOrders && selectedDate && selectedDate !== getTodayDate()
+                                    ? 'bg-[var(--gold-crayola)] text-[var(--smoky-black-1)]'
+                                    : 'bg-[var(--eerie-black-2)] text-[var(--quick-silver)] hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)]'
+                                }`}
+                        >
+                            {!showAllOrders && selectedDate && selectedDate !== getTodayDate()
+                                ? formatDisplayDate(selectedDate)
+                                : 'Select Date'
+                            }
+                            {!showAllOrders && selectedDate && selectedDate !== getTodayDate() && orders.length > 0 && ` (${orders.length})`}
                         </button>
                     </div>
-                )}
+                </div>
 
-                {/* Filters */}
+                {/* Status Filters */}
                 <div className="mb-6">
                     <div className="flex items-center gap-2 mb-4">
                         <Filter size={18} className="text-[var(--quick-silver)]" />
                         <span className="text-[var(--quick-silver)] text-sm font-medium">Filter by status</span>
-                        {searchQuery.trim() && (
-                            <span className="text-[var(--gold-crayola)] text-xs">
-                                (filtered by search)
-                            </span>
-                        )}
                     </div>
 
                     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[var(--eerie-black-4)] scrollbar-track-transparent">
@@ -212,24 +284,36 @@ const AdminOrdersView: React.FC = () => {
                     <div className="text-center py-12">
                         <Package size={48} className="text-[var(--quick-silver)] mx-auto mb-4" />
                         <h3 className="text-[var(--white)] text-lg font-medium mb-2">
-                            {searchQuery.trim() ? 'No matching orders found' : 'No orders found'}
+                            {searchQuery.trim() || (!showAllOrders && selectedDate) ? 'No matching orders found' : 'No orders found'}
                         </h3>
                         <p className="text-[var(--quick-silver)] mb-4">
-                            {searchQuery.trim() 
+                            {searchQuery.trim()
                                 ? `No orders match your search "${searchQuery}"${activeFilter !== 'all' ? ` with status "${activeFilter}"` : ''}.`
-                                : activeFilter === 'all'
-                                    ? "There are no orders yet."
-                                    : `No orders with status "${activeFilter}".`
+                                : !showAllOrders && selectedDate
+                                    ? `No orders found for ${selectedDate === getTodayDate() ? 'today' : formatDisplayDate(selectedDate)}${activeFilter !== 'all' ? ` with status "${activeFilter}"` : ''}.`
+                                    : activeFilter === 'all'
+                                        ? "There are no orders yet."
+                                        : `No orders with status "${activeFilter}".`
                             }
                         </p>
-                        {searchQuery.trim() && (
-                            <button
-                                onClick={clearSearch}
-                                className="bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] px-4 py-2 rounded-lg font-medium hover:bg-[var(--gold-crayola)]/90 transition-colors"
-                            >
-                                Clear search
-                            </button>
-                        )}
+                        <div className="flex gap-2 justify-center">
+                            {searchQuery.trim() && (
+                                <button
+                                    onClick={clearSearch}
+                                    className="bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] px-4 py-2 rounded-lg font-medium hover:bg-[var(--gold-crayola)]/90 transition-colors"
+                                >
+                                    Clear search
+                                </button>
+                            )}
+                            {!showAllOrders && (
+                                <button
+                                    onClick={handleShowAllOrders}
+                                    className="bg-[var(--eerie-black-3)] text-[var(--white)] px-4 py-2 rounded-lg font-medium hover:bg-[var(--eerie-black-4)] transition-colors"
+                                >
+                                    Show all orders
+                                </button>
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -241,6 +325,15 @@ const AdminOrdersView: React.FC = () => {
                             />
                         ))}
                     </div>
+                )}
+
+                {/* Calendar Modal */}
+                {showCalendar && (
+                    <CalendarPicker
+                        selectedDate={selectedDate}
+                        onDateSelect={handleDateSelect}
+                        onClose={() => setShowCalendar(false)}
+                    />
                 )}
             </div>
         </div>
