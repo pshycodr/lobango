@@ -10,6 +10,7 @@ import { viewOrders } from "./admin/orders/viewOrders"
 import { setNewBookingPermission } from "./admin/permissions/setNewBookingPermission"
 import { setNewOrderPermission } from "./admin/permissions/setNewOrderPermission"
 import verifyAdmin from "./admin/auth/verifyAdmin"
+import { viewOrdersByDate } from "./admin/orders/viewOrdersByDate"
 
 
 
@@ -21,6 +22,7 @@ adminRouter.get('/verify', adminCheck, verifyAdmin)
 
 adminRouter.get("/orders", adminCheck, viewOrders)
 adminRouter.post("/order/update-status", adminCheck, updateOrderStatus)
+adminRouter.get("/orders/filter", adminCheck, viewOrdersByDate)
 
 adminRouter.get("/bookings", adminCheck, viewBookings)
 adminRouter.post("/booking/update-status", adminCheck, updateBookingStatus)
