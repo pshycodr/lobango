@@ -1,96 +1,136 @@
-import { Phone, Mail, Calendar, Clock, Users } from "lucide-react";
+import { Phone, Users } from "lucide-react";
 import type { Booking } from "../../types/bookings";
 import StatusBadge from "./StatusBadge";
 
 interface BookingCardProps {
-    booking: Booking;
-    onClick: (booking: Booking) => void;
-    onStatusClick: (booking: Booking, e: React.MouseEvent) => void;
+  booking: Booking;
+  onClick: (booking: Booking) => void;
+  onStatusClick: (booking: Booking, e: React.MouseEvent) => void;
 }
 
 const BookingCard: React.FC<BookingCardProps> = ({ booking, onClick, onStatusClick }) => {
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric'
-        });
-    };
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  };
 
-    const formatTime = (timeString: string): string => {
-        console.log(timeString);
-        
-        const [hours, minutes] = timeString.split(':');
-        const date = new Date();
-        date.setHours(parseInt(hours), parseInt(minutes));
-        return date.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-    };
+  const formatTime = (timeString: string): string => {
+    const [hours, minutes] = timeString.split(":");
+    const date = new Date();
+    date.setHours(parseInt(hours), parseInt(minutes));
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
-    return (
-        <div
-            onClick={() => onClick(booking)}
-            className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-4 hover:bg-[var(--eerie-black-3)] transition-all duration-200 cursor-pointer hover:border-[var(--gold-crayola)]/30 hover:shadow-lg hover:shadow-[var(--gold-crayola)]/10"
-        >
-            {/* Header with Status */}
-            <div className="flex items-center justify-between mb-3">
-                <h3 className="text-[var(--white)] font-semibold text-lg">#{booking.booking_id}</h3>
-                <StatusBadge
-                    status={booking.status}
-                    onClick={(e) => onStatusClick(booking, e)}
-                />
-            </div>
+  const formatCreatedAt = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  };
 
-            {/* Customer Info */}
-            <div className="mb-4">
-                <p className="text-[var(--white)] font-medium mb-1">{booking.customer_name}</p>
-                <div className="flex items-center gap-2 text-[var(--quick-silver)] text-sm mb-1">
-                    <Phone size={14} />
-                    <span>{booking.customer_phone}</span>
-                </div>
-                <div className="flex items-center gap-2 text-[var(--quick-silver)] text-sm">
-                    <Mail size={14} />
-                    <span className="truncate">{booking.customer_email}</span>
-                </div>
-            </div>
+  const formatCreatedAtTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
-            {/* Booking Details Grid */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="flex items-center gap-2 text-[var(--quick-silver)] text-sm">
-                    <Calendar size={14} className="text-[var(--gold-crayola)]" />
-                    <span>{formatDate(booking.date)}</span>
-                </div>
-                <div className="flex items-center gap-2 text-[var(--quick-silver)] text-sm">
-                    <Clock size={14} className="text-[var(--gold-crayola)]" />
-                    <span>{formatTime(booking.time)}</span>
-                </div>
-                <div className="flex items-center gap-2 text-[var(--quick-silver)] text-sm">
-                    <Users size={14} className="text-[var(--gold-crayola)]" />
-                    <span>{booking.number_of_people} guests</span>
-                </div>
-                <div className="text-[var(--quick-silver)] text-sm">
-                    <span className="text-[var(--gold-crayola)]">Occasion:</span>
-                    <br />
-                    <span className="text-xs">{booking.occasion || 'N/A'}</span>
-                </div>
-            </div>
-
-            {/* Created At */}
-            <div className="text-xs text-[var(--quick-silver)]/70 border-t border-[var(--eerie-black-4)] pt-2">
-                Created: {new Date(booking.created_at).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: true
-                })}
-            </div>
+  return (
+    <div
+      onClick={() => onClick(booking)}
+      className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-4 
+                 hover:bg-[var(--eerie-black-3)] hover:border-[var(--gold-crayola)]/30 
+                 transition-all duration-300 cursor-pointer group active:scale-[0.98] select-none"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="text-[var(--white)] font-semibold text-lg leading-tight">
+            {booking.customer_name}
+          </h3>
+          <p className="text-[var(--quick-silver)] text-xs mt-1">#{booking.booking_id}</p>
         </div>
-    );
+        <StatusBadge
+          status={booking.status}
+          onClick={(e) => {
+            e.stopPropagation();
+            onStatusClick(booking, e);
+          }}
+        />
+      </div>
+
+      {/* Booking Details */}
+      <div className="space-y-3 mb-4">
+        {/* Date & Time (highlighted) */}
+        <div className="flex justify-between items-center">
+          <span className="text-[var(--quick-silver)] text-sm">Date & Time</span>
+          <span className="text-[var(--gold-crayola)] font-bold text-base">
+            {formatDate(booking.date)} • {formatTime(booking.time)}
+          </span>
+        </div>
+
+        {/* Contact */}
+        <div className="flex justify-between items-center">
+          <span className="text-[var(--quick-silver)] text-sm">Contact</span>
+          <div className="flex items-center gap-1 text-[var(--white)] text-sm">
+            <Phone size={12} className="opacity-80" />
+            <a
+              href={`tel:+${booking.customer_phone}`}
+              className="hover:underline hover:text-[var(--gold-crayola)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {booking.customer_phone}
+            </a>
+          </div>
+        </div>
+
+        {/* Email */}
+        <div className="flex justify-between items-center">
+          <span className="text-[var(--quick-silver)] text-sm">Email</span>
+          <span className="text-[var(--white)] text-sm truncate max-w-[140px] md:max-w-[200px]">
+            {booking.customer_email}
+          </span>
+        </div>
+
+        {/* Guests */}
+        <div className="flex justify-between items-center">
+          <span className="text-[var(--quick-silver)] text-sm">Guests</span>
+          <div className="flex items-center gap-1 text-[var(--gold-crayola)] text-md font-semibold">
+            <Users size={12} />
+            <span>{booking.number_of_people} guests</span>
+          </div>
+        </div>
+
+        {/* Occasion/Message */}
+        {booking.occasion && (
+          <div className="flex justify-between items-start">
+            <span className="text-[var(--quick-silver)] text-sm">Message</span>
+            <span className="text-[var(--white)] text-sm capitalize line-clamp-2 max-w-[70%]">
+              {booking.occasion}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="flex justify-between items-center pt-3 border-t border-[var(--eerie-black-4)]">
+        <div className="text-[var(--quick-silver)] text-xs">
+          {formatCreatedAt(booking.created_at)} • {formatCreatedAtTime(booking.created_at)}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default BookingCard;
