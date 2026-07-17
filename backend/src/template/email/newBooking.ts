@@ -8,24 +8,24 @@ interface BookingConfirmationHtmlTemplate {
     number_of_people: number;
 }
 
-export const bookingConfirmationHtmlTemplate = ({ 
-    customer_name, 
-    booking_id, 
-    customer_phone, 
-    customer_email, 
-    date, 
-    time, 
+export const bookingConfirmationHtmlTemplate = ({
+    customer_name,
+    booking_id,
+    customer_phone,
+    customer_email,
+    date,
+    time,
     number_of_people
 }: BookingConfirmationHtmlTemplate) => {
-    
+
     // Format date for display
     const formatDate = (dateStr: string) => {
         const dateObj = new Date(dateStr);
-        return dateObj.toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+        return dateObj.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
     };
 
@@ -77,33 +77,33 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
         <title>Booking Confirmation</title>
     </head>
     <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0c0c0c; line-height: 1.6;">
-        
+
         <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
             <!-- Main Content -->
             <div style="padding: 50px 40px; background-color: #ffffff;" class="mobile-content-padding">
-                
+
                 <!-- Greeting -->
                 <h2 style="margin: 0 0 30px 0; color: #0c0c0c; font-size: 24px; font-weight: 400;">
                     Hello ${customer_name},
                 </h2>
-                
+
                 <p style="margin: 0 0 40px 0; color: #575757; font-size: 16px; line-height: 1.6;">
                     Your table reservation is confirmed! Please present your Booking ID upon arrival for verification.
                 </p>
 
                 <!-- Booking Summary -->
                 <div style="border: 1px solid #f0f0f0; border-radius: 8px; overflow: hidden; margin-bottom: 40px;">
-                    
+
                     <!-- Header -->
                     <div style="background-color: #171717; padding: 20px 30px;">
                         <h3 style="margin: 0; color: #c2a572; font-size: 18px; font-weight: 500;">
                             Reservation Details
                         </h3>
                     </div>
-                    
+
                     <!-- Content -->
                     <div style="padding: 30px; background-color: #fafafa;" class="mobile-summary-padding">
-                        
+
                         <!-- Booking ID Row -->
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e8e8e8;" class="mobile-stack">
                             <tr>
@@ -117,7 +117,7 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
                                 </td>
                             </tr>
                         </table>
-                        
+
                         <!-- Date Row -->
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e8e8e8;" class="mobile-stack">
                             <tr>
@@ -129,7 +129,7 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
                                 </td>
                             </tr>
                         </table>
-                        
+
                         <!-- Time Row -->
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e8e8e8;" class="mobile-stack">
                             <tr>
@@ -141,7 +141,7 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
                                 </td>
                             </tr>
                         </table>
-                        
+
                         <!-- Party Size Row -->
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e8e8e8;" class="mobile-stack">
                             <tr>
@@ -153,7 +153,7 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
                                 </td>
                             </tr>
                         </table>
-                        
+
                         <!-- Contact Row -->
                         <table style="width: 100%; border-collapse: collapse;" class="mobile-stack">
                             <tr>
@@ -166,7 +166,7 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
                                 </td>
                             </tr>
                         </table>
-                        
+
                     </div>
                 </div>
 
@@ -259,11 +259,11 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
         <!-- Mobile Responsive -->
         <style>
             @media only screen and (max-width: 600px) {
-                .mobile-padding { 
-                    padding: 40px 20px !important; 
+                .mobile-padding {
+                    padding: 40px 20px !important;
                 }
-                .mobile-content-padding { 
-                    padding: 30px 20px !important; 
+                .mobile-content-padding {
+                    padding: 30px 20px !important;
                 }
                 .mobile-summary-padding {
                     padding: 20px !important;

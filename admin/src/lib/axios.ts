@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://backend.webcheap-in.workers.dev",
+  baseURL: "http://127.0.0.1:8787",
   withCredentials: true,
 });
 

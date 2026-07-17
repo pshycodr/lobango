@@ -21,11 +21,11 @@ export function useGeolocation() {
                     maximumAge: 60000
                 });
             });
-            
+
             return position.coords;
         } catch (err) {
             let errorMessage = 'Failed to get location';
-            
+
             if (err instanceof GeolocationPositionError) {
                 switch (err.code) {
                     case err.PERMISSION_DENIED:
@@ -39,7 +39,7 @@ export function useGeolocation() {
                         break;
                 }
             }
-            
+
             setError(errorMessage);
             throw new Error(errorMessage);
         } finally {

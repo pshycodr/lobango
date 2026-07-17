@@ -50,7 +50,7 @@ export async function adminLogin(c: Context) {
     const token = await sign(
         {
             username: user.username,
-            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
         },
         c.env.JWT_SECRET
     )
@@ -58,10 +58,9 @@ export async function adminLogin(c: Context) {
     setCookie(c, 'admin_token', token, {
         httpOnly: true,
         secure: true,
-        sameSite: 'None',       // 🔥 Must be 'None' for cross-site cookies
+        sameSite: 'None',       
         path: '/',
-        maxAge: 60 * 60 * 24,
-        // ❌ Do not set `domain` for cross-origin setups like this
+        maxAge: 60 * 60 * 24 * 7,
       })
       
 

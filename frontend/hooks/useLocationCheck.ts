@@ -27,8 +27,8 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
 
   // Shop location coordinates
   const SHOP_LOCATION = {
-    lat: 23.406513,
-    lng:  87.923624
+    lat: 23.2357888,
+    lng: 87.8968832
   };
 
   const [locationState, setLocationState] = useState<LocationState>({
@@ -49,15 +49,15 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
     const R = 6371; // Earth's radius in kbudnilometers
     const dLat = toRadians(lat2 - lat1);
     const dLng = toRadians(lng2 - lng1);
-    
-    const a = 
+
+    const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
       Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
-    
+
     return Math.round(distance * 100) / 100; // Round to 2 decimal places
   };
 
@@ -96,7 +96,7 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
         (position) => {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
-          
+
           const distance = calculateDistance(
             userLat,
             userLng,
@@ -118,7 +118,7 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
         },
         (error) => {
           let errorMessage = 'Unable to retrieve your location.';
-          
+
           switch (error.code) {
             case error.PERMISSION_DENIED:
               errorMessage = 'Location access denied. Please enable location services and refresh the page.';
@@ -175,24 +175,24 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
     distance: locationState.distance,
     error: locationState.error,
     isLoading: locationState.isLoading,
-    
+
     // Actions
     checkLocation: checkUserLocation,
     recheckLocation,
     resetLocationCheck,
-    
+
     // Utils
     canCheckout: locationState.isWithinRange === true,
     shouldBlockCheckout: locationState.isWithinRange === false,
     maxDistance: maxDistanceKm,
     shopLocation: SHOP_LOCATION,
-    
+
     // Helper methods
     getDistanceText: () => {
       if (locationState.distance === null) return null;
       return `${locationState.distance} km away`;
     },
-    
+
     getLocationStatus: () => {
       if (locationState.isLoading) return 'checking';
       if (locationState.error) return 'error';

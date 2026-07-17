@@ -7,9 +7,9 @@ export async function createRazorpayOrder(c: Context) {
         key_id: c.env.RAZORPAY_KEY_ID,
         key_secret: c.env.RAZORPAY_SECRET_KEY,
     })
-    
+
     console.log(c.env.RAZORPAY_KEY_ID, c.env.RAZORPAY_SECRET_KEY, await c.req.json());
-    
+
     const { amount, currency = 'INR' } = await c.req.json()
 
     if (!amount || isNaN(amount)) {

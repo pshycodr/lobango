@@ -1,4 +1,3 @@
-// hooks/useLocationPermission.ts
 import { useState, useEffect, useCallback } from 'react';
 
 export interface LocationPermissionState {
@@ -34,7 +33,7 @@ export function useLocationPermission() {
       // Check if permission API is available
       if ('permissions' in navigator) {
         const permission = await navigator.permissions.query({ name: 'geolocation' });
-        
+
         if (permission.state === 'granted') {
           // Get current position to confirm it works
           navigator.geolocation.getCurrentPosition(
