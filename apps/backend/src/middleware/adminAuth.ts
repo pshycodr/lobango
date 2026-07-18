@@ -4,12 +4,11 @@ import { verify } from "hono/jwt";
 
 export const adminCheck = async (c: Context, next: Next) => {
   const token = getCookie(c, "admin_token");
-  console.log(token);
 
   if (!token) return c.text("Unauthorized", 401);
 
   try {
-    const payload = await verify(token, c.env.JWT_SECRET);
+    const payload = await verify(token, c.env.JWT_SECRET, "HS256");
     c.set("admin", payload);
     return next();
   } catch {
