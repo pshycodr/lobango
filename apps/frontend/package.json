@@ -1,0 +1,38 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@ionic/react": "^8.8.14",
+    "axios": "^1.18.1",
+    "clsx": "^2.1.1",
+    "ionicons": "^8.0.13",
+    "lucide-react": "^1.25.0",
+    "next": "16.2.10",
+    "razorpay": "^2.9.8",
+    "react": "19.2.7",
+    "react-datepicker": "^9.1.0",
+    "react-dom": "19.2.7",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.4",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.2.10",
+    "postcss": "^8.5.19",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.2",
+    "@lobango/contracts": "workspace:"
+  }
+}

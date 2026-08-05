@@ -1,0 +1,1866 @@
+{
+  "menu": [
+    {
+      "category": "Kebabs",
+      "items": [
+        {
+          "id": "kebab-1",
+          "name": "Tandoori Chicken (1pc)",
+          "price": 130,
+          "image": "/assets/images/tandorisnacks/tandoorichicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-3",
+          "name": "Chicken Tengri Kebab (1pc)",
+          "price": 90,
+          "image": "/assets/images/tandorisnacks/chickentangrikebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-4",
+          "name": "Chicken Pahari Kebab (6pcs)",
+          "price": 240,
+          "image": "/assets/images/tandorisnacks/chickenpaharikebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-5",
+          "name": "Chicken Banjara Kebab (6pcs)",
+          "price": 230,
+          "image": "/assets/images/tandorisnacks/ChickenBanjaraKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-6",
+          "name": "Chicken Tikka Kebab (6pcs)",
+          "price": 200,
+          "image": "/assets/images/tandorisnacks/chickentikkakebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-7",
+          "name": "Chicken Hariyali Kebab (6pcs)",
+          "price": 240,
+          "image": "/assets/images/tandorisnacks/chickenhariyalikebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-8",
+          "name": "Chicken Reshmi Kebab (6pcs)",
+          "price": 230,
+          "image": "/assets/images/tandorisnacks/ChickenReshmiKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-9",
+          "name": "Chicken Malai Kebab (6pcs)",
+          "price": 250,
+          "image": "/assets/images/tandorisnacks/ChickenMalaiKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-10",
+          "name": "Chicken Seekh Kebab (6pcs)",
+          "price": 280,
+          "image": "/assets/images/tandorisnacks/ChickenSeekhKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-11",
+          "name": "Chicken Kashmiri Tikka Kebab (6pcs)",
+          "price": 260,
+          "image": "/assets/images/tandorisnacks/ChickenKashmiriTikkaKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-12",
+          "name": "Chicken Afghani Kebab (6pcs)",
+          "price": 270,
+          "image": "/assets/images/tandorisnacks/ChickenAfghaniKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-13",
+          "name": "Chicken Lahori Kebab (6pcs)",
+          "price": 280,
+          "image": "/assets/images/tandorisnacks/ChickenLahoriKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-14",
+          "name": "Chicken Cheese Kebab (6pcs)",
+          "price": 230,
+          "image": "/assets/images/tandorisnacks/ChickenCheeseKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-15",
+          "name": "Paneer Tikka Kebab (8pcs)",
+          "price": 280,
+          "image": "/assets/images/tandorisnacks/PaneerTikkaKebab.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "kebab-16",
+          "name": "Paneer Malai Kebab (8pcs)",
+          "price": 310,
+          "image": "/assets/images/tandorisnacks/PaneerMalaiKebab.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "kebab-17",
+          "name": "Paneer Hariyali Kebab (8pcs)",
+          "price": 280,
+          "image": "/assets/images/tandorisnacks/PaneerHariyaliKebab.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "kebab-18",
+          "name": "Paneer Reshmi Kebab (8pcs)",
+          "price": 300,
+          "image": "/assets/images/tandorisnacks/PaneerReshmiKebab.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "kebab-19",
+          "name": "Mutton Tikka Kebab (6pcs)",
+          "price": 380,
+          "image": "/assets/images/tandorisnacks/MuttonTikkaKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-20",
+          "name": "Mutton Seekh Kebab",
+          "price": 390,
+          "image": "/assets/images/tandorisnacks/MuttonSeekhKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-21",
+          "name": "Mutton Reshmi Kebab",
+          "price": 399,
+          "image": "/assets/images/tandorisnacks/MuttonReshmiKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-22",
+          "name": "Mutton Hariyali Kebab",
+          "price": 380,
+          "image": "/assets/images/tandorisnacks/MuttonHariyaliKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-23",
+          "name": "Mutton Afghani Kebab",
+          "price": 370,
+          "image": "/assets/images/tandorisnacks/MuttonAfghaniKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-24",
+          "name": "Mutton Cheese Tikka Kebab",
+          "price": 380,
+          "image": "/assets/images/tandorisnacks/MuttonCheeseTikkaKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-25",
+          "name": "Fish Tikka Kebab",
+          "price": 280,
+          "image": "/assets/images/tandorisnacks/FishTikkaKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-26",
+          "name": "Fish Malai Kebab",
+          "price": 290,
+          "image": "/assets/images/tandorisnacks/FishMalaiKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-27",
+          "name": "Fish Seekh Kebab",
+          "price": 299,
+          "image": "/assets/images/tandorisnacks/FishSeekhKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-28",
+          "name": "Fish Reshmi Kebab",
+          "price": 280,
+          "image": "/assets/images/tandorisnacks/FishReshmiKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-29",
+          "name": "Fish Hariyali Kebab",
+          "price": 290,
+          "image": "/assets/images/tandorisnacks/FishHariyaliKebab.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "kebab-30",
+          "name": "Lobango Special Kebab",
+          "price": 280,
+          "image": "/assets/images/tandorisnacks/LobangoSpecialKebab.jpg",
+          "isVeg": false
+        }
+      ]
+    },
+    {
+      "category": "Rolls",
+      "items": [
+        {
+          "id": "roll-1",
+          "name": "Egg Roll",
+          "price": 35,
+          "image": "/assets/images/roll/egg roll.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-2",
+          "name": "Chicken Roll",
+          "price": 50,
+          "image": "/assets/images/roll/chicken roll.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-3",
+          "name": "Egg Chicken Roll",
+          "price": 60,
+          "image": "/assets/images/roll/r1.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-4",
+          "name": "Paneer Roll",
+          "price": 55,
+          "image": "/assets/images/roll/paneer roll.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roll-5",
+          "name": "Egg Paneer Roll",
+          "price": 60,
+          "image": "/assets/images/roll/paneer roll.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-6",
+          "name": "Egg Cheese Roll",
+          "price": 60,
+          "image": "/assets/images/roll/cheese roll.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-7",
+          "name": "Mutton Roll",
+          "price": 90,
+          "image": "/assets/images/roll/mutton roll.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-8",
+          "name": "Egg Mutton Roll",
+          "price": 100,
+          "image": "/assets/images/roll/r2.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-9",
+          "name": "Egg Cheese Paneer Roll",
+          "price": 80,
+          "image": "/assets/images/roll/r3.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-10",
+          "name": "Lobango Special Roll",
+          "price": 90,
+          "image": "/assets/images/roll/special roll.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-11",
+          "name": "Mixed Roll",
+          "price": 99,
+          "image": "/assets/images/roll/egg roll.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roll-12",
+          "name": "Egg Cheese Chicken Roll",
+          "price": 85,
+          "image": "/assets/images/roll/r5.jpg",
+          "isVeg": false
+        }
+      ]
+    },
+    {
+      "category": "Noodles (Veg & Nonveg)",
+      "items": [
+        {
+          "id": "noodle-1",
+          "name": "Veg Hakka Noodles",
+          "price": 60,
+          "image": "/assets/images/noodles/hkveg.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "noodle-2",
+          "name": "Veg Schezwan Hakka Noodles",
+          "price": 80,
+          "image": "/assets/images/noodles/n9.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "noodle-3",
+          "name": "Egg Hakka Noodles",
+          "price": 70,
+          "image": "/assets/images/noodles/noodoles5.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-4",
+          "name": "Egg Schezwan Hakka Noodles",
+          "price": 90,
+          "image": "/assets/images/noodles/n8.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-5",
+          "name": "Chicken Hakka Noodles",
+          "price": 120,
+          "image": "/assets/images/noodles/chickenhakkanoodoles.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-6",
+          "name": "Chicken Schezwan Hakka Noodles",
+          "price": 140,
+          "image": "/assets/images/noodles/noodoles6.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-7",
+          "name": "Egg Chicken Hakka Noodles",
+          "price": 130,
+          "image": "/assets/images/noodles/noodles.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-8",
+          "name": "Egg Chicken Schezwan Hakka Noodles",
+          "price": 150,
+          "image": "/assets/images/noodles/noodoles1.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-9",
+          "name": "Mixed Hakka Noodles",
+          "price": 180,
+          "image": "/assets/images/noodles/noodles2.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-10",
+          "name": "Mixed Schezwan HakkaNoodles",
+          "price": 200,
+          "image": "/assets/images/noodles/noodels4.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-11",
+          "name": "Pan Fried Noodles(Veg)",
+          "price": 110,
+          "image": "/assets/images/noodles/panveg.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "noodle-12",
+          "name": "Pan Fried Noodles(Egg)",
+          "price": 130,
+          "image": "/assets/images/noodles/pan2.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-13",
+          "name": "Pan Fried Noodles(Chicken)",
+          "price": 170,
+          "image": "/assets/images/noodles/pan.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-14",
+          "name": "American ChopSuey(Non-veg)",
+          "price": 190,
+          "image": "/assets/images/noodles/noodels4.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-15",
+          "name": "American ChopSuey(veg)",
+          "price": 170,
+          "image": "/assets/images/noodles/noodels4.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "noodle-16",
+          "name": "chicken singapore noodles",
+          "price": 160,
+          "image": "/assets/images/noodles/pan2.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-17",
+          "name": "Veg singapore noodles",
+          "price": 130,
+          "image": "/assets/images/noodles/noodels3.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "noodle-18",
+          "name": "Hong kong noodles(non-veg)",
+          "price": 180,
+          "image": "/assets/images/noodles/noo.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "noodle-19",
+          "name": "Hong kong noodles(veg)",
+          "price": 140,
+          "image": "/assets/images/noodles/hkchicken.jpg",
+          "isVeg": true
+        }
+      ]
+    },
+    {
+      "category": "Momos",
+      "items": [
+        {
+          "id": "momo-1",
+          "name": "Veg Momo",
+          "price": 50,
+          "image": "/assets/images/momo/vegmomo.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "momo-2",
+          "name": "Chicken Momo",
+          "price": 60,
+          "image": "/assets/images/momo/chickenmomo.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "momo-3",
+          "name": "Chicken Fried Momo",
+          "price": 70,
+          "image": "/assets/images/momo/chickenfriedmomo.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "momo-4",
+          "name": "Chicken Pan Fried Momo",
+          "price": 90,
+          "image": "/assets/images/momo/panfriedmomo.jpg",
+          "isVeg": false
+        }
+      ]
+    },
+    {
+      "category": "Indian/Chinese (Veg)",
+      "items": [
+        {
+          "id": "niv-1",
+          "name": "Matar Paneer",
+          "price": 150,
+          "image": "/assets/images/indianchineaseveg/MatarPaneer.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-2",
+          "name": "Paneer Kadhai (6pcs)",
+          "price": 180,
+          "image": "/assets/images/indianchineaseveg/PaneerKadhai.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-3",
+          "name": "Paneer Do-Pyaza (6pcs)",
+          "price": 180,
+          "image": "/assets/images/indianchineaseveg/PaneerDoPyaza.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-4",
+          "name": "Paneer Masala (6pcs)",
+          "price": 190,
+          "image": "/assets/images/indianchineaseveg/PaneerMasala.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-5",
+          "name": "Paneer Chilli (6pcs)",
+          "price": 160,
+          "image": "/assets/images/indianchineaseveg/PaneerChilli.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-6",
+          "name": "Paneer Butter Masala ",
+          "price": 190,
+          "image": "/assets/images/indianchineaseveg/PaneerButterMasala.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-7",
+          "name": "Paneer Tikka Masala (6pcs)",
+          "price": 270,
+          "image": "/assets/images/indianchineaseveg/PaneerTikkaMasala.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-8",
+          "name": "Paneer Reshmi Butter Masala (6pcs)",
+          "price": 290,
+          "image": "/assets/images/indianchineaseveg/PaneerReshmiButterMasala.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-9",
+          "name": "Paneer Malai Tikka Masala (6pcs)",
+          "price": 299,
+          "image": "/assets/images/indianchineaseveg/PaneerMalaiTikkaMasala.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-10",
+          "name": "Mixed Veg",
+          "price": 160,
+          "image": "/assets/images/indianchineaseveg/MixedVeg.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-11",
+          "name": "Chilli Mushroom",
+          "price": 160,
+          "image": "/assets/images/indianchineaseveg/ChilliMushroom.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-12",
+          "name": "Crispy Chilli Baby Corn",
+          "price": 160,
+          "image": "/assets/images/indianchineaseveg/CrispyChilliBabyCorn.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-13",
+          "name": "Mushroom Chilli Dry",
+          "price": 150,
+          "image": "/assets/images/indianchineaseveg/ChilliMushroom.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-14",
+          "name": "Mushroom Masala",
+          "price": 170,
+          "image": "/assets/images/indianchineaseveg/MushroomMasala.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-15",
+          "name": "Paneer Pakoda",
+          "price": 240,
+          "image": "/assets/images/indianchineaseveg/PaneerPakoda.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-16",
+          "name": "Paneer Panjabi",
+          "price": 190,
+          "image": "/assets/images/indianchineaseveg/PaneerPanjab.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-17",
+          "name": "Sahi Paneer",
+          "price": 220,
+          "image": "/assets/images/indianchineaseveg/SahiPaneer.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-18",
+          "name": "Paneer Jalfrazi (6pcs)",
+          "price": 250,
+          "image": "/assets/images/indianchineaseveg/PaneerJalfrazi.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-19",
+          "name": "Kadai Veg",
+          "price": 160,
+          "image": "/assets/images/indianchineaseveg/KadaiVeg.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-20",
+          "name": "Tawa Veg",
+          "price": 180,
+          "image": "/assets/images/indianchineaseveg/TawaVeg.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-21",
+          "name": "Veg Jalfrazi",
+          "price": 220,
+          "image": "/assets/images/indianchineaseveg/VegJalfrazi.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-22",
+          "name": "Malai Kofta",
+          "price": 240,
+          "image": "/assets/images/indianchineaseveg/MalaiKofta.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-23",
+          "name": "Veg Manchurian",
+          "price": 150,
+          "image": "/assets/images/indianchineaseveg/VegManchurian.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-24",
+          "name": "Veg Manchurian Dry",
+          "price": 140,
+          "image": "/assets/images/indianchineaseveg/VegManchurianDry.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-25",
+          "name": "Paneer Manchurian",
+          "price": 180,
+          "image": "/assets/images/indianchineaseveg/PaneerManchurian.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-26",
+          "name": "Paneer Manchurian Dry",
+          "price": 170,
+          "image": "/assets/images/indianchineaseveg/PaneerManchurian.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-27",
+          "name": "Chilli Paneer Dry",
+          "price": 150,
+          "image": "/assets/images/indianchineaseveg/ChilliPaneerDry.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-28",
+          "name": "Paneer Kaju Curry",
+          "price": 240,
+          "image": "/assets/images/indianchineaseveg/PaneerKajuCurry.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-29",
+          "name": "Palak Paneer",
+          "price": 260,
+          "image": "/assets/images/indianchineaseveg/PalakPaneer.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-30",
+          "name": "Paneer Delhi Ka Makhani",
+          "price": 280,
+          "image": "/assets/images/indianchineaseveg/PaneerDelhiKaMakhani.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-31",
+          "name": "Dal Makhani",
+          "price": 155,
+          "image": "/assets/images/indianchineaseveg/DalMakhani.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-32",
+          "name": "Paneer Handi",
+          "price": 290,
+          "image": "/assets/images/indianchineaseveg/PaneerHandi.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-33",
+          "name": "Paneer 65",
+          "price": 190,
+          "image": "/assets/images/indianchineaseveg/Paneer65.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-34",
+          "name": "Paneer Chotpoti",
+          "price": 199,
+          "image": "/assets/images/indianchineaseveg/PaneerChotpoti.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-35",
+          "name": "Gobi Manchurian",
+          "price": 180,
+          "image": "/assets/images/indianchineaseveg/GobiManchurian.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-36",
+          "name": "Gobi Manchurian Dry",
+          "price": 170,
+          "image": "/assets/images/indianchineaseveg/GobiManchurianDry.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-37",
+          "name": "Finger Chips",
+          "price": 120,
+          "image": "/assets/images/indianchineaseveg/FingerChips.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-38",
+          "name": "AmericanCorn salt and pepper (Dry)",
+          "price": 160,
+          "image": "/assets/images/indianchineaseveg/Americancorn.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "niv-39",
+          "name": "Hot garlic panner (Dry/Gravy)",
+          "price": 170,
+          "image": "/assets/images/indianchineaseveg/Hotgarlicpanner.jpg",
+          "isVeg": true
+        }
+      ]
+    },
+    {
+      "category": "Indian (Non-Veg)",
+      "items": [
+        {
+          "id": "nin-1",
+          "name": "Chicken Butter Masala (4pcs)",
+          "price": 180,
+          "image": "/assets/images/indiannonveg/ChickenButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-2",
+          "name": "Chicken Kadai",
+          "price": 180,
+          "image": "/assets/images/indiannonveg/ChickenKadai.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-3",
+          "name": "Chicken Kosha",
+          "price": 160,
+          "image": "/assets/images/indiannonveg/ChickenKosha.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-4",
+          "name": "Chicken Masala",
+          "price": 190,
+          "image": "/assets/images/indiannonveg/ChickenMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-5",
+          "name": "Chicken Lababdar",
+          "price": 220,
+          "image": "/assets/images/indiannonveg/ChickenLababdar.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-6",
+          "name": "Chicken Ra Ra Masala",
+          "price": 230,
+          "image": "/assets/images/indiannonveg/ChickenRaRaMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-7",
+          "name": "Chicken Party Wala",
+          "price": 210,
+          "image": "/assets/images/indiannonveg/ChickenPartyWala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-8",
+          "name": "Chicken Kolhapuri",
+          "price": 230,
+          "image": "/assets/images/indiannonveg/ChickenKolhapuri.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-9",
+          "name": "Chicken Dilruba",
+          "price": 190,
+          "image": "/assets/images/indiannonveg/ChickenDilruba.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-10",
+          "name": "Chicken Do-Pyaza",
+          "price": 180,
+          "image": "/assets/images/indiannonveg/ChickenDo-Pyaza.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-11",
+          "name": "Chicken Achari",
+          "price": 280,
+          "image": "/assets/images/indiannonveg/ChickenAchari.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-12",
+          "name": "Chicken Handi",
+          "price": 230,
+          "image": "/assets/images/indiannonveg/ChickenHandi.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-13",
+          "name": "Balti Chicken",
+          "price": 280,
+          "image": "/assets/images/indiannonveg/BaltiChicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-14",
+          "name": "Chicken Rogan Josh",
+          "price": 260,
+          "image": "/assets/images/indiannonveg/ChickenRoganJosh.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-15",
+          "name": "Chicken Bharta",
+          "price": 180,
+          "image": "/assets/images/indiannonveg/ChickenBharta.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-16",
+          "name": "Chicken Jalfrezi",
+          "price": 280,
+          "image": "/assets/images/indiannonveg/ChickenJalfrezi.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-17",
+          "name": "Chicken Chap",
+          "price": 90,
+          "image": "/assets/images/indiannonveg/ChickenChap.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-18",
+          "name": "Chicken Kaju Masala",
+          "price": 230,
+          "image": "/assets/images/indiannonveg/ChickenKajuMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-19",
+          "name": "Chicken Rejala",
+          "price": 220,
+          "image": "/assets/images/indiannonveg/ChickenRejala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-20",
+          "name": "Chicken Tikka Butter Masala",
+          "price": 280,
+          "image": "/assets/images/indiannonveg/ChickenTikkaButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-21",
+          "name": "Chicken Reshmi Butter Masala",
+          "price": 290,
+          "image": "/assets/images/indiannonveg/ChickenReshmiButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-22",
+          "name": "Chicken Reshmi Masala",
+          "price": 270,
+          "image": "/assets/images/indiannonveg/ChickenReshmiMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-23",
+          "name": "Kashmiri Chicken",
+          "price": 199,
+          "image": "/assets/images/indiannonveg/KashmiriChicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-24",
+          "name": "Chicken Tandoori Masala (2pcs)",
+          "price": 450,
+          "image": "/assets/images/indiannonveg/ChickenTandooriMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-25",
+          "name": "Chicken Tengdi Masala (2pcs)",
+          "price": 299,
+          "image": "/assets/images/indiannonveg/ChickenTengdiMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-26",
+          "name": "Mutton Kosha (4pcs)",
+          "price": 280,
+          "image": "/assets/images/indiannonveg/MuttonKosha.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-27",
+          "name": "Mutton Kadai",
+          "price": 310,
+          "image": "/assets/images/indiannonveg/MuttonKadai.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-28",
+          "name": "Mutton Do-Pyaza",
+          "price": 320,
+          "image": "/assets/images/indiannonveg/MuttonDo-Pyaza.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-29",
+          "name": "Mutton Masala",
+          "price": 330,
+          "image": "/assets/images/indiannonveg/MuttonMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-30",
+          "name": "Mutton Butter Masala",
+          "price": 320,
+          "image": "/assets/images/indiannonveg/MuttonButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-31",
+          "name": "Mutton Rogan Josh",
+          "price": 370,
+          "image": "/assets/images/indiannonveg/MuttonRoganJosh.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-32",
+          "name": "Mutton Handi",
+          "price": 390,
+          "image": "/assets/images/indiannonveg/MuttonHandi.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-33",
+          "name": "Mutton Tikka Masala",
+          "price": 450,
+          "image": "/assets/images/indiannonveg/MuttonTikkaMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-34",
+          "name": "Mutton Tikka Butter Masala",
+          "price": 480,
+          "image": "/assets/images/indiannonveg/MuttonTikkaButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-35",
+          "name": "Mutton Reshmi Butter Masala",
+          "price": 490,
+          "image": "/assets/images/indiannonveg/MuttonReshmiButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-36",
+          "name": "Mutton Kaju Masala",
+          "price": 360,
+          "image": "/assets/images/indiannonveg/MuttonKajuMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-37",
+          "name": "Mutton Chap (1pc)",
+          "price": 140,
+          "image": "/assets/images/indiannonveg/MuttonChap.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-38",
+          "name": "Mutton Rejala",
+          "price": 380,
+          "image": "/assets/images/indiannonveg/MuttonRejala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-39",
+          "name": "Mutton Ra Ra Masala",
+          "price": 390,
+          "image": "/assets/images/indiannonveg/MuttonRaRaMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-40",
+          "name": "Fish Masala (2pcs)",
+          "price": 230,
+          "image": "/assets/images/indiannonveg/FishMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-41",
+          "name": "Fish Butter Masala",
+          "price": 280,
+          "image": "/assets/images/indiannonveg/FishButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-42",
+          "name": "Fish Kadai",
+          "price": 270,
+          "image": "/assets/images/indiannonveg/FishKadai.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-43",
+          "name": "Fish Kosha",
+          "price": 240,
+          "image": "/assets/images/indiannonveg/FishKosha.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-44",
+          "name": "Fish Tikka Masala",
+          "price": 299,
+          "image": "/assets/images/indiannonveg/FishTikkaButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-45",
+          "name": "Fish Tikka Butter Masala",
+          "price": 310,
+          "image": "/assets/images/indiannonveg/FishTikkaButterMasala.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "nin-46",
+          "name": "Lobango Special",
+          "price": 399,
+          "image": "/assets/images/indiannonveg/LobangoSpecialinv.jpg",
+          "isVeg": false
+        }
+      ]
+    },
+    {
+      "category": "Roti/Naan",
+      "items": [
+        {
+          "id": "roti-1",
+          "name": "Plain Naan",
+          "price": 45,
+          "image": "/assets/images/roti/plainnan.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-2",
+          "name": "Butter Naan",
+          "price": 60,
+          "image": "/assets/images/roti/butternan.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-3",
+          "name": "Chicken Keema Naan",
+          "price": 90,
+          "image": "/assets/images/roti/chickenkeemanaan.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roti-4",
+          "name": "Garlic Naan",
+          "price": 90,
+          "image": "/assets/images/roti/gsrlicnaan.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "roti-5",
+          "name": "Kashmiri Naan",
+          "price": 99,
+          "image": "/assets/images/roti/kasmirinan.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-6",
+          "name": "Alu Paratha",
+          "price": 55,
+          "image": "/assets/images/roti/aluparata.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-7",
+          "name": "Masala Kulcha",
+          "price": 90,
+          "image": "/assets/images/roti/masalakulcha.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-8",
+          "name": "Paneer Kulcha",
+          "price": 85,
+          "image": "/assets/images/roti/panirkulcha.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-9",
+          "name": "Fried Kulcha",
+          "price": 40,
+          "image": "/assets/images/roti/friedkulcha.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-10",
+          "name": "Lachha Paratha",
+          "price": 30,
+          "image": "/assets/images/roti/lacha.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-11",
+          "name": "Tandoori Roti",
+          "price": 25,
+          "image": "/assets/images/roti/tandoriroti.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-12",
+          "name": "Butter Tandoori Roti",
+          "price": 35,
+          "image": "/assets/images/roti/buttertandoriroti.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-13",
+          "name": "Stuff Kulcha",
+          "price": 60,
+          "image": "/assets/images/roti/stuffkulcha.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-14",
+          "name": "Cheese Garlic Naan",
+          "price": 110,
+          "image": "/assets/images/roti/cheesegarlicnan.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "roti-15",
+          "name": "Dhonia Roti",
+          "price": 45,
+          "image": "/assets/images/roti/dhoniaroti.jpg",
+          "isVeg": true
+        }
+      ]
+    },
+    {
+      "category": "Soups (Veg)",
+      "items": [
+        {
+          "id": "soup-v-1",
+          "name": "Tomato Soup",
+          "price": 120,
+          "image": "/assets/images/soup/tomatosoup.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "soup-v-2",
+          "name": "Veg Manchow Soup",
+          "price": 120,
+          "image": "/assets/images/soup/VegManchowSoup.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "soup-v-3",
+          "name": "Veg Hot & Sour Soup",
+          "price": 120,
+          "image": "/assets/images/soup/soup.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "soup-v-4",
+          "name": "Veg Clear Soup",
+          "price": 120,
+          "image": "/assets/images/soup/clearesoup.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "soup-v-5",
+          "name": "Veg Sweet Corn Soup",
+          "price": 140,
+          "image": "/assets/images/soup/vegsweetcornsoup.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "soup-v-6",
+          "name": "Cream of Mushroom Soup",
+          "price": 120,
+          "image": "/assets/images/soup/CreamofMushroomSoup.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "soup-v-8",
+          "name": "Veg Noodles Soup",
+          "price": 120,
+          "image": "/assets/images/soup/noodlessoup.jpg",
+          "isVeg": true
+        }
+      ]
+    },
+    {
+      "category": "Soups (Non-Veg)",
+      "items": [
+        {
+          "id": "soup-n-1",
+          "name": "Chicken Clear Soup",
+          "price": 160,
+          "image": "/assets/images/soup/chickensoup.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "soup-n-2",
+          "name": "Chicken Manchow Soup",
+          "price": 160,
+          "image": "/assets/images/soup/chickenmanchusoup.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "soup-n-3",
+          "name": "Chicken Hot & Sour Soup",
+          "price": 160,
+          "image": "/assets/images/soup/chs.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "soup-n-4",
+          "name": "Chicken Cream Soup",
+          "price": 160,
+          "image": "/assets/images/soup/creamsoup.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "soup-n-5",
+          "name": "Chicken Sweet & Sour Soup",
+          "price": 160,
+          "image": "/assets/images/soup/soup2.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "soup-n-6",
+          "name": "Chicken Sweet Corn Soup",
+          "price": 180,
+          "image": "/assets/images/soup/ChickenSweetCornSoup.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "soup-n-8",
+          "name": "Chicken Noodles Soup",
+          "price": 160,
+          "image": "/assets/images/soup/cns1.jpg",
+          "isVeg": false
+        }
+      ]
+    },
+    {
+      "category": "Rice",
+      "items": [
+        {
+          "id": "rice-1",
+          "name": "Steam Rice",
+          "price": 99,
+          "image": "/assets/images/rice/SteamRice.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-2",
+          "name": "Veg Fried Rice",
+          "price": 130,
+          "image": "/assets/images/rice/vegfriedrice.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-3",
+          "name": "Veg Schezwan Rice",
+          "price": 150,
+          "image": "/assets/images/rice/vegsezwan rice.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-4",
+          "name": "Egg Fried Rice",
+          "price": 140,
+          "image": "/assets/images/rice/eggfriedrice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-5",
+          "name": "Egg Schezwan Rice",
+          "price": 160,
+          "image": "/assets/images/rice/EggSchezwanRice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-6",
+          "name": "Chicken Fried Rice",
+          "price": 160,
+          "image": "/assets/images/rice/ChickenFriedRice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-7",
+          "name": "Chicken Schezwan Rice",
+          "price": 180,
+          "image": "/assets/images/rice/chickensezwanrice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-8",
+          "name": "Egg Chicken Rice",
+          "price": 180,
+          "image": "/assets/images/rice/eggchickenrice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-9",
+          "name": "Egg Chicken Schezwan Rice",
+          "price": 200,
+          "image": "/assets/images/rice/EggChickenSchezwanRice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-10",
+          "name": "Mixed Rice",
+          "price": 240,
+          "image": "/assets/images/rice/mixedfriedrice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-11",
+          "name": "Mixed Schezwan Rice",
+          "price": 260,
+          "image": "/assets/images/rice/MixedSchezwanRice.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-12",
+          "name": "Hong Kong Rice",
+          "price": 280,
+          "image": "/assets/images/rice/hong.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-13",
+          "name": "Kolhapuri Rice",
+          "price": 290,
+          "image": "/assets/images/rice/kolapuririce.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-14",
+          "name": "Singapuri Rice",
+          "price": 289,
+          "image": "/assets/images/rice/singapuririce.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "rice-15",
+          "name": "Chicken Shanghai Rice",
+          "price": 190,
+          "image": "/assets/images/rice/chickensanghi.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-16",
+          "name": "Veg Shanghai Special Rice",
+          "price": 170,
+          "image": "/assets/images/rice/vegsanghai.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-17",
+          "name": "Boxer Rice",
+          "price": 199,
+          "image": "/assets/images/rice/boxerrice.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-18",
+          "name": "Veg korean Rice",
+          "price": 160,
+          "image": "/assets/images/rice/vegkorianrice.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-19",
+          "name": "Chicken korean Rice",
+          "price": 199,
+          "image": "/assets/images/rice/chickenkorianrice.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-20",
+          "name": "Veg Triple Schezwan Fried Rice",
+          "price": 220,
+          "image": "/assets/images/rice/tripleschezwanveg.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "rice-21",
+          "name": "Chicken Triple Schezwan Fried Rice",
+          "price": 280,
+          "image": "/assets/images/rice/TripleSchezwanchicken.jpg",
+          "isVeg": true
+        }
+      ]
+    },
+    {
+      "category": "Biryani/Pulao",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Chicken Biryani",
+          "price": 130,
+          "image": "/assets/images/biriyani/chickenbiriyani.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "biryani-2",
+          "name": "Alu Biryani",
+          "price": 100,
+          "image": "/assets/images/biriyani/alubiriyani.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "biryani-3",
+          "name": "Veg Biryani",
+          "price": 99,
+          "image": "/assets/images/biriyani/vegbiriyani.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "biryani-4",
+          "name": "Mutton Biryani",
+          "price": 240,
+          "image": "/assets/images/biriyani/muttonbiriyani.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "biryani-5",
+          "name": "Veg Pulao",
+          "price": 170,
+          "image": "/assets/images/biriyani/vegpulaw.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "biryani-6",
+          "name": "Kashmiri Pulao",
+          "price": 199,
+          "image": "/assets/images/biriyani/kasmiripulao.jpg",
+          "isVeg": true
+        }
+      ]
+    },
+    {
+      "category": "Non-Veg Starters",
+      "items": [
+        {
+          "id": "starter-1",
+          "name": "Chicken Chilli (Gravy)",
+          "price": 150,
+          "image": "/assets/images/nonvegstarters/chickenchilli.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-2",
+          "name": "Chicken Chilli (Dry)",
+          "price": 140,
+          "image": "/assets/images/nonvegstarters/chickenchilli.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-3",
+          "name": "Chicken Manchurian (gravy)",
+          "price": 170,
+          "image": "/assets/images/nonvegstarters/chickenmanchurian.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-4",
+          "name": "Chicken Manchurian (Dry)",
+          "price": 160,
+          "image": "/assets/images/nonvegstarters/chickenmanchuriandry.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-5",
+          "name": "Chicken 65",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/chicken65.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-6",
+          "name": "Chicken Sweet & Sour Gravy",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/chickensweetandsour.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-7",
+          "name": "Garlic Chicken",
+          "price": 170,
+          "image": "/assets/images/nonvegstarters/garlicchicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-8",
+          "name": "Ginger Chicken",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/gingerchicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-9",
+          "name": "Chicken Pakoda",
+          "price": 90,
+          "image": "/assets/images/nonvegstarters/chickenpokora.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-10",
+          "name": "Chicken Lollipop",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/chickenlolipop.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-11",
+          "name": "Crispy Chicken",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/crispychicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-12",
+          "name": "Chicken Chotpoti",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/chickenchotpoti.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-13",
+          "name": "Chicken Like K.F.C. (Dry)",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/kfcdry.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-14",
+          "name": "Chicken Popcorn",
+          "price": 230,
+          "image": "/assets/images/nonvegstarters/chickenpopcon.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-15",
+          "name": "Chicken Oil Fry",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/chickenoilfry.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-16",
+          "name": "Schezwan Chicken (Dry)",
+          "price": 190,
+          "image": "/assets/images/nonvegstarters/sezwanchickendry.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-17",
+          "name": "Schezwan Chicken (gravy)",
+          "price": 199,
+          "image": "/assets/images/nonvegstarters/SchezwanChickengravy.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-18",
+          "name": "Honey Chicken",
+          "price": 230,
+          "image": "/assets/images/nonvegstarters/honnychicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-19",
+          "name": "Dragon Chicken",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/dragonchicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-20",
+          "name": "Chicken salt & pepper",
+          "price": 170,
+          "image": "/assets/images/nonvegstarters/chickensaltandpepper.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-21",
+          "name": "Chilli Mustard Chicken",
+          "price": 180,
+          "image": "/assets/images/nonvegstarters/chillimustardchicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-22",
+          "name": "Pan Fried Chicken",
+          "price": 190,
+          "image": "/assets/images/nonvegstarters/panfriedchicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-23",
+          "name": "Lemon Chicken",
+          "price": 199,
+          "image": "/assets/images/nonvegstarters/LemonChicke.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-24",
+          "name": "General Tao Chicken",
+          "price": 220,
+          "image": "/assets/images/nonvegstarters/GeneralTaoChicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-25",
+          "name": "Oyster Chicken",
+          "price": 190,
+          "image": "/assets/images/nonvegstarters/OysterChicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-26",
+          "name": "Hong Kong Chicken",
+          "price": 199,
+          "image": "/assets/images/nonvegstarters/HongKongChicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-27",
+          "name": "Kung Pao Chicken",
+          "price": 220,
+          "image": "/assets/images/nonvegstarters/KungPaoChicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-28",
+          "name": "Hunan Chicken",
+          "price": 190,
+          "image": "/assets/images/nonvegstarters/HunanChicken.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-29",
+          "name": "Mango Mustard Fish",
+          "price": 240,
+          "image": "/assets/images/nonvegstarters/mangomusterdfish.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-30",
+          "name": "Chilli mustard Fish",
+          "price": 230,
+          "image": "/assets/images/nonvegstarters/chillimusterdfish.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-31",
+          "name": "Pan Fried Fish",
+          "price": 220,
+          "image": "/assets/images/nonvegstarters/panfriedfish.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-32",
+          "name": "Golden Fried Prawn",
+          "price": 250,
+          "image": "/assets/images/nonvegstarters/goldenfriedprawn.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-33",
+          "name": "Chilli Fish",
+          "price": 240,
+          "image": "/assets/images/nonvegstarters/chillifish.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-34",
+          "name": "Kung Pao Fish",
+          "price": 280,
+          "image": "/assets/images/nonvegstarters/KungPaoFish.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-35",
+          "name": "Garlic Fish",
+          "price": 290,
+          "image": "/assets/images/nonvegstarters/GarlicFish.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-36",
+          "name": "Sweet & Sour Fish",
+          "price": 280,
+          "image": "/assets/images/nonvegstarters/Sweet&SourFish.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-37",
+          "name": "Kung Pao Prawn",
+          "price": 359,
+          "image": "/assets/images/nonvegstarters/KungPaoPrawn.jpg",
+          "isVeg": false
+        },
+        {
+          "id": "starter-38",
+          "name": "Sweet & sour Prawn",
+          "price": 340,
+          "image": "/assets/images/nonvegstarters/Sweet&sourPrawn.jpg",
+          "isVeg": false
+        }
+      ]
+    },
+    {
+      "category": "Salad/Raita",
+      "items": [
+        {
+          "id": "salad-1",
+          "name": "Green Salad",
+          "price": 60,
+          "image": "/assets/images/raitasalad/greensalad.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "salad-2",
+          "name": "Onion Salad",
+          "price": 50,
+          "image": "/assets/images/raitasalad/onionsalad.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "salad-3",
+          "name": "Cucumber Salad",
+          "price": 50,
+          "image": "/assets/images/raitasalad/cucunbersalad.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "salad-4",
+          "name": "Cucumber Raita",
+          "price": 90,
+          "image": "/assets/images/raitasalad/cucumberraita.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "salad-5",
+          "name": "Veg Raita",
+          "price": 80,
+          "image": "/assets/images/raitasalad/vegraita.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "salad-6",
+          "name": "Mixed Raita",
+          "price": 110,
+          "image": "/assets/images/raitasalad/mixedraita.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "salad-7",
+          "name": "Burdi Raita",
+          "price": 120,
+          "image": "/assets/images/raitasalad/bondiraita.jpg",
+          "isVeg": true
+        }
+      ]
+    },
+    {
+      "category": "Mocktails",
+      "items": [
+        {
+          "id": "mocktail-1",
+          "name": "Blue Lagoon",
+          "price": 99,
+          "image": "/assets/images/cocktail/bluelagun.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "mocktail-2",
+          "name": "Virgin Mojito",
+          "price": 89,
+          "image": "/assets/images/cocktail/varginmojito.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "mocktail-3",
+          "name": "Frozen Blue",
+          "price": 89,
+          "image": "/assets/images/cocktail/frozenblue.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "mocktail-4",
+          "name": "Mango Tango",
+          "price": 99,
+          "image": "/assets/images/cocktail/mango.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "mocktail-5",
+          "name": "Green Majesty",
+          "price": 89,
+          "image": "/assets/images/cocktail/greenmajesty.jpg",
+          "isVeg": true
+        },
+        {
+          "id": "mocktail-6",
+          "name": "Litchi Punch",
+          "price": 89,
+          "image": "/assets/images/cocktail/litcipunch.jpg",
+          "isVeg": true
+        }
+      ]
+    }
+  ]
+}
