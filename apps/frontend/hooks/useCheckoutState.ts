@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Address } from "@/types/address";
+import { Address } from "@lobango/contracts/address";
+import { useEffect, useState } from "react";
 
 interface PaymentData {
   amount: number;

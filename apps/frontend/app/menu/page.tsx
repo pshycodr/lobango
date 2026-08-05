@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import menuData from "@/data/menu.json";
-import { Rubik } from "next/font/google";
-import { MobileMenuToggle } from "@/components/Menu/MobileMenuToggle";
-import { MenuSidebar } from "@/components/Menu/MenuSidebar";
-import { MenuContent } from "@/components/Menu/MenuContent";
-import { Category, MenuItem } from "@/types/menu";
-import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { FloatingCart } from "@/components/Menu/FloatingCart";
+import { MenuContent } from "@/components/Menu/MenuContent";
+import { MenuSidebar } from "@/components/Menu/MenuSidebar";
+import { MobileMenuToggle } from "@/components/Menu/MobileMenuToggle";
+import menuData from "@/data/menu.json";
+import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { usePermissionsStore } from "@/store/usePermissionsStore";
+import { Category, MenuItem } from "@lobango/contracts/menu";
+import { Rubik } from "next/font/google";
+import { useCallback, useEffect, useState } from "react";
 
 const rubik = Rubik({ subsets: ["latin"] });
 

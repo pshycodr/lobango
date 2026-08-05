@@ -1,19 +1,9 @@
+import { BookingSchema } from "@lobango/contracts/bookings";
+import { eq } from "drizzle-orm";
 import { Context } from "hono";
-import z from "zod";
+import { customAlphabet } from "nanoid";
 import { getDB } from "../../db/db";
 import { bookings } from "../../db/schema";
-import { customAlphabet } from "nanoid";
-import { eq } from "drizzle-orm";
-
-const AddBookingSchema = z.object({
-  name: z.string().min(1),
-  phone: z.string().min(10),
-  email: z.email(),
-  peoples: z.string().min(1),
-  ocassion: z.string().optional().default("N/A"),
-  date: z.string().min(1),
-  time: z.string().min(1),
-});
 
 const generateBookingId = () => {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 10);
@@ -23,7 +13,7 @@ const generateBookingId = () => {
 const addBooking = async (c: Context) => {
   try {
     const body = await c.req.json();
-    const parseResult = AddBookingSchema.safeParse(body);
+    const parseResult = BookingSchema.safeParse(body);
     const created_at = new Date().toISOString();
 
     if (!parseResult.success) {
@@ -62,8 +52,8 @@ const addBooking = async (c: Context) => {
       customer_email: data.email,
       date: data.date,
       time: data.time,
-      number_of_people: parseInt(data.peoples, 10),
-      occasion: data.ocassion || "N/A",
+      number_of_people: parseInt(data.person, 10),
+      message: data.message || "N/A",
       created_at,
     });
 

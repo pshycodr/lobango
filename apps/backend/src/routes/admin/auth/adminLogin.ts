@@ -54,7 +54,7 @@ export async function adminLogin(c: Context) {
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
     },
     c.env.JWT_SECRET,
-    "HS256"
+    "HS256",
   );
 
   setCookie(c, "admin_token", token, {

@@ -1,6 +1,6 @@
-import { MenuItemCard } from "./MenuItemCard";
+import { Category, MenuItem } from "@lobango/contracts/menu";
 import { Playfair_Display } from "next/font/google";
-import { Category, MenuItem } from "@/types/menu";
+import { MenuItemCard } from "./MenuItemCard";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 

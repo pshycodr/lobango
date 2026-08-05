@@ -1,5 +1,5 @@
-import { X, CheckCircle, AlertCircle } from "lucide-react";
-import { SubmitStatus } from "@/types/bookings";
+import { SubmitStatus } from "@lobango/contracts/bookings";
+import { AlertCircle, CheckCircle, X } from "lucide-react";
 import { BookingIdSection } from "./BookingIdSection";
 
 export const StatusPopup = ({

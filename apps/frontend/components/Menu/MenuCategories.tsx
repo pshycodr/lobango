@@ -1,17 +1,4 @@
-type MenuItem = {
-  id: string;
-  name: string;
-  price: number;
-  category?: string;
-  description?: string;
-  isVeg: boolean;
-  image: string;
-};
-
-type Category = {
-  category: string;
-  items: MenuItem[];
-};
+import { Category } from "@lobango/contracts/menu";
 
 export const MenuCategories = ({
   categories,

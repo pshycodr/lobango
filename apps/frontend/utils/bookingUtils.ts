@@ -1,4 +1,4 @@
-import { BookingResponse, FormData } from "@/types/bookings";
+import { Booking, BookingResponse } from "@lobango/contracts/bookings";
 
 export const getErrorMessage = (
   response: any,
@@ -15,7 +15,7 @@ export const getErrorMessage = (
   return result.error || "Something went wrong. Please try again.";
 };
 
-export const prepareBookingData = (formData: FormData) => ({
+export const prepareBookingData = (formData: Booking) => ({
   name: formData.name,
   phone: formData.phone,
   email: formData.email,

@@ -1,26 +1,14 @@
+import { OrderStatusUpdateSchema } from "@lobango/contracts/admin";
+import { eq } from "drizzle-orm";
 import { Context } from "hono";
-import z from "zod";
 import { getDB } from "../../../db/db";
 import { orders } from "../../../db/schema";
-import { eq } from "drizzle-orm";
 
-const OrderStatusUpdateProps = z.object({
-  orderId: z.string(),
-  status: z.enum([
-    "pending",
-    "accepted",
-    "out for delivery",
-    "delivered",
-    "rejected",
-  ]),
-});
-
-type OrderStatusUpdate = z.infer<typeof OrderStatusUpdateProps>;
 
 export const updateOrderStatus = async (c: Context) => {
   try {
     const body: unknown = await c.req.json();
-    const parsed = OrderStatusUpdateProps.safeParse(body);
+    const parsed = OrderStatusUpdateSchema.safeParse(body);
 
     if (!parsed.success) {
       return c.json({ success: false, message: "Invalid request body" }, 400);

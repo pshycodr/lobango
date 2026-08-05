@@ -1,23 +1,9 @@
-import { MenuSearch } from "./MenuSearch";
-import { MenuCategories } from "./MenuCategories";
+import { Category } from "@lobango/contracts/menu";
 import { Playfair_Display } from "next/font/google";
+import { MenuCategories } from "./MenuCategories";
+import { MenuSearch } from "./MenuSearch";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
-
-type MenuItem = {
-  id: string;
-  name: string;
-  price: number;
-  category?: string;
-  description?: string;
-  isVeg: boolean;
-  image: string;
-};
-
-type Category = {
-  category: string;
-  items: MenuItem[];
-};
 
 export const MenuSidebar = ({
   isOpen,

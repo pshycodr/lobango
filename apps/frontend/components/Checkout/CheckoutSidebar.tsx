@@ -1,6 +1,6 @@
 import DeliveryAddress from "@/components/Checkout/DeliveryAddress";
 import PaymentMethod from "@/components/Checkout/PaymentMethod";
-import { Address } from "@/types/address";
+import { Address } from "@lobango/contracts/address";
 
 interface CheckoutSidebarProps {
   selectedAddress: Address | undefined;

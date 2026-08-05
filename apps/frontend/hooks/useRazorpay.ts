@@ -1,7 +1,7 @@
-import { useState } from "react";
 import api from "@/lib/axios";
-import { Address } from "@/types/address";
 import { CartItem } from "@/types/cart";
+import type { Address } from "@lobango/contracts/address";
+import type { Order, OrderRequest, RazorPay } from "@lobango/contracts/order";
 
 interface LoadingState {
   type: "page" | "payment" | "verification" | "none";
@@ -54,7 +54,7 @@ export function useRazorpay({
         message: "Creating payment order...",
       });
 
-      const orderData = {
+      const orderData: Order = {
         customerName: selectedAddress.name,
         customerPhone: selectedAddress.phone,
         customerEmail: selectedAddress.email,
@@ -62,7 +62,6 @@ export function useRazorpay({
         longitude: selectedAddress.longitude,
         latitude: selectedAddress.latitude,
         paymentMethod: "razorpay",
-        amount: Math.ceil(total),
         items: cart.map((item) => ({
           name: item.name,
           price: item.price,
@@ -72,7 +71,10 @@ export function useRazorpay({
 
       console.log("here is order data: ", orderData);
 
-      const res = await api.post("/api/v1/payment/create-order", orderData);
+      const res = await api.post("/api/v1/payment/create-order", {
+        amount: Math.ceil(total),
+        currency: "INR",
+      });
       const {
         razorpayOrderId,
         amount,
@@ -93,7 +95,7 @@ export function useRazorpay({
         name: "Lobango",
         description: `Order ID: ${localOrderId}`,
         order_id: razorpayOrderId,
-        handler: async function (response: any) {
+        handler: async function (response: RazorPay) {
           await handlePaymentSuccess(
             response,
             orderData,
@@ -125,8 +127,8 @@ export function useRazorpay({
   };
 
   const handlePaymentSuccess = async (
-    response: any,
-    orderData: any,
+    response: RazorPay,
+    orderData: Order,
     selectedAddress: Address,
     localOrderId: string,
   ) => {
@@ -136,12 +138,18 @@ export function useRazorpay({
         message: "Verifying payment...",
       });
 
-      const verifyRes = await api.post("/api/v1/client/order", {
-        ...orderData,
+      const razorpay: RazorPay = {
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_order_id: response.razorpay_order_id,
         razorpay_signature: response.razorpay_signature,
-      });
+      };
+
+      const orderPaylaod: OrderRequest = {
+        order: orderData,
+        razorpay: razorpay,
+      };
+
+      const verifyRes = await api.post("/api/v1/client/order", orderPaylaod);
 
       setLoadingState({ type: "verification", message: "Finalizing order..." });
 

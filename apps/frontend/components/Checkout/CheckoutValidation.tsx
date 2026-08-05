@@ -1,4 +1,4 @@
-import { Address } from "@/types/address";
+import { Address } from "@lobango/contracts/address";
 
 interface CheckoutValidationProps {
   selectedAddress: Address | undefined;

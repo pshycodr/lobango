@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { Address, AddressModalProps } from "@lobango/contracts/address";
 import { X } from "lucide-react";
-import { AddressList } from "./AddressList";
+import { useEffect, useState } from "react";
 import { AddressForm } from "./AddressForm";
-import { Address, AddressModalProps } from "@/types/address";
+import { AddressList } from "./AddressList";
 
 const ADDRESS_STORAGE_KEY = "user_addresses";
 

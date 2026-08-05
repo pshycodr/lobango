@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { CartItem } from "@/types/cart";
 import menuData from "@/data/menu.json";
+import { CartItem } from "@/types/cart";
 
 function getMenuItemPrice(id: string): number {
   for (const category of menuData.menu) {

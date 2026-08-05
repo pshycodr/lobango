@@ -1,12 +1,3 @@
-export interface MenuItem {
-  id: string;
-  name: string;
-  price: string;
-  description: string;
-  image: string;
-  badge?: "Seasonal" | "New";
-}
-
 export interface ServiceItem {
   id: string;
   title: string;

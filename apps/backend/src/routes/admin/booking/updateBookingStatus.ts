@@ -1,14 +1,11 @@
-import { Context } from "hono";
+import { UpdateBookingSchema } from "@lobango/contracts/admin";
 import { eq } from "drizzle-orm";
-import z from "zod";
+import { Context } from "hono";
 import { getDB } from "../../../db/db";
 import { bookings } from "../../../db/schema";
 import { sendBookingEmail } from "../../../utils/sendEmail";
 
-const UpdateBookingSchema = z.object({
-  booking_id: z.string(),
-  status: z.enum(["pending", "accepted", "rejected"]),
-});
+
 
 const updateBookingStatus = async (c: Context) => {
   try {

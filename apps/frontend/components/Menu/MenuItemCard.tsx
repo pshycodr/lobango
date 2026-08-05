@@ -1,8 +1,8 @@
-import { MenuItem } from "@/types/menu";
 import { useCartStore } from "@/store/useCartStore";
-import { useMemo } from "react";
-import Image from "next/image";
 import { usePermissionsStore } from "@/store/usePermissionsStore";
+import { MenuItem } from "@lobango/contracts/menu";
+import Image from "next/image";
+import { useMemo } from "react";
 
 export const MenuItemCard = ({
   item,

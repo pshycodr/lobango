@@ -1,4 +1,4 @@
-import { ADDRESS_TYPES } from "@/types/address";
+import { ADDRESS_TYPES } from "@lobango/contracts/address";
 
 interface AddressTypeSelectorProps {
   selectedType: string;

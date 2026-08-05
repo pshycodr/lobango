@@ -1,8 +1,8 @@
 import OrderSummary from "@/components/Checkout/OrderSummary";
 import PlaceOrderButton from "@/components/Checkout/PlaceOrderButton";
-import { CheckoutValidation } from "./CheckoutValidation";
 import { CartItem } from "@/types/cart";
-import { Address } from "@/types/address";
+import { Address } from "@lobango/contracts/address";
+import { CheckoutValidation } from "./CheckoutValidation";
 
 interface CheckoutMainContentProps {
   cart: CartItem[];

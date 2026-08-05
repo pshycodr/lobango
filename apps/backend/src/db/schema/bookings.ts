@@ -11,7 +11,7 @@ export const bookings = sqliteTable("bookings", {
   time: text("time").notNull(), // HH:mm
 
   number_of_people: int("number_of_people").notNull(),
-  occasion: text("occasion").default("N/A"), // optional
+  message: text("message").default("N/A"), // optional
   status: text("status").default("pending"),
   created_at: text("created_at").default("CURRENT_TIMESTAMP"),
 });

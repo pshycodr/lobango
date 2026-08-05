@@ -1,40 +1,15 @@
 import { D1Database } from "@cloudflare/workers-types";
+import { OrderRequestSchema } from "@lobango/contracts/order";
+import crypto from "crypto";
 import { Context } from "hono";
 import { customAlphabet } from "nanoid";
-import z from "zod";
 import { getDB } from "../../db/db";
 import { orderItems } from "../../db/schema/orderItems";
 import { orders } from "../../db/schema/orders";
-import crypto from "crypto";
 import { sendOrderEmail } from "../../utils/sendEmail";
-
 export interface Env {
   DB: D1Database;
 }
-
-const OrderItemSchema = z.object({
-  id: z.number().optional(),
-  name: z.string().min(1),
-  price: z.number().min(0),
-  quantity: z.number().min(1),
-});
-
-const OrderRequestSchema = z.object({
-  customerName: z.string().min(1),
-  customerPhone: z.string().min(8),
-  customerEmail: z.email(),
-  customerAddress: z.string().min(5),
-  longitude: z.string(),
-  latitude: z.string(),
-  paymentMethod: z.enum(["razorpay", "cash_on_delivery"]),
-  items: z.array(OrderItemSchema).min(1, "At least one item is required"),
-  razorpay_payment_id: z.string().optional(),
-  razorpay_order_id: z.string().optional(),
-  razorpay_signature: z.string().optional(),
-});
-
-type OrderItems = z.infer<typeof OrderItemSchema>;
-type OrderRequest = z.infer<typeof OrderRequestSchema>;
 
 // NanoID generator for readable order IDs
 const generateOrderId = () => {
@@ -68,7 +43,7 @@ export async function placeOrder(c: Context) {
       return c.json({ error: parsed.error.message }, 400);
     }
 
-    const order = parsed.data;
+    const { order, razorpay } = parsed.data;
     const db = getDB(c.env.DB);
     const created_at = new Date().toISOString();
     const total_amount = order.items.reduce(
@@ -78,7 +53,7 @@ export async function placeOrder(c: Context) {
 
     if (order.paymentMethod === "razorpay") {
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-        order;
+        razorpay;
 
       if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
         return c.json({ error: "Missing Razorpay payment details" }, 400);
@@ -118,9 +93,9 @@ export async function placeOrder(c: Context) {
       status: "pending",
       payment_method: order.paymentMethod,
       payment_status: order.paymentMethod === "razorpay" ? "paid" : "pending",
-      razorpay_order_id: order.razorpay_order_id ?? null,
-      razorpay_payment_id: order.razorpay_payment_id ?? null,
-      razorpay_signature: order.razorpay_signature ?? null,
+      razorpay_order_id: razorpay.razorpay_order_id ?? null,
+      razorpay_payment_id: razorpay.razorpay_payment_id ?? null,
+      razorpay_signature: razorpay.razorpay_signature ?? null,
       created_at,
     });
 

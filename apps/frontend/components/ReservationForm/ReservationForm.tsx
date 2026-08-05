@@ -1,18 +1,18 @@
-import { User, Clock, AlertCircle } from "lucide-react";
+import { Clock, User } from "lucide-react";
 import { Forum } from "next/font/google";
 import {
-  TextInput,
-  SelectInput,
-  DatePickerInput,
-  TextAreaInput,
+    personOptions,
+    personValues,
+    timeOptions,
+    timeValues,
+} from "../../utils/bookingUtils";
+import {
+    DatePickerInput,
+    SelectInput,
+    TextAreaInput,
+    TextInput,
 } from "./FormInputs";
 import { SubmitButton } from "./SubmitButton";
-import {
-  personOptions,
-  personValues,
-  timeOptions,
-  timeValues,
-} from "../../utils/bookingUtils";
 
 const forum = Forum({
   subsets: ["latin"],

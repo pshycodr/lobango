@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
-import { FormData, SubmitStatus, BookingResponse } from "@/types/bookings";
-import {
-  getErrorMessage,
-  prepareBookingData,
-  copyToClipboard,
-} from "../utils/bookingUtils";
 import api from "@/lib/axios";
+import {
+    Booking,
+    BookingResponse,
+    SubmitStatus,
+} from "@lobango/contracts/bookings";
+import { useEffect, useState } from "react";
+import {
+    copyToClipboard,
+    getErrorMessage,
+    prepareBookingData,
+} from "../utils/bookingUtils";
 
 export const useBooking = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<Booking>({
     name: "",
     phone: "",
     email: "",

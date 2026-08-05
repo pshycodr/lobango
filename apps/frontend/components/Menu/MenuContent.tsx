@@ -1,4 +1,4 @@
-import { Category, MenuItem } from "@/types/menu";
+import { Category, MenuItem } from "@lobango/contracts/menu";
 import { MenuHero } from "./MenuHero";
 import { MenuSection } from "./MenuSection";
 import { NoResults } from "./NoResults";
