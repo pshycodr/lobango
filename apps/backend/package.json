@@ -7,7 +7,10 @@
     "build": "rm -rf dist && bun build src/index.ts --bundle --platform=node --outfile=dist/index.js --minify",
     "start": "wrangler dev",
     "lint": "eslint .",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply lobangodb --local",
+    "db:migrate:deploy": "wrangler d1 migrations apply lobangodb --remote"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.4",
