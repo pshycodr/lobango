@@ -12,16 +12,16 @@ const forum = Forum({
 const AboutSection = () => {
   return (
     <section
-      className="relative py-[var(--section-space)] text-center lg:py-[170px_100px] overflow-hidden"
+      className="relative overflow-hidden py-(--section-space) text-center lg:py-[170px_100px]"
       aria-labelledby="about-label"
       id="about"
     >
       <div className="container mx-auto px-4">
-        <div className="grid gap-30 lg:grid-cols-[0.7fr_1fr]  lg:gap-8 lg:items-center">
+        <div className="grid gap-30 lg:grid-cols-[0.7fr_1fr] lg:items-center lg:gap-8">
           {/* Content */}
-          <div className="lg:pr-24 xl:pr-0 ">
+          <div className="lg:pr-24 xl:pr-0">
             <p
-              className="text-center text-lg text-[var(--gold-crayola)] font-bold uppercase tracking-normal mb-3 relative after:content-[''] after:block after:w-25 after:mx-auto after:mt-1.5 after:bg-[url('/assets/images/separator.svg')] after:bg-no-repeat after:bg-center after:h-4"
+              className="relative mb-3 text-center text-lg font-bold tracking-normal text-(--gold-crayola) uppercase after:mx-auto after:mt-1.5 after:block after:h-4 after:w-25 after:bg-[url('/assets/images/separator.svg')] after:bg-center after:bg-no-repeat after:content-['']"
               id="about-label"
             >
               Our Story
@@ -33,7 +33,7 @@ const AboutSection = () => {
               Every Flavour Tells a Story
             </h2>
 
-            <p className="text-white leading-[var(--lineHeight-5)] mb-8">
+            <p className="mb-8 leading-(--lineHeight-5) text-white">
               At Lobango, every meal is a celebration of flavor and tradition.
               Born from a love of authentic ingredients and heartfelt cooking,
               Lobango brings people together to share unforgettable moments.
@@ -42,20 +42,20 @@ const AboutSection = () => {
               made.
             </p>
 
-            <div className="font-bold mb-2 text-amber-50 items-center mx-auto">
+            <div className="mx-auto mb-2 items-center font-bold text-amber-50">
               Book Through Call
             </div>
 
             <a
               href="tel:+916296832453"
-              className="text-[var(--gold-crayola)]  mx-auto block mb-7 transition-colors hover:underline lg:mx-0 items-center"
+              className="mx-auto mb-7 block items-center text-(--gold-crayola) transition-colors hover:underline lg:mx-0"
             >
               +91 6296832453
             </a>
           </div>
 
           {/* Banner */}
-          <figure className="relative mb-30 lg:mb-0  lg:scale-75 bottom-10 lg:bottom-0">
+          <figure className="relative bottom-10 mb-30 lg:bottom-0 lg:mb-0 lg:scale-75">
             <div className="w-full pl-12 sm:pl-20 lg:pl-0">
               <Image
                 src="/assets/images/about-banner.jpg"
@@ -63,17 +63,17 @@ const AboutSection = () => {
                 height={570}
                 loading="lazy"
                 alt="about banner"
-                className="w-full parallax-item"
+                className="parallax-item w-full"
                 data-parallax-speed="1"
               />
             </div>
 
             {/* Absolute Images */}
             <div
-              className="absolute -bottom-20 left-0 lg:-left-15 w-38 py-12 parallax-item"
+              className="parallax-item absolute -bottom-20 left-0 w-38 py-12 lg:-left-15"
               data-parallax-speed="1.75"
             >
-              <div className="relative before:absolute before:top-0 before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:w-35 before:bg-[url('/assets/images/img-pattern.svg')] before:bg-repeat before:-z-10">
+              <div className="relative before:absolute before:top-0 before:bottom-0 before:left-1/2 before:-z-10 before:w-35 before:-translate-x-1/2 before:bg-[url('/assets/images/img-pattern.svg')] before:bg-repeat">
                 <Image
                   src="/assets/images/about-abs-image.jpg"
                   width={285}
@@ -85,10 +85,10 @@ const AboutSection = () => {
               </div>
             </div>
 
-            <div className="absolute -top-16 right-0 overflow-hidden w-[134px] h-[134px]">
-              <div className="relative w-full h-full">
+            <div className="absolute -top-16 right-0 h-[134px] w-[134px] overflow-hidden">
+              <div className="relative h-full w-full">
                 {/* Spinning background */}
-                <div className="absolute inset-0 bg-[url('/assets/images/badge-2-bg.png')] bg-no-repeat bg-contain spin-slow" />
+                <div className="spin-slow absolute inset-0 bg-[url('/assets/images/badge-2-bg.png')] bg-contain bg-no-repeat" />
 
                 {/* Static foreground image */}
                 <Image
@@ -111,7 +111,7 @@ const AboutSection = () => {
           height={115}
           loading="lazy"
           alt="shape"
-          className="hidden xl:block absolute scale-160  opacity-60 bottom-10 left-14  animate-float"
+          className="animate-float absolute bottom-10 left-14 hidden scale-160 opacity-60 xl:block"
         />
       </div>
     </section>

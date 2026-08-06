@@ -14,20 +14,20 @@ export const MenuSection = ({
   const sectionId = category.category.replace(/\s+/g, "-").toLowerCase();
 
   return (
-    <section id={sectionId} className="mb-16 px-4 scroll-mt-24">
+    <section id={sectionId} className="mb-16 scroll-mt-24 px-4">
       <div className="mb-10">
         <h2
-          className={`text-2xl md:text-3xl font-light text-[var(--white)] mb-3 ${playfair.className} tracking-wide`}
+          className={`mb-3 text-2xl font-light text-(--white) md:text-3xl ${playfair.className} tracking-wide`}
         >
           {category.category}
         </h2>
-        <div className="h-px w-16 bg-[var(--gold-crayola)] opacity-50 rounded-full"></div>
-        <p className="text-[var(--quick-silver)] mt-3 text-sm font-light">
+        <div className="h-px w-16 rounded-full bg-(--gold-crayola) opacity-50"></div>
+        <p className="mt-3 text-sm font-light text-(--quick-silver)">
           {category.items.length} items
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {category.items.map((item) => (
           <MenuItemCard
             key={item.id}

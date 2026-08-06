@@ -142,21 +142,19 @@ function ViewOrderContent() {
 
   return (
     <>
-      <header className="text-center mb-8">
+      <header className="mb-8 text-center">
         <h1
-          className={`${playfair.className} text-3xl md:text-4xl font-bold text-[var(--gold-crayola)] mb-2`}
+          className={`${playfair.className} mb-2 text-3xl font-bold text-(--gold-crayola) md:text-4xl`}
         >
           My Order
         </h1>
-        <p className="text-[var(--quick-silver)] text-sm md:text-base">
+        <p className="text-sm text-(--quick-silver) md:text-base">
           Track your delicious order status
         </p>
         {orderId && (
-          <p className="text-[var(--white-alpha-20)] text-xs mt-2">
+          <p className="mt-2 text-xs text-(--white-alpha-20)">
             Order ID:{" "}
-            <span className="font-mono text-[var(--gold-crayola)]">
-              {orderId}
-            </span>
+            <span className="font-mono text-(--gold-crayola)">{orderId}</span>
           </p>
         )}
       </header>
@@ -197,9 +195,9 @@ function ViewOrderFallback() {
 export default function ViewOrderPage() {
   return (
     <div
-      className={`min-h-screen bg-gradient-to-b from-[var(--eerie-black-1)] to-[var(--smoky-black-2)] ${inter.className}`}
+      className={`min-h-screen bg-linear-to-b from-(--eerie-black-1) to-(--smoky-black-2) ${inter.className}`}
     >
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div className="container mx-auto max-w-2xl px-4 py-8">
         <Suspense fallback={<ViewOrderFallback />}>
           <ViewOrderContent />
         </Suspense>

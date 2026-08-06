@@ -26,32 +26,25 @@ export const MenuSidebar = ({
     {/* Mobile Overlay */}
     {isOpen && (
       <div
-        className="lg:hidden fixed inset-0 bg-[var(--black-alpha-80)] backdrop-blur-sm z-40"
+        className="fixed inset-0 z-40 bg-(--black-alpha-80) backdrop-blur-sm lg:hidden"
         onClick={onClose}
       />
     )}
 
     {/* Sidebar */}
     <div
-      className={`
-      lg:w-80 w-72 bg-[var(--eerie-black-1)] border-r border-[var(--white-alpha-10)]
-      lg:fixed lg:h-screen overflow-y-auto shadow-xl z-40
-      ${isOpen ? "fixed inset-y-0 left-0" : "fixed -left-72 lg:left-0"}
-      transition-all duration-300 ease-in-out
-    `}
+      className={`z-40 w-72 overflow-y-auto border-r border-(--white-alpha-10) bg-(--eerie-black-1) shadow-xl lg:fixed lg:h-screen lg:w-80 ${isOpen ? "fixed inset-y-0 left-0" : "fixed -left-72 lg:left-0"} transition-all duration-300 ease-in-out`}
     >
       <div className="p-6 lg:p-8">
         {/* Header */}
         <div className="mb-10 text-center">
           <h1
-            className={`text-2xl lg:text-3xl font-light text-[var(--gold-crayola)] ${playfair.className} tracking-wide`}
+            className={`text-2xl font-light text-(--gold-crayola) lg:text-3xl ${playfair.className} tracking-wide`}
           >
             Lobango
           </h1>
-          <p className="text-[var(--quick-silver)] text-sm mt-2 font-light">
-            Menu
-          </p>
-          <div className="h-px bg-gradient-to-r from-transparent via-[var(--gold-crayola)] via-opacity-30 to-transparent mt-4"></div>
+          <p className="mt-2 text-sm font-light text-(--quick-silver)">Menu</p>
+          <div className="via-opacity-30 mt-4 h-px bg-linear-to-r from-transparent via-(--gold-crayola) to-transparent"></div>
         </div>
 
         {/* Search */}

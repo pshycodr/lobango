@@ -40,7 +40,7 @@ export default function OrderStatusTracker({
         label: "Order Confirmed",
         description: "Restaurant is preparing your order",
         isCompleted: ["accepted", "out for delivery", "delivered"].includes(
-          normalizedStatus,
+          normalizedStatus
         ),
         isActive: normalizedStatus === "accepted",
         isRejected: isRejected,
@@ -105,7 +105,7 @@ export default function OrderStatusTracker({
           setLineProgress(targetProgress);
         }
       },
-      steps.length * 200 + 300,
+      steps.length * 200 + 300
     ); // Wait for all steps to appear + small delay
 
     return () => {
@@ -133,9 +133,9 @@ export default function OrderStatusTracker({
       case "out for delivery":
         return {
           message: "Order is out for delivery",
-          color: "text-[var(--gold-crayola)]",
-          bgColor: "bg-[var(--gold-crayola)]/10",
-          borderColor: "border-[var(--gold-crayola)]/30",
+          color: "text-(--gold-crayola)",
+          bgColor: "bg-(--gold-crayola)/10",
+          borderColor: "border-(--gold-crayola)/30",
         };
       case "delivered":
         return {
@@ -154,9 +154,9 @@ export default function OrderStatusTracker({
       default:
         return {
           message: "Tracking order status",
-          color: "text-[var(--quick-silver)]",
-          bgColor: "bg-[var(--quick-silver)]/10",
-          borderColor: "border-[var(--quick-silver)]/30",
+          color: "text-(--quick-silver)",
+          bgColor: "bg-(--quick-silver)/10",
+          borderColor: "border-(--quick-silver)/30",
         };
     }
   };
@@ -165,7 +165,7 @@ export default function OrderStatusTracker({
     if (step.isRejected) {
       return (
         <svg
-          className="w-4 h-4"
+          className="h-4 w-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -183,7 +183,7 @@ export default function OrderStatusTracker({
     if (step.isCompleted && step.id === "delivered") {
       return (
         <svg
-          className="w-4 h-4"
+          className="h-4 w-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -199,20 +199,20 @@ export default function OrderStatusTracker({
     }
 
     if (step.isCompleted) {
-      return <div className="w-3 h-3 bg-current rounded-full"></div>;
+      return <div className="h-3 w-3 rounded-full bg-current"></div>;
     }
 
     if (step.isActive) {
       return (
         <div className="relative">
-          <div className="w-3 h-3 bg-[var(--gold-crayola)] rounded-full"></div>
-          <div className="absolute inset-0 w-3 h-3 bg-[var(--gold-crayola)]/40 rounded-full animate-ping"></div>
+          <div className="h-3 w-3 rounded-full bg-(--gold-crayola)"></div>
+          <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-(--gold-crayola)/40"></div>
         </div>
       );
     }
 
     return (
-      <div className="w-3 h-3 border-2 border-[var(--quick-silver)]/50 rounded-full bg-[var(--smoky-black-3)]"></div>
+      <div className="h-3 w-3 rounded-full border-2 border-(--quick-silver)/50 bg-(--smoky-black-3)"></div>
     );
   };
 
@@ -220,35 +220,35 @@ export default function OrderStatusTracker({
   const isRejected = currentStatus.toLowerCase() === "rejected";
 
   return (
-    <div className="bg-[var(--eerie-black-2)] rounded-xl p-6 md:p-8 border border-[var(--white-alpha-10)] shadow-lg">
-      <div className="text-center mb-8">
+    <div className="rounded-xl border border-(--white-alpha-10) bg-(--eerie-black-2) p-6 shadow-lg md:p-8">
+      <div className="mb-8 text-center">
         <h2
-          className={`${playfair.className} text-2xl md:text-3xl font-bold text-[var(--gold-crayola)] mb-4`}
+          className={`${playfair.className} mb-4 text-2xl font-bold text-(--gold-crayola) md:text-3xl`}
         >
           Order Tracking
         </h2>
         <div
-          className={`${statusInfo.bgColor} ${statusInfo.color} ${statusInfo.borderColor} border px-6 py-3 rounded-full inline-flex items-center space-x-3`}
+          className={`${statusInfo.bgColor} ${statusInfo.color} ${statusInfo.borderColor} inline-flex items-center space-x-3 rounded-full border px-6 py-3`}
         >
           <div
-            className={`w-2 h-2 ${statusInfo.color.replace("text-", "bg-")} rounded-full ${!isRejected ? "animate-pulse" : ""}`}
+            className={`h-2 w-2 ${statusInfo.color.replace("text-", "bg-")} rounded-full ${!isRejected ? "animate-pulse" : ""}`}
           ></div>
-          <span className="font-medium text-sm">{statusInfo.message}</span>
+          <span className="text-sm font-medium">{statusInfo.message}</span>
         </div>
       </div>
 
-      <div className="relative max-w-lg mx-auto">
+      <div className="relative mx-auto max-w-lg">
         {/* Progress Line Container */}
         {!isRejected && animatedSteps.length > 1 && (
           <div
-            className="absolute left-4 top-12 w-0.5 overflow-hidden"
+            className="absolute top-12 left-4 w-0.5 overflow-hidden"
             style={{ height: `${(animatedSteps.length - 1) * 80}px` }}
           >
             {/* Background line */}
-            <div className="absolute inset-0 w-full bg-[var(--white-alpha-20)]"></div>
+            <div className="absolute inset-0 w-full bg-(--white-alpha-20)"></div>
             {/* Animated progress line */}
             <div
-              className="absolute top-0 left-0 w-full bg-[var(--gold-crayola)] transition-all duration-2000 ease-out shadow-sm"
+              className="absolute top-0 left-0 w-full bg-(--gold-crayola) shadow-sm transition-all duration-2000 ease-out"
               style={{
                 height: `${lineProgress}%`,
                 boxShadow: "0 0 4px rgba(255, 193, 7, 0.4)",
@@ -261,7 +261,7 @@ export default function OrderStatusTracker({
           {animatedSteps.map((step, index) => (
             <div
               key={step.id}
-              className={`relative flex items-start space-x-4 transform transition-all duration-500 ease-out ${
+              className={`relative flex transform items-start space-x-4 transition-all duration-500 ease-out ${
                 index < animatedSteps.length
                   ? "translate-x-0 opacity-100"
                   : "translate-x-8 opacity-0"
@@ -270,43 +270,40 @@ export default function OrderStatusTracker({
             >
               {/* Step Icon */}
               <div
-                className={`
-                relative z-10 flex items-center justify-center w-8 h-8 rounded-full transition-all duration-500
-                ${
+                className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-500 ${
                   step.isRejected
                     ? "bg-red-500 text-white shadow-lg shadow-red-500/20"
                     : step.isCompleted
-                      ? "bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] shadow-lg shadow-[var(--gold-crayola)]/20"
+                      ? "bg-(--gold-crayola) text-(--smoky-black-1) shadow-(--gold-crayola)/20 shadow-lg"
                       : step.isActive
-                        ? "bg-[var(--gold-crayola)]/20 text-[var(--gold-crayola)] border-2 border-[var(--gold-crayola)]"
-                        : "bg-[var(--smoky-black-3)] text-[var(--quick-silver)] border-2 border-[var(--white-alpha-20)]"
-                }
-              `}
+                        ? "border-2 border-(--gold-crayola) bg-(--gold-crayola)/20 text-(--gold-crayola)"
+                        : "border-2 border-(--white-alpha-20) bg-(--smoky-black-3) text-(--quick-silver)"
+                } `}
               >
                 {renderIcon(step)}
               </div>
 
               {/* Step Content */}
-              <div className="flex-1 min-w-0 pb-2">
-                <div className="flex items-center justify-between mb-2">
+              <div className="min-w-0 flex-1 pb-2">
+                <div className="mb-2 flex items-center justify-between">
                   <h3
-                    className={`font-bold text-lg ${
+                    className={`text-lg font-bold ${
                       step.isRejected
                         ? "text-red-400"
                         : step.isCompleted || step.isActive
                           ? "text-white"
-                          : "text-[var(--quick-silver)]"
+                          : "text-(--quick-silver)"
                     }`}
                   >
                     {step.label}
                   </h3>
                   {step.isActive && !step.isRejected && (
-                    <div className="flex items-center space-x-2 tracking-wide px-2 py-1 bg-[var(--gold-crayola)]/10 rounded-full border border-[var(--gold-crayola)]/20">
+                    <div className="flex items-center space-x-2 rounded-full border border-(--gold-crayola)/20 bg-(--gold-crayola)/10 px-2 py-1 tracking-wide">
                       <div className="relative">
-                        <div className="absolute h-2 w-2 rounded-full bg-green-500 opacity-75 animate-ping"></div>
+                        <div className="absolute h-2 w-2 animate-ping rounded-full bg-green-500 opacity-75"></div>
                         <div className="h-2 w-2 rounded-full bg-green-500"></div>
                       </div>
-                      <span className="text-xs text-[var(--gold-crayola)] font-semibold uppercase tracking-wide">
+                      <span className="text-xs font-semibold tracking-wide text-(--gold-crayola) uppercase">
                         Live
                       </span>
                     </div>
@@ -317,8 +314,8 @@ export default function OrderStatusTracker({
                     step.isRejected
                       ? "text-red-300"
                       : step.isCompleted || step.isActive
-                        ? "text-[var(--quick-silver)]"
-                        : "text-[var(--davys-grey)]"
+                        ? "text-(--quick-silver)"
+                        : "text-(--davys-grey)"
                   }`}
                 >
                   {step.description}
@@ -330,11 +327,11 @@ export default function OrderStatusTracker({
       </div>
 
       {currentStatus.toLowerCase() === "delivered" && (
-        <div className="mt-8 bg-green-500/10 rounded-xl p-6 border border-green-500/20">
+        <div className="mt-8 rounded-xl border border-green-500/20 bg-green-500/10 p-6">
           <div className="text-center">
-            <div className="w-12 h-12 mx-auto mb-3 bg-green-500 rounded-full flex items-center justify-center">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-500">
               <svg
-                className="w-6 h-6 text-white"
+                className="h-6 w-6 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -347,10 +344,10 @@ export default function OrderStatusTracker({
                 />
               </svg>
             </div>
-            <h3 className="text-green-400 font-bold text-lg mb-2">
+            <h3 className="mb-2 text-lg font-bold text-green-400">
               Order Completed
             </h3>
-            <p className="text-[var(--quick-silver)] text-sm">
+            <p className="text-sm text-(--quick-silver)">
               Thank you for your business!
             </p>
           </div>
@@ -358,11 +355,11 @@ export default function OrderStatusTracker({
       )}
 
       {isRejected && (
-        <div className="mt-8 bg-yellow-500/10 rounded-xl p-6 border border-yellow-500/20">
+        <div className="mt-8 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-6">
           <div className="text-center">
-            <div className="w-12 h-12 mx-auto mb-3 bg-yellow-500 rounded-full flex items-center justify-center">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
               <svg
-                className="w-6 h-6 text-white"
+                className="h-6 w-6 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -375,13 +372,13 @@ export default function OrderStatusTracker({
                 />
               </svg>
             </div>
-            <h3 className="text-yellow-400 font-bold text-lg mb-2">
+            <h3 className="mb-2 text-lg font-bold text-yellow-400">
               Order Cancelled
             </h3>
-            <p className="text-[var(--quick-silver)] text-sm">
+            <p className="text-sm text-(--quick-silver)">
               Your payment will be refunded within 3–5 business days.
             </p>
-            <p className="text-white text-sm mt-3">
+            <p className="mt-3 text-sm text-white">
               Need help? Call{" "}
               <span className="font-semibold">+91 6296832453</span>
             </p>

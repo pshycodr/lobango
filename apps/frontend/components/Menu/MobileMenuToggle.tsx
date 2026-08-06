@@ -7,11 +7,11 @@ export const MobileMenuToggle = ({
 }) => (
   <button
     onClick={onClick}
-    className="lg:hidden fixed top-6 left-6 z-50 bg-[var(--eerie-black-2)] border border-[var(--white-alpha-10)] text-[var(--gold-crayola)] p-2.5 rounded-lg shadow-lg backdrop-blur-sm transition-all duration-200 hover:border-[var(--gold-crayola)] hover:border-opacity-30"
+    className="hover:border-opacity-30 fixed top-6 left-6 z-50 rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-2) p-2.5 text-(--gold-crayola) shadow-lg backdrop-blur-sm transition-all duration-200 hover:border-(--gold-crayola) lg:hidden"
     aria-label="Toggle menu"
   >
     <svg
-      className="w-5 h-5"
+      className="h-5 w-5"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"

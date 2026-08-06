@@ -26,7 +26,7 @@ const ReservationSection = () => {
     <>
       <section className="relative" id="reserv">
         <div className="container mx-auto px-4">
-          <div className="bg-[var(--smoky-black-2)] -mt-[270px] lg:grid lg:grid-cols-[1fr_0.5fr] overflow-hidden">
+          <div className="mt-[-270px] overflow-hidden bg-(--smoky-black-2) lg:grid lg:grid-cols-[1fr_0.5fr]">
             <ReservationForm
               formData={formData}
               startDate={startDate}

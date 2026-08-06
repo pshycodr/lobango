@@ -22,39 +22,39 @@ const Preloader = () => {
 
   return (
     <div
-      className={`fixed inset-0 bg-[var(--smoky-black-1)] z-50 flex items-center justify-center transition-all duration-1000 ease-in-out ${isLoaded ? "opacity-0 pointer-events-none" : "opacity-100"} ${forum.className}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-(--smoky-black-1) transition-all duration-1000 ease-in-out ${isLoaded ? "pointer-events-none opacity-0" : "opacity-100"} ${forum.className}`}
     >
       <div className="text-center">
         {/* Main Logo Circle */}
-        <div className="relative w-20 h-20 mx-auto mb-8">
-          <div className="absolute inset-0 border-2 border-[var(--white-alpha-10)] rounded-full"></div>
-          <div className="absolute inset-0 border-2 border-transparent border-t-[var(--gold-crayola)] rounded-full animate-spin"></div>
+        <div className="relative mx-auto mb-8 h-20 w-20">
+          <div className="absolute inset-0 rounded-full border-2 border-(--white-alpha-10)"></div>
+          <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-(--gold-crayola)"></div>
           <div
-            className="absolute inset-3 border border-transparent border-t-[var(--gold-crayola)] rounded-full animate-spin"
+            className="absolute inset-3 animate-spin rounded-full border border-transparent border-t-(--gold-crayola)"
             style={{ animationDirection: "reverse", animationDuration: "1.5s" }}
           ></div>
         </div>
 
         {/* Restaurant Name */}
         <div className="mb-6">
-          <h1 className="text-4xl font-light text-[var(--gold-crayola)] tracking-[0.25em] mb-3 font-forum">
+          <h1 className="font-forum mb-3 text-4xl font-light tracking-[0.25em] text-(--gold-crayola)">
             LOBANGO
           </h1>
-          <div className="w-24 h-px bg-[var(--gold-crayola)] mx-auto mb-2"></div>
-          <p className="text-[var(--white-alpha-20)] text-xs tracking-[0.2em] uppercase">
+          <div className="mx-auto mb-2 h-px w-24 bg-(--gold-crayola)"></div>
+          <p className="text-xs tracking-[0.2em] text-(--white-alpha-20) uppercase">
             Multi Cuisine Restaurant
           </p>
         </div>
 
         {/* Loading Dots */}
         <div className="flex justify-center space-x-2">
-          <div className="w-2 h-2 bg-[var(--gold-crayola)] rounded-full animate-bounce"></div>
+          <div className="h-2 w-2 animate-bounce rounded-full bg-(--gold-crayola)"></div>
           <div
-            className="w-2 h-2 bg-[var(--gold-crayola)] rounded-full animate-bounce"
+            className="h-2 w-2 animate-bounce rounded-full bg-(--gold-crayola)"
             style={{ animationDelay: "0.2s" }}
           ></div>
           <div
-            className="w-2 h-2 bg-[var(--gold-crayola)] rounded-full animate-bounce"
+            className="h-2 w-2 animate-bounce rounded-full bg-(--gold-crayola)"
             style={{ animationDelay: "0.4s" }}
           ></div>
         </div>

@@ -14,11 +14,11 @@ export default function ErrorMessage({
   onTryAnother,
 }: ErrorMessageProps) {
   return (
-    <div className="bg-[var(--eerie-black-2)] rounded-xl p-6 md:p-8 border border-red-500/20">
+    <div className="rounded-xl border border-red-500/20 bg-(--eerie-black-2) p-6 md:p-8">
       <div className="text-center">
-        <div className="w-16 h-16 mx-auto mb-4 bg-red-500/20 rounded-full flex items-center justify-center">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20">
           <svg
-            className="w-8 h-8 text-red-400"
+            className="h-8 w-8 text-red-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -33,23 +33,23 @@ export default function ErrorMessage({
         </div>
 
         <h3
-          className={`${playfair.className} text-lg font-semibold text-red-400 mb-2`}
+          className={`${playfair.className} mb-2 text-lg font-semibold text-red-400`}
         >
           Oops! Something went wrong
         </h3>
 
-        <p className="text-[var(--quick-silver)] mb-6">{message}</p>
+        <p className="mb-6 text-(--quick-silver)">{message}</p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <button
             onClick={onRetry}
-            className="px-6 py-2 bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] rounded-lg font-semibold hover:bg-opacity-90 transition-all"
+            className="hover:bg-opacity-90 rounded-lg bg-(--gold-crayola) px-6 py-2 font-semibold text-(--smoky-black-1) transition-all"
           >
             Try Again
           </button>
           <button
             onClick={onTryAnother}
-            className="px-6 py-2 border border-[var(--gold-crayola)] text-[var(--gold-crayola)] rounded-lg font-semibold hover:bg-[var(--gold-crayola)] hover:text-[var(--smoky-black-1)] transition-all"
+            className="rounded-lg border border-(--gold-crayola) px-6 py-2 font-semibold text-(--gold-crayola) transition-all hover:bg-(--gold-crayola) hover:text-(--smoky-black-1)"
           >
             Use Different Order ID
           </button>

@@ -19,36 +19,34 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   const { newOrders } = usePermissionsStore();
 
   return (
-    <div className="bg-[var(--eerie-black-2)] rounded-lg p-4 border border-[var(--white-alpha-10)] sticky top-4">
-      <h2 className="text-[var(--white)] text-lg font-semibold font-playfair mb-4">
+    <div className="sticky top-4 rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-2) p-4">
+      <h2 className="font-playfair mb-4 text-lg font-semibold text-(--white)">
         Order Summary
       </h2>
 
-      <div className="space-y-2 mb-4">
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-[var(--quick-silver)] font-inter">
+      <div className="mb-4 space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-inter text-(--quick-silver)">
             Items ({itemCount})
           </span>
-          <span className="text-[var(--white)] font-inter">
+          <span className="font-inter text-(--white)">
             ₹{subtotal.toFixed(0)}
           </span>
         </div>
 
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-[var(--quick-silver)] font-inter">
-            Delivery Fee
-          </span>
-          <span className="text-[var(--white)] font-inter">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-inter text-(--quick-silver)">Delivery Fee</span>
+          <span className="font-inter text-(--white)">
             ₹{deliveryFee.toFixed(0)}
           </span>
         </div>
 
-        <div className="border-t border-[var(--white-alpha-20)] pt-2">
-          <div className="flex justify-between items-center">
-            <span className="text-[var(--white)] text-base font-playfair font-semibold">
+        <div className="border-t border-(--white-alpha-20) pt-2">
+          <div className="flex items-center justify-between">
+            <span className="font-playfair text-base font-semibold text-(--white)">
               Total
             </span>
-            <span className="text-[var(--gold-crayola)] text-lg font-bold font-playfair">
+            <span className="font-playfair text-lg font-bold text-(--gold-crayola)">
               ₹{total.toFixed(0)}
             </span>
           </div>
@@ -58,15 +56,12 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       <button
         onClick={onCheckout}
         disabled={!newOrders}
-        className={`w-full py-2.5 rounded-lg text-sm font-semibold font-inter transition-all duration-200 active:scale-98
-    bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] hover:bg-[hsl(38,61%,68%)]
-    ${!newOrders ? "opacity-50 cursor-not-allowed" : ""}
-  `}
+        className={`font-inter w-full rounded-lg bg-(--gold-crayola) py-2.5 text-sm font-semibold text-(--smoky-black-1) transition-all duration-200 hover:bg-[hsl(38,61%,68%)] active:scale-98 ${!newOrders ? "cursor-not-allowed opacity-50" : ""} `}
       >
         Proceed to Checkout
       </button>
 
-      <p className="text-[var(--quick-silver)] text-xs text-center mt-2 font-inter">
+      <p className="font-inter mt-2 text-center text-xs text-(--quick-silver)">
         Free delivery on orders over ₹299
       </p>
     </div>

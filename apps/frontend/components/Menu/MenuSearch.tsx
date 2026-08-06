@@ -6,9 +6,9 @@ export const MenuSearch = ({
   setSearchQuery: (query: string) => void;
 }) => (
   <div className="relative mb-8">
-    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
       <svg
-        className="h-4 w-4 text-[var(--gold-crayola)] opacity-60"
+        className="h-4 w-4 text-(--gold-crayola) opacity-60"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -24,7 +24,7 @@ export const MenuSearch = ({
     <input
       type="text"
       placeholder="Search our menu..."
-      className="w-full pl-12 pr-4 py-3 bg-[var(--eerie-black-3)] border border-[var(--white-alpha-10)] rounded-lg text-[var(--white)] placeholder-[var(--quick-silver)] placeholder:text-sm focus:ring-1 focus:ring-[var(--gold-crayola)] focus:ring-opacity-30 focus:border-[var(--gold-crayola)] focus:border-opacity-50 outline-none transition-all duration-300"
+      className="focus:ring-opacity-30 focus:border-opacity-50 w-full rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-3) py-3 pr-4 pl-12 text-(--white) placeholder-(--quick-silver) transition-all duration-300 outline-none placeholder:text-sm focus:border-(--gold-crayola) focus:ring-1 focus:ring-(--gold-crayola)"
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
     />

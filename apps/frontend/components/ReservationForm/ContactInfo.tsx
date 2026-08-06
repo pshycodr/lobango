@@ -14,18 +14,18 @@ const ContactSection = ({
   content: React.ReactNode;
 }) => (
   <div>
-    <p className="font-bold mb-1 text-amber-50">{title}</p>
+    <p className="mb-1 font-bold text-amber-50">{title}</p>
     {content}
   </div>
 );
 
 export const ContactInfo = () => (
   <div
-    className="text-center p-10 lg:p-16 bg-repeat bg-top-left"
+    className="bg-top-left bg-repeat p-10 text-center lg:p-16"
     style={{ backgroundImage: "url('/assets/images/form-pattern.png')" }}
   >
     <h2
-      className={`text-3xl sm:text-6xl text-white ${forum.className} text-center mb-10`}
+      className={`text-3xl text-white sm:text-6xl ${forum.className} mb-10 text-center`}
     >
       Contact Us
     </h2>
@@ -36,19 +36,19 @@ export const ContactInfo = () => (
         content={
           <a
             href="tel:+916296832453"
-            className="font-[var(--fontSize-body-1)] text-[var(--gold-crayola)] max-w-max mx-auto block mb-5 transition-colors hover:underline"
+            className="mx-auto mb-5 block max-w-max font-(--fontSize-body-1) text-(--gold-crayola) transition-colors hover:underline"
           >
             +91 6296832453
           </a>
         }
       />
 
-      <div className="w-2 h-2 border border-[var(--gold-crayola)] rotate-45 mx-auto my-5 spin-slow"></div>
+      <div className="spin-slow mx-auto my-5 h-2 w-2 rotate-45 border border-(--gold-crayola)"></div>
 
       <ContactSection
         title="Location"
         content={
-          <address className="font-[var(--fontSize-body-4)] text-[var(--gold-crayola)] not-italic mb-6">
+          <address className="mb-6 font-(--fontSize-body-4) text-(--gold-crayola) not-italic">
             BHATAR, PURBO BORDHAMAN, <br />
             WEST BENGAL, IND
           </address>
@@ -58,7 +58,7 @@ export const ContactInfo = () => (
       <ContactSection
         title="Lunch Time"
         content={
-          <p className="font-[var(--fontSize-body-4)] text-[var(--quick-silver)] leading-[var(--lineHeight-3)] mb-6">
+          <p className="mb-6 leading-(--lineHeight-3) font-(--fontSize-body-4) text-(--quick-silver)">
             Monday to Sunday <br />
             11.00 am - 2.30pm
           </p>
@@ -68,7 +68,7 @@ export const ContactInfo = () => (
       <ContactSection
         title="Dinner Time"
         content={
-          <p className="font-[var(--fontSize-body-4)] text-[var(--quick-silver)] leading-[var(--lineHeight-3)]">
+          <p className="leading-(--lineHeight-3) font-(--fontSize-body-4) text-(--quick-silver)">
             Monday to Sunday <br />
             07.30 pm - 10.00pm
           </p>

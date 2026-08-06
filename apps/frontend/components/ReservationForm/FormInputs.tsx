@@ -29,7 +29,7 @@ export const TextInput = ({
     placeholder={placeholder}
     value={value}
     onChange={onChange}
-    className={`bg-[var(--eerie-black-2)] text-white h-14 px-5 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] placeholder:text-white ${className}`}
+    className={`h-14 border border-(--white-alpha-10) bg-(--eerie-black-2) px-5 text-white transition-colors outline-none placeholder:text-white focus:border-(--gold-crayola) ${className}`}
     required={required}
     disabled={disabled}
     minLength={minLength}
@@ -54,12 +54,12 @@ export const SelectInput = ({
   disabled?: boolean;
 }) => (
   <div className="relative">
-    <Icon className="absolute top-1/2 left-4 -translate-y-1/2 w-4 h-4 pointer-events-none text-[var(--gold-crayola)]" />
+    <Icon className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-(--gold-crayola)" />
     <select
       name={name}
       value={value}
       onChange={onChange}
-      className="bg-[var(--eerie-black-2)] text-white h-14 pl-10 pr-10 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] w-full appearance-none cursor-pointer"
+      className="h-14 w-full cursor-pointer appearance-none border border-(--white-alpha-10) bg-(--eerie-black-2) pr-10 pl-10 text-white transition-colors outline-none focus:border-(--gold-crayola)"
       disabled={disabled}
     >
       {options.map((option, index) => (
@@ -68,7 +68,7 @@ export const SelectInput = ({
         </option>
       ))}
     </select>
-    <ChevronDown className="absolute top-1/2 right-2.5 -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
+    <ChevronDown className="pointer-events-none absolute top-1/2 right-2.5 h-4 w-4 -translate-y-1/2 text-white" />
   </div>
 );
 
@@ -86,7 +86,7 @@ export const DatePickerInput = ({
   disabled?: boolean;
 }) => (
   <div className="relative min-w-full">
-    <CalenderIcon className="absolute z-10 top-1/2 left-4 -translate-y-1/2 w-4 h-4 pointer-events-none text-[var(--gold-crayola)]" />
+    <CalenderIcon className="pointer-events-none absolute top-1/2 left-4 z-10 h-4 w-4 -translate-y-1/2 text-(--gold-crayola)" />
     <DatePicker
       selected={selected}
       onChange={onChange}
@@ -94,7 +94,7 @@ export const DatePickerInput = ({
       maxDate={maxDate}
       dateFormat="dd-MM-yyyy"
       placeholderText="Select date"
-      className="!w-full bg-[var(--eerie-black-2)] text-white h-14 pl-12 pr-10 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] appearance-none cursor-pointer"
+      className="h-14 w-full! cursor-pointer appearance-none border border-(--white-alpha-10) bg-(--eerie-black-2) pr-10 pl-12 text-white transition-colors outline-none focus:border-(--gold-crayola)"
       popperPlacement="bottom-start"
       calendarClassName="react-datepicker custom-datepicker"
       dayClassName={(date) =>
@@ -126,7 +126,7 @@ export const TextAreaInput = ({
     placeholder={placeholder}
     value={value}
     onChange={onChange}
-    className="bg-[var(--eerie-black-2)] text-white h-35 p-5 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] w-full resize-none leading-none mb-5 placeholder:text-white"
+    className="mb-5 h-35 w-full resize-none border border-(--white-alpha-10) bg-(--eerie-black-2) p-5 leading-none text-white transition-colors outline-none placeholder:text-white focus:border-(--gold-crayola)"
     disabled={disabled}
   />
 );

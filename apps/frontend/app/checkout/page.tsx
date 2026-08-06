@@ -152,7 +152,7 @@ export default function CheckoutPage() {
 
     if (!locationAllowsCheckout) {
       alert(
-        "Sorry, we cannot deliver to your current location. Please check if you are within our delivery area.",
+        "Sorry, we cannot deliver to your current location. Please check if you are within our delivery area."
       );
       return;
     }
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
 
   return (
     <div
-      className="min-h-screen bg-[var(--smoky-black-1)]"
+      className="min-h-screen bg-(--smoky-black-1)"
       style={
         {
           fontFamily:
@@ -216,7 +216,7 @@ export default function CheckoutPage() {
       <CheckoutHeader onBack={handleBack} />
 
       {/* Location Check */}
-      <div className="max-w-4xl mx-auto px-6 pt-4">
+      <div className="mx-auto max-w-4xl px-6 pt-4">
         <LocationCheck
           onLocationChange={(canCheckout) => {
             // Handle location change if needed
@@ -227,15 +227,15 @@ export default function CheckoutPage() {
 
       {/* Orders closed message */}
       {newOrders === false && (
-        <div className="flex justify-center items-center w-full">
-          <p className="p-4 mt-5 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500">
+        <div className="flex w-full items-center justify-center">
+          <p className="mt-5 flex items-center justify-center gap-3 rounded-md border-2 border-red-500 p-4 text-center text-xl font-semibold tracking-tighter text-red-500">
             Online orders are currently closed.
           </p>
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="mx-auto max-w-4xl px-6 py-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <CheckoutSidebar
             selectedAddress={selectedAddress}
             onChangeAddress={handleChangeAddress}

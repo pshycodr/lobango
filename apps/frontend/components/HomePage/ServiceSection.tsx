@@ -34,21 +34,21 @@ const ServiceSection = () => {
 
   return (
     <section
-      className="relative p-5 pt-10 sm:p-[70px]  bg-[var(--smoky-black-2)] text-center overflow-hidden z-10"
+      className="relative z-10 overflow-hidden bg-(--smoky-black-2) p-5 pt-10 text-center sm:p-[70px]"
       aria-label="service"
     >
       <div className="container mx-auto px-4">
-        <p className="text-xs text-[var(--gold-crayola)] font-bold uppercase tracking-tighter mb-3 relative after:content-[''] after:block after:w-25 after:mx-auto after:mt-1.5 after:bg-[url('/assets/images/separator.svg')] after:bg-no-repeat after:bg-center after:h-4">
+        <p className="relative mb-3 text-xs font-bold tracking-tighter text-(--gold-crayola) uppercase after:mx-auto after:mt-1.5 after:block after:h-4 after:w-25 after:bg-[url('/assets/images/separator.svg')] after:bg-center after:bg-no-repeat after:content-['']">
           Flavors For Royalty
         </p>
 
         <h2
-          className={`${forum.className} text-4xl sm:text-5xl text-white mb-4`}
+          className={`${forum.className} mb-4 text-4xl text-white sm:text-5xl`}
         >
           We Offer Top Notch
         </h2>
 
-        <p className="text-xs sm:text-sm text-white leading-10 mb-10">
+        <p className="mb-10 text-xs leading-10 text-white sm:text-sm">
           Lobanga Provide Best Quality and Hygienic Food
         </p>
 
@@ -61,9 +61,9 @@ const ServiceSection = () => {
               }`}
             >
               <div className="">
-                <Link href="#" className="relative block pb-8 mb-7 z-10 group">
+                <Link href="#" className="group relative z-10 mb-7 block pb-8">
                   <div
-                    className="relative scale-95 overflow-hidden bg-[var(--eerie-black-4)] transition-transform duration-500 group-hover:scale-100"
+                    className="relative scale-95 overflow-hidden bg-(--eerie-black-4) transition-transform duration-500 group-hover:scale-100"
                     style={{
                       aspectRatio: `${service.width} / ${service.height}`,
                     }}
@@ -74,22 +74,22 @@ const ServiceSection = () => {
                       height={service.height}
                       loading="lazy"
                       alt={service.title}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
 
                     {/* Shine Effect */}
-                    <div className="absolute -left-15 inset-0 w-1/2 h-full bg-gradient-to-r from-transparent to-white/40 -skew-x-12 -translate-x-full transition-transform duration-1000 group-hover:translate-x-[275%]"></div>
+                    <div className="absolute inset-0 -left-15 h-full w-1/2 -translate-x-full -skew-x-12 bg-linear-to-r from-transparent to-white/40 transition-transform duration-1000 group-hover:translate-x-[275%]"></div>
                   </div>
 
                   {/* Pattern Background */}
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-35 h-full bg-[url('/assets/images/img-pattern.svg')] bg-center bg-cover bg-repeat transition-all duration-500 -z-10 group-hover:scale-x-[-1] group-hover:delay-300"></div>
+                  <div className="absolute -top-4 left-1/2 -z-10 h-full w-35 -translate-x-1/2 bg-[url('/assets/images/img-pattern.svg')] bg-cover bg-center bg-repeat transition-all duration-500 group-hover:scale-x-[-1] group-hover:delay-300"></div>
                 </Link>
 
                 <div className="relative -top-5">
                   <h3 className={`text-3xl text-white ${forum.className}`}>
                     <Link
                       href="#"
-                      className="transition-colors hover:text-[var(--gold-crayola)]"
+                      className="transition-colors hover:text-(--gold-crayola)"
                     >
                       {service.title}
                     </Link>
@@ -97,7 +97,7 @@ const ServiceSection = () => {
 
                   <Link
                     href="/menu"
-                    className="text-[var(--gold-crayola)] pb-1 mx-auto text-sm uppercase tracking-tighter font-bold transition-colors hover:text-white relative after:absolute after:left-0 after:-bottom-2 after:w-full after:h-1.5 after:border-t after:border-b after:border-[var(--gold-crayola)] after:scale-x-20 after:opacity-0 after:transition-all after:duration-500 hover:after:scale-x-100 hover:after:opacity-100"
+                    className="relative mx-auto pb-1 text-sm font-bold tracking-tighter text-(--gold-crayola) uppercase transition-colors after:absolute after:-bottom-2 after:left-0 after:h-1.5 after:w-full after:scale-x-20 after:border-t after:border-b after:border-(--gold-crayola) after:opacity-0 after:transition-all after:duration-500 hover:text-white hover:after:scale-x-100 hover:after:opacity-100"
                   >
                     View Menu
                   </Link>
@@ -114,7 +114,7 @@ const ServiceSection = () => {
           height={412}
           loading="lazy"
           alt="shape"
-          className="hidden lg:block absolute bottom-0 left-0 max-w-max -z-10 move-anim"
+          className="move-anim absolute bottom-0 left-0 -z-10 hidden max-w-max lg:block"
         />
         <Image
           src="/assets/images/shape-2.png"
@@ -122,7 +122,7 @@ const ServiceSection = () => {
           height={345}
           loading="lazy"
           alt="shape"
-          className="hidden lg:block scale-160 absolute top-15 right-5 max-w-max -z-10 move-anim"
+          className="move-anim absolute top-15 right-5 -z-10 hidden max-w-max scale-160 lg:block"
         />
       </div>
     </section>

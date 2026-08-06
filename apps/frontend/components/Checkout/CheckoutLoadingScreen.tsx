@@ -6,10 +6,10 @@ interface CheckoutLoadingScreenProps {
 
 export function CheckoutLoadingScreen({ message }: CheckoutLoadingScreenProps) {
   return (
-    <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
       <div className="text-center">
         <LoadingSpinner />
-        <p className="text-white mt-4">{message}</p>
+        <p className="mt-4 text-white">{message}</p>
       </div>
     </div>
   );

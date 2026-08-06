@@ -28,17 +28,17 @@ export default function PlaceOrderButton({
   const formatPrice = (price: number) => `${price.toFixed(2)}`;
 
   return (
-    <div className="p-6 fixed bottom-0.5 w-full sm:w-xl z-10 backdrop-blur-sm rounded-xl">
+    <div className="fixed bottom-0.5 z-10 w-full rounded-xl p-6 backdrop-blur-sm sm:w-xl">
       <button
         onClick={handleClick}
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onMouseLeave={() => setIsPressed(false)}
         disabled={isButtonDisabled}
-        className={`w-full h-14 rounded-xl text-lg font-bold leading-normal tracking-[0.015em] transition-all duration-200 transform cursor-pointer shadow-lg hover:shadow-xl ${
+        className={`h-14 w-full transform cursor-pointer rounded-xl text-lg leading-normal font-bold tracking-[0.015em] shadow-lg transition-all duration-200 hover:shadow-xl ${
           isButtonDisabled
-            ? "bg-[var(--davys-grey)] text-[var(--quick-silver)] cursor-not-allowed"
-            : `bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] hover:brightness-110 ${
+            ? "cursor-not-allowed bg-(--davys-grey) text-(--quick-silver)"
+            : `bg-(--gold-crayola) text-(--smoky-black-1) hover:brightness-110 ${
                 isPressed ? "scale-95 brightness-90" : "hover:scale-[1.02]"
               }`
         }`}

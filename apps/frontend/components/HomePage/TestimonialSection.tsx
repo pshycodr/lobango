@@ -11,7 +11,7 @@ const forum = Forum({
 const TestimonialSection = () => {
   return (
     <section
-      className="relative py-[var(--section-space)] pb-[340px] text-center bg-cover bg-center bg-no-repeat"
+      className="relative bg-cover bg-center bg-no-repeat py-(--section-space) pb-[340px] text-center"
       style={{ backgroundImage: "url('/assets/images/testimonial-bg.jpg')" }}
       aria-label="testimonials"
     >
@@ -19,16 +19,16 @@ const TestimonialSection = () => {
         <div className={`text-8xl text-white ${forum.className} mb-5`}>”</div>
 
         <p
-          className={`text-2xl lg:text-4xl text-white ${forum.className} tracking-tight max-w-[700px]  mx-auto mb-10`}
+          className={`text-2xl text-white lg:text-4xl ${forum.className} mx-auto mb-10 max-w-[700px] tracking-tight`}
         >
           I wanted to thank you for inviting me down for that amazing dinner the
           other night. The food was extraordinary.
         </p>
 
-        <div className="flex justify-center gap-0.5 mb-12">
-          <div className="w-2 h-2 border border-[var(--gold-crayola)] rotate-45 spin-slow"></div>
-          <div className="w-2 h-2 border border-[var(--gold-crayola)] rotate-45 spin-slow"></div>
-          <div className="w-2 h-2 border border-[var(--gold-crayola)] rotate-45 spin-slow"></div>
+        <div className="mb-12 flex justify-center gap-0.5">
+          <div className="spin-slow h-2 w-2 rotate-45 border border-(--gold-crayola)"></div>
+          <div className="spin-slow h-2 w-2 rotate-45 border border-(--gold-crayola)"></div>
+          <div className="spin-slow h-2 w-2 rotate-45 border border-(--gold-crayola)"></div>
         </div>
 
         <div className="text-center">
@@ -38,10 +38,10 @@ const TestimonialSection = () => {
             height={100}
             loading="lazy"
             alt="kunal chaterjee"
-            className="mx-auto rounded-full mb-4"
+            className="mx-auto mb-4 rounded-full"
           />
 
-          <p className=" text-[var(--gold-crayola)] font-bold uppercase tracking-[var(--letterSpacing-3)]">
+          <p className="font-bold tracking-(--letterSpacing-3) text-(--gold-crayola) uppercase">
             kunal chaterjee
           </p>
         </div>

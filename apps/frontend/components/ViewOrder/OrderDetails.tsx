@@ -42,86 +42,76 @@ export default function OrderDetails({
     <div className="space-y-6">
       <OrderStatusTracker currentStatus={order.status} />
 
-      <div className="bg-[var(--eerie-black-2)] rounded-xl p-6 md:p-8 border border-[var(--white-alpha-10)]">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+      <div className="rounded-xl border border-(--white-alpha-10) bg-(--eerie-black-2) p-6 md:p-8">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <h2
-            className={`${playfair.className} text-xl md:text-2xl font-semibold text-[var(--gold-crayola)] mb-2 sm:mb-0`}
+            className={`${playfair.className} mb-2 text-xl font-semibold text-(--gold-crayola) sm:mb-0 md:text-2xl`}
           >
             Order Information
           </h2>
           <button
             onClick={onTryAnother}
-            className="text-[var(--gold-crayola)] text-sm hover:underline transition-all"
+            className="text-sm text-(--gold-crayola) transition-all hover:underline"
           >
             Try Another ID
           </button>
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[var(--smoky-black-3)] rounded-lg p-4 border border-[var(--white-alpha-10)]">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[var(--quick-silver)] text-sm">
-                Order ID
-              </span>
+          <div className="rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-sm text-(--quick-silver)">Order ID</span>
               <button
                 onClick={() => navigator.clipboard.writeText(order.orderId)}
-                className="text-[var(--gold-crayola)] text-xs hover:underline"
+                className="text-xs text-(--gold-crayola) hover:underline"
               >
                 Copy
               </button>
             </div>
-            <p className="text-[var(--white)] font-mono text-lg font-semibold">
+            <p className="font-mono text-lg font-semibold text-(--white)">
               {order.orderId}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-[var(--smoky-black-3)] rounded-lg p-4 border border-[var(--white-alpha-10)]">
-              <p className="text-[var(--quick-silver)] text-sm mb-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
+              <p className="mb-2 text-sm text-(--quick-silver)">
                 Customer Details
               </p>
-              <p className="text-[var(--white)] font-medium mb-1">
-                {order.name}
-              </p>
-              <p className="text-[var(--gold-crayola)] text-sm">
-                {order.phone}
-              </p>
+              <p className="mb-1 font-medium text-(--white)">{order.name}</p>
+              <p className="text-sm text-(--gold-crayola)">{order.phone}</p>
             </div>
-            <div className="bg-[var(--smoky-black-3)] rounded-lg p-4 border border-[var(--white-alpha-10)]">
-              <p className="text-[var(--quick-silver)] text-sm mb-2">
-                Order Date
-              </p>
-              <p className="text-[var(--white)] font-medium">
+            <div className="rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
+              <p className="mb-2 text-sm text-(--quick-silver)">Order Date</p>
+              <p className="font-medium text-(--white)">
                 {formatDate(order.createdAt)}
               </p>
             </div>
           </div>
 
-          <div className="bg-[var(--smoky-black-3)] rounded-lg p-4 border border-[var(--white-alpha-10)]">
-            <p className="text-[var(--quick-silver)] text-sm mb-2">
+          <div className="rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
+            <p className="mb-2 text-sm text-(--quick-silver)">
               Delivery Address
             </p>
-            <p className="text-[var(--white)] leading-relaxed">
-              {order.address}
-            </p>
+            <p className="leading-relaxed text-(--white)">{order.address}</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-[var(--smoky-black-3)] rounded-lg p-4 border border-[var(--white-alpha-10)]">
-              <p className="text-[var(--quick-silver)] text-sm mb-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
+              <p className="mb-2 text-sm text-(--quick-silver)">
                 Payment Method
               </p>
-              <p className="text-[var(--white)] capitalize font-medium">
+              <p className="font-medium text-(--white) capitalize">
                 {order.paymentMethod}
               </p>
             </div>
-            <div className="bg-[var(--smoky-black-3)] rounded-lg p-4 border border-[var(--white-alpha-10)]">
-              <p className="text-[var(--quick-silver)] text-sm mb-2">
+            <div className="rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
+              <p className="mb-2 text-sm text-(--quick-silver)">
                 Payment Status
               </p>
               <div className="flex items-center space-x-2">
                 <div
-                  className={`w-2 h-2 rounded-full ${order.paymentStatus.toLowerCase() === "paid" ? "bg-green-400" : "bg-red-400"}`}
+                  className={`h-2 w-2 rounded-full ${order.paymentStatus.toLowerCase() === "paid" ? "bg-green-400" : "bg-red-400"}`}
                 ></div>
                 <p
                   className={`font-semibold capitalize ${getPaymentStatusColor(order.paymentStatus)}`}

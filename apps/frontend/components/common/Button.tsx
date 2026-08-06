@@ -29,8 +29,8 @@ const Button = ({
 
   // Variant classes
   const variantClasses = {
-    primary: "bg-[var(--deep-saffron)] text-white hover:text-black",
-    secondary: "bg-[var(--dark-orange)] text-white hover:text-white",
+    primary: "bg-(--deep-saffron) text-white hover:text-black",
+    secondary: "bg-(--dark-orange) text-white hover:text-white",
     outline: "border border-white text-white hover:bg-white hover:text-black",
   };
 
@@ -44,7 +44,7 @@ const Button = ({
   // Hover effect classes
   const hoverEffect =
     variant !== "outline"
-      ? `after:content-[''] after:absolute after:bottom-0 after:left-5 after:w-[1px] after:h-[1px] 
+      ? `after:content-[''] after:absolute after:bottom-0 after:left-5 after:w-px after:h-px 
        after:bg-rich-black-fogra-29 after:rounded-full after:z-[-1] after:transition-all 
        after:duration-500 hover:after:scale-[500]`
       : "";
@@ -52,17 +52,11 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`
-        ${baseClasses} 
-        ${variantClasses[variant]} 
-        ${sizeClasses[size]} 
-        ${hoverEffect} 
-        ${className}
-      `}
+      className={` ${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${hoverEffect} ${className} `}
       onClick={onClick}
       {...props}
     >
-      <span className="flex items-center justify-center gap-2 relative z-10">
+      <span className="relative z-10 flex items-center justify-center gap-2">
         {icon && iconPosition === "left" && (
           <IonIcon icon={icon} className="text-lg" />
         )}

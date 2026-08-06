@@ -40,15 +40,15 @@ export const ShoppingCart: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--smoky-black-1)]">
+    <div className="min-h-screen bg-(--smoky-black-1)">
       {/* Header */}
-      <div className="bg-[var(--eerie-black-1)] border-b border-[var(--white-alpha-10)]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="border-b border-(--white-alpha-10) bg-(--eerie-black-1)">
+        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-[var(--gold-crayola)] text-3xl md:text-4xl font-semibold font-playfair mb-2">
+            <h1 className="font-playfair mb-2 text-3xl font-semibold text-(--gold-crayola) md:text-4xl">
               Your Cart
             </h1>
-            <p className="text-[var(--quick-silver)] text-sm font-inter">
+            <p className="font-inter text-sm text-(--quick-silver)">
               {itemCount} {itemCount === 1 ? "item" : "items"} ready for
               checkout
             </p>
@@ -57,8 +57,8 @@ export const ShoppingCart: React.FC = () => {
       </div>
 
       {newOrders === false ? (
-        <div className="flex justify-center items-center w-full">
-          <p className="p-4 mt-5 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500 ">
+        <div className="flex w-full items-center justify-center">
+          <p className="mt-5 flex items-center justify-center gap-3 rounded-md border-2 border-red-500 p-4 text-center text-xl font-semibold tracking-tighter text-red-500">
             Online orders are currently closed.
           </p>
         </div>
@@ -67,20 +67,20 @@ export const ShoppingCart: React.FC = () => {
       )}
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-3 lg:gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2">
             <div className="space-y-3">
               {cartItems.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-[var(--eerie-black-2)] flex items-center justify-center">
+                <div className="py-12 text-center">
+                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-(--eerie-black-2)">
                     <span className="text-2xl">🛒</span>
                   </div>
-                  <h3 className="text-[var(--white)] text-lg font-playfair font-semibold mb-1">
+                  <h3 className="font-playfair mb-1 text-lg font-semibold text-(--white)">
                     Your cart is empty
                   </h3>
-                  <p className="text-[var(--quick-silver)] text-sm font-inter">
+                  <p className="font-inter text-sm text-(--quick-silver)">
                     Add some delicious items to get started
                   </p>
                 </div>

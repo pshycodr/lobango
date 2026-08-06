@@ -17,50 +17,50 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
   };
 
   return (
-    <div className="group bg-[var(--eerie-black-2)] hover:bg-[var(--eerie-black-3)] transition-all duration-200 rounded-lg p-3 border border-[var(--white-alpha-10)] hover:border-[var(--gold-crayola)] hover:border-opacity-20">
+    <div className="group hover:border-opacity-20 rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-2) p-3 transition-all duration-200 hover:border-(--gold-crayola) hover:bg-(--eerie-black-3)">
       <div className="flex items-center gap-3">
         {/* Image */}
-        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-[var(--eerie-black-4)]">
+        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-(--eerie-black-4)">
           <Image
             src={item.image}
             alt={item.name}
             width={48}
             height={48}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
           />
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">
-          <h3 className="text-[var(--white)] text-sm font-medium font-playfair leading-tight mb-1">
+        <div className="min-w-0 flex-1">
+          <h3 className="font-playfair mb-1 text-sm leading-tight font-medium text-(--white)">
             {item.name}
           </h3>
-          <p className="text-[var(--quick-silver)] text-xs font-inter leading-tight">
+          <p className="font-inter text-xs leading-tight text-(--quick-silver)">
             {item.description}
           </p>
         </div>
 
         {/* Price and Controls */}
         <div className="flex items-center gap-3">
-          <span className="text-[var(--gold-crayola)] text-lg font-semibold font-playfair">
+          <span className="font-playfair text-lg font-semibold text-(--gold-crayola)">
             ₹{item.price.toFixed(0)}
           </span>
 
           <div className="flex items-center gap-1">
             <button
               onClick={() => handleQuantityChange(-1)}
-              className="w-6 h-6 rounded border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center hover:bg-[var(--gold-crayola)] hover:text-[var(--smoky-black-1)] transition-all duration-150 text-sm active:scale-95"
+              className="flex h-6 w-6 items-center justify-center rounded border border-(--gold-crayola) text-sm text-(--gold-crayola) transition-all duration-150 hover:bg-(--gold-crayola) hover:text-(--smoky-black-1) active:scale-95"
             >
               −
             </button>
 
-            <span className="text-[var(--white)] w-6 text-center font-inter text-sm font-medium">
+            <span className="font-inter w-6 text-center text-sm font-medium text-(--white)">
               {item.quantity}
             </span>
 
             <button
               onClick={() => handleQuantityChange(1)}
-              className="w-6 h-6 rounded border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center hover:bg-[var(--gold-crayola)] hover:text-[var(--smoky-black-1)] transition-all duration-150 text-sm active:scale-95"
+              className="flex h-6 w-6 items-center justify-center rounded border border-(--gold-crayola) text-sm text-(--gold-crayola) transition-all duration-150 hover:bg-(--gold-crayola) hover:text-(--smoky-black-1) active:scale-95"
             >
               +
             </button>

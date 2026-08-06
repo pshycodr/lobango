@@ -72,18 +72,18 @@ const HeroSection = () => {
 
   return (
     <section
-      className="relative pt-32 h-screen overflow-hidden z-10 text-center"
+      className="relative z-10 h-screen overflow-hidden pt-32 text-center"
       id="home"
     >
       {/* Slider Items */}
-      <ul className=" w-full h-full">
+      <ul className="h-full w-full">
         {slides.map((slide, index) => (
           <li
             key={index}
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full grid place-content-center pt-25 transition-all duration-1000 z-10 ${index === currentSlide ? "opacity-100 visible" : "opacity-0 invisible"}`}
+            className={`absolute top-1/2 left-1/2 z-10 grid h-full w-full -translate-x-1/2 -translate-y-1/2 place-content-center pt-25 transition-all duration-1000 ${index === currentSlide ? "visible opacity-100" : "invisible opacity-0"}`}
           >
             {/* Background Image */}
-            <div className="absolute inset-0 pointer-events-none select-none -z-10">
+            <div className="pointer-events-none absolute inset-0 -z-10 select-none">
               <Image
                 src={slide.image}
                 fill
@@ -103,12 +103,12 @@ const HeroSection = () => {
             <div
               className={`space-y-4 ${index === currentSlide ? "animate-fade-in-up" : ""}`}
             >
-              <p className="text-sm text-[var(--gold-crayola)]  uppercase tracking-wide relative after:content-[''] after:block after:w-25 after:mx-auto after:mt-1.5 after:bg-[url('/assets/images/separator.svg')] after:bg-no-repeat after:bg-center after:h-4">
+              <p className="relative text-sm tracking-wide text-(--gold-crayola) uppercase after:mx-auto after:mt-1.5 after:block after:h-4 after:w-25 after:bg-[url('/assets/images/separator.svg')] after:bg-center after:bg-no-repeat after:content-['']">
                 {slide.subtitle}
               </p>
 
               <h1
-                className={`lg:text-8xl text-5xl text-white ${forum.className} leading-none`}
+                className={`text-5xl text-white lg:text-8xl ${forum.className} leading-none`}
               >
                 {slide.title.split(" ").map((word, i, arr) => (
                   <span key={i}>
@@ -121,21 +121,21 @@ const HeroSection = () => {
                 ))}
               </h1>
 
-              <p className="text-sm lg:text-lg text-amber-50 leading-[var(--lineHeight-4)] mb-10">
+              <p className="mb-10 text-sm leading-(--lineHeight-4) text-amber-50 lg:text-lg">
                 {slide.text}
               </p>
 
-              <div className="flex gap-5  justify-center items-center flex-wrap ">
+              <div className="flex flex-wrap items-center justify-center gap-5">
                 <Link
                   href="/menu"
-                  className="inline-block text-[var(--smoky-black-1)] bg-[var(--gold-crayola)] font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 rounded-lg mt-5"
+                  className="mt-5 inline-block rounded-lg border-2 border-(--gold-crayola) bg-(--gold-crayola) px-11 py-3 font-bold tracking-[3px] text-(--smoky-black-1) uppercase"
                 >
                   Order Now
                 </Link>
                 {isOrderId ? (
                   <Link
                     href="/order-tracking"
-                    className="inline-block text-[var(--gold-crayola)] bg-[var(--smoky-black-1)]  font-bold uppercase tracking-[3px] border-2 border-[var(--gold-crayola)] px-11 py-3 rounded-lg mt-5"
+                    className="mt-5 inline-block rounded-lg border-2 border-(--gold-crayola) bg-(--smoky-black-1) px-11 py-3 font-bold tracking-[3px] text-(--gold-crayola) uppercase"
                   >
                     View Order
                   </Link>
@@ -150,7 +150,7 @@ const HeroSection = () => {
 
       {/* Navigation Buttons */}
       <button
-        className="hidden md:grid absolute z-10 text-[var(--gold-crayola)] text-2xl border border-[var(--gold-crayola)] w-11 h-11 place-items-center top-1/2 left-8 -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-[var(--gold-crayola)] hover:text-black"
+        className="absolute top-1/2 left-8 z-10 hidden h-11 w-11 -translate-y-1/2 rotate-45 place-items-center border border-(--gold-crayola) text-2xl text-(--gold-crayola) transition-all duration-250 hover:bg-(--gold-crayola) hover:text-black md:grid"
         onClick={prevSlide}
         onMouseEnter={stopAutoSlide}
         onMouseLeave={startAutoSlide}
@@ -160,7 +160,7 @@ const HeroSection = () => {
       </button>
 
       <button
-        className="hidden md:grid absolute z-10 text-[var(--gold-crayola)] text-2xl border border-[var(--gold-crayola)] w-11 h-11 place-items-center top-1/2 right-8 -translate-y-1/2 rotate-45 transition-all duration-250 hover:bg-[var(--gold-crayola)] hover:text-black"
+        className="absolute top-1/2 right-8 z-10 hidden h-11 w-11 -translate-y-1/2 rotate-45 place-items-center border border-(--gold-crayola) text-2xl text-(--gold-crayola) transition-all duration-250 hover:bg-(--gold-crayola) hover:text-black md:grid"
         onClick={nextSlide}
         onMouseEnter={stopAutoSlide}
         onMouseLeave={startAutoSlide}
@@ -170,9 +170,9 @@ const HeroSection = () => {
       </button>
 
       {/* Book A Table Button */}
-      {/* <Link href="#reserv" className="absolute bottom-4 right-4 z-20 bg-[var(--gold-crayola)] w-28 h-28 p-3 scale-60 sm:scale-75 lg:bottom-12 lg:right-12 lg:scale-100 flex flex-col items-center justify-center text-center rounded-full  after:absolute after:inset-0 after:border after:border-[var(--gold-crayola)] after:rounded-full after:animate-spin" style={{ animationDuration: '15s' }}>
+      {/* <Link href="#reserv" className="absolute bottom-4 right-4 z-20 bg-(--gold-crayola) w-28 h-28 p-3 scale-60 sm:scale-75 lg:bottom-12 lg:right-12 lg:scale-100 flex flex-col items-center justify-center text-center rounded-full  after:absolute after:inset-0 after:border after:border-(--gold-crayola) after:rounded-full after:animate-spin" style={{ animationDuration: '15s' }}>
         <Image src="/assets/images/hero-icon.png" width={48} height={48} alt="booking icon" className="mb-1.5" />
-        <span className="text-black font-bold uppercase tracking-[var(--letterSpacing-1)] leading-[var(--lineHeight-3)] text-xs">
+        <span className="text-black font-bold uppercase tracking-(--letterSpacing-1) leading-(--lineHeight-3) text-xs">
           Book A Table
         </span>
       </Link> */}

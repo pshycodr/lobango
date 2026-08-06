@@ -21,15 +21,15 @@ export default function OrderIdInput({ onSubmit }: OrderIdInputProps) {
   };
 
   return (
-    <div className="bg-[var(--eerie-black-2)] rounded-lg p-8 border border-[var(--white-alpha-10)]">
-      <div className="max-w-md mx-auto">
-        <div className="text-center mb-8">
+    <div className="rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-2) p-8">
+      <div className="mx-auto max-w-md">
+        <div className="mb-8 text-center">
           <h2
-            className={`${playfair.className} text-2xl font-semibold text-white mb-2`}
+            className={`${playfair.className} mb-2 text-2xl font-semibold text-white`}
           >
             Track Your Order
           </h2>
-          <p className="text-[var(--quick-silver)] text-sm">
+          <p className="text-sm text-(--quick-silver)">
             Enter your order ID to view status
           </p>
         </div>
@@ -41,7 +41,7 @@ export default function OrderIdInput({ onSubmit }: OrderIdInputProps) {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Order ID"
-              className="w-full px-4 py-3 bg-[var(--smoky-black-3)] border border-[var(--white-alpha-20)] rounded-lg text-white placeholder-[var(--quick-silver)] focus:outline-none focus:border-[var(--gold-crayola)] transition-colors duration-200"
+              className="w-full rounded-lg border border-(--white-alpha-20) bg-(--smoky-black-3) px-4 py-3 text-white placeholder-(--quick-silver) transition-colors duration-200 focus:border-(--gold-crayola) focus:outline-none"
               required
               disabled={isSubmitting}
             />
@@ -50,18 +50,18 @@ export default function OrderIdInput({ onSubmit }: OrderIdInputProps) {
           <button
             type="submit"
             disabled={isSubmitting || !inputValue.trim()}
-            className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+            className={`w-full rounded-lg px-4 py-3 font-medium transition-all duration-200 ${
               isSubmitting
-                ? "bg-[var(--quick-silver)] text-[var(--smoky-black-1)] cursor-not-allowed"
-                : "bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] hover:bg-[var(--gold-crayola)]/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                ? "cursor-not-allowed bg-(--quick-silver) text-(--smoky-black-1)"
+                : "bg-(--gold-crayola) text-(--smoky-black-1) hover:bg-(--gold-crayola)/90 disabled:cursor-not-allowed disabled:opacity-50"
             }`}
           >
             {isSubmitting ? "Tracking..." : "Track Order"}
           </button>
         </form>
 
-        <div className="mt-6 p-4 bg-[var(--smoky-black-3)] rounded-lg border border-[var(--white-alpha-10)]">
-          <p className="text-[var(--quick-silver)] text-xs leading-relaxed">
+        <div className="mt-6 rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
+          <p className="text-xs leading-relaxed text-(--quick-silver)">
             Your order ID was sent via email when you placed your order.
           </p>
         </div>

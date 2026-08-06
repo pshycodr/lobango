@@ -22,15 +22,15 @@ const FeaturesSection = () => {
 
   return (
     <section
-      className="relative py-[var(--section-space)] text-center overflow-visible"
+      className="relative overflow-visible py-(--section-space) text-center"
       aria-label="features"
     >
       <div className="container mx-auto px-4">
-        <p className="text-[var(--gold-crayola)] font-bold uppercase tracking-[var(--letterSpacing-2)] mb-3 relative after:content-[''] after:block after:w-25 after:mx-auto after:mt-1.5 after:bg-[url('/assets/images/separator.svg')] after:bg-no-repeat after:bg-center after:h-4">
+        <p className="relative mb-3 font-bold tracking-(--letterSpacing-2) text-(--gold-crayola) uppercase after:mx-auto after:mt-1.5 after:block after:h-4 after:w-25 after:bg-[url('/assets/images/separator.svg')] after:bg-center after:bg-no-repeat after:content-['']">
           Why Choose Us
         </p>
 
-        <h2 className="text-white font-[var(--fontFamily-forum)] mb-10">
+        <h2 className="mb-10 font-(--fontFamily-forum) text-white">
           Our Strength
         </h2>
 
@@ -38,9 +38,9 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <li key={index}>
               <div
-                className={`p-8 pb-10 ${index % 2 === 0 ? "bg-[var(--eerie-black-3)]" : "bg-[var(--smoky-black-3)]"}`}
+                className={`p-8 pb-10 ${index % 2 === 0 ? "bg-(--eerie-black-3)" : "bg-(--smoky-black-3)"}`}
               >
-                <div className="max-w-max mx-auto transition-transform duration-500 hover:scale-x-[-1] hover:rotate-180">
+                <div className="mx-auto max-w-max transition-transform duration-500 hover:scale-x-[-1] hover:rotate-180">
                   <Image
                     src={feature.icon}
                     width={100}
@@ -50,11 +50,11 @@ const FeaturesSection = () => {
                   />
                 </div>
 
-                <h3 className=" text-white font-[var(--fontFamily-forum)] my-5">
+                <h3 className="my-5 font-(--fontFamily-forum) text-white">
                   {feature.title}
                 </h3>
 
-                <p className="text-[var(--quick-silver)] leading-[var(--lineHeight-6)]">
+                <p className="leading-(--lineHeight-6) text-(--quick-silver)">
                   {/* Empty as per original design */}
                 </p>
               </div>
@@ -70,7 +70,7 @@ const FeaturesSection = () => {
           height={115}
           loading="lazy"
           alt="shape"
-          className="hidden xl:block absolute scale-100  opacity-80 -bottom-50 left-10  animate-float"
+          className="animate-float absolute -bottom-50 left-10 hidden scale-100 opacity-80 xl:block"
         />
       </div>
     </section>

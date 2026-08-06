@@ -38,29 +38,27 @@ export default function OrderSummary({
   };
 
   return (
-    <div className="bg-[var(--eerie-black-1)] rounded-lg p-4 mb-4">
-      <h3 className="text-[var(--white)] text-lg font-bold mb-4">
-        Order Summary
-      </h3>
+    <div className="mb-4 rounded-lg bg-(--eerie-black-1) p-4">
+      <h3 className="mb-4 text-lg font-bold text-(--white)">Order Summary</h3>
 
       {/* Order Items - Scrollable on mobile */}
-      <div className="max-h-[50vh] overflow-y-auto mb-4 space-y-3 -mx-2 px-2">
+      <div className="-mx-2 mb-4 max-h-[50vh] space-y-3 overflow-y-auto px-2">
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex items-start gap-3 bg-[var(--eerie-black-2)] rounded-lg p-3 relative"
+            className="relative flex items-start gap-3 rounded-lg bg-(--eerie-black-2) p-3"
           >
             {/* Remove button (mobile-friendly) */}
             <button
               onClick={() => onRemoveItem(item.id)}
-              className="cursor-pointer absolute top-1 right-1 p-1 text-[var(--quick-silver)] hover:text-[var(--gold-crayola)]"
+              className="absolute top-1 right-1 cursor-pointer p-1 text-(--quick-silver) hover:text-(--gold-crayola)"
               aria-label="Remove item"
             >
               <X size={16} />
             </button>
 
             {/* Item image */}
-            <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0">
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg">
               <Image
                 src={item.image}
                 alt={item.name}
@@ -71,18 +69,18 @@ export default function OrderSummary({
             </div>
 
             {/* Item details - Fixed width container */}
-            <div className="flex-1 min-w-0 pr-4">
+            <div className="min-w-0 flex-1 pr-4">
               {" "}
               {/* Added pr-4 for padding right */}
-              <div className="flex justify-between items-start gap-2">
-                <h4 className="text-[var(--white)] text-sm font-semibold flex-1 line-clamp-1 break-words">
+              <div className="flex items-start justify-between gap-2">
+                <h4 className="line-clamp-1 flex-1 text-sm font-semibold wrap-break-word text-(--white)">
                   {item.name}
                 </h4>
-                <p className="text-[var(--gold-crayola)] text-sm font-bold shrink-0">
+                <p className="shrink-0 text-sm font-bold text-(--gold-crayola)">
                   {formatPrice(item.price * item.quantity)}
                 </p>
               </div>
-              <p className="text-[var(--quick-silver)] text-xs line-clamp-2 mt-1 mb-2">
+              <p className="mt-1 mb-2 line-clamp-2 text-xs text-(--quick-silver)">
                 {item.description}
               </p>
               {/* Quantity controls */}
@@ -91,13 +89,13 @@ export default function OrderSummary({
                   onClick={() =>
                     handleQuantityChange(item.id, item.quantity - 1)
                   }
-                  className="w-7 h-7 cursor-pointer rounded-md border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center active:bg-[var(--gold-crayola)] active:text-[var(--smoky-black-1)] transition-colors"
+                  className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-(--gold-crayola) text-(--gold-crayola) transition-colors active:bg-(--gold-crayola) active:text-(--smoky-black-1)"
                   aria-label="Decrease quantity"
                 >
                   <Minus size={12} />
                 </button>
 
-                <span className="text-[var(--white)] text-sm font-medium min-w-[1.5rem] text-center">
+                <span className="min-w-6 text-center text-sm font-medium text-(--white)">
                   {item.quantity}
                 </span>
 
@@ -105,7 +103,7 @@ export default function OrderSummary({
                   onClick={() =>
                     handleQuantityChange(item.id, item.quantity + 1)
                   }
-                  className="w-7 h-7 cursor-pointer rounded-md border border-[var(--gold-crayola)] text-[var(--gold-crayola)] flex items-center justify-center active:bg-[var(--gold-crayola)] active:text-[var(--smoky-black-1)] transition-colors"
+                  className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-(--gold-crayola) text-(--gold-crayola) transition-colors active:bg-(--gold-crayola) active:text-(--smoky-black-1)"
                   aria-label="Increase quantity"
                 >
                   <Plus size={12} />
@@ -117,22 +115,20 @@ export default function OrderSummary({
       </div>
 
       {/* Order Totals */}
-      <div className="border-t border-[var(--eerie-black-3)] pt-4 space-y-2">
+      <div className="space-y-2 border-t border-(--eerie-black-3) pt-4">
         <div className="flex items-center justify-between">
-          <p className="text-[var(--quick-silver)] text-sm">Subtotal</p>
-          <p className="text-[var(--white)] text-sm">{formatPrice(subtotal)}</p>
+          <p className="text-sm text-(--quick-silver)">Subtotal</p>
+          <p className="text-sm text-(--white)">{formatPrice(subtotal)}</p>
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="text-[var(--quick-silver)] text-sm">Delivery Fee</p>
-          <p className="text-[var(--white)] text-sm">
-            {formatPrice(deliveryFee)}
-          </p>
+          <p className="text-sm text-(--quick-silver)">Delivery Fee</p>
+          <p className="text-sm text-(--white)">{formatPrice(deliveryFee)}</p>
         </div>
 
-        <div className="flex items-center justify-between pt-3 border-t border-[var(--eerie-black-3)]">
-          <p className="text-[var(--white)] text-base font-bold">Total</p>
-          <p className="text-[var(--gold-crayola)] text-base font-bold">
+        <div className="flex items-center justify-between border-t border-(--eerie-black-3) pt-3">
+          <p className="text-base font-bold text-(--white)">Total</p>
+          <p className="text-base font-bold text-(--gold-crayola)">
             {formatPrice(total)}
           </p>
         </div>

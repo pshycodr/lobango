@@ -65,10 +65,7 @@ export const ReservationForm = ({
 
       <p className="mb-10 text-center text-amber-50">
         Booking request{" "}
-        <a
-          href="tel:+916296832453"
-          className="text-[var(--gold-crayola)] underline"
-        >
+        <a href="tel:+916296832453" className="text-(--gold-crayola) underline">
           +91 6296832453
         </a>{" "}
         or fill out the order form

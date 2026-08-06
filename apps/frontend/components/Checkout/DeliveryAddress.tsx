@@ -24,40 +24,40 @@ export default function DeliveryAddress({
   };
 
   return (
-    <div className="bg-[var(--eerie-black-1)] rounded-xl p-4 mb-4">
-      <h3 className="text-[var(--white)] text-lg font-bold mb-3">
+    <div className="mb-4 rounded-xl bg-(--eerie-black-1) p-4">
+      <h3 className="mb-3 text-lg font-bold text-(--white)">
         Delivery Address
       </h3>
 
       <button
-        className="flex items-center gap-3 w-full bg-[var(--eerie-black-2)] rounded-lg p-3 active:bg-[var(--eerie-black-3)] transition-colors duration-200 text-left"
+        className="flex w-full items-center gap-3 rounded-lg bg-(--eerie-black-2) p-3 text-left transition-colors duration-200 active:bg-(--eerie-black-3)"
         onClick={onChangeAddress}
         aria-label={
           address ? "Change delivery address" : "Add delivery address"
         }
       >
         {/* Icon with better touch target */}
-        <div className="text-[var(--gold-crayola)] flex items-center justify-center rounded-lg bg-[var(--smoky-black-1)] shrink-0 size-10 active:bg-[var(--smoky-black-2)] border border-[var(--gold-crayola)]">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-(--gold-crayola) bg-(--smoky-black-1) text-(--gold-crayola) active:bg-(--smoky-black-2)">
           <MapPin size={18} />
         </div>
 
         {/* Address content with better mobile spacing */}
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           {address ? (
             <>
-              <p className="text-[var(--white)] text-sm font-semibold line-clamp-1 mb-1">
+              <p className="mb-1 line-clamp-1 text-sm font-semibold text-(--white)">
                 {address.label}
               </p>
-              <p className="text-[var(--quick-silver)] text-xs line-clamp-2">
+              <p className="line-clamp-2 text-xs text-(--quick-silver)">
                 {formatFullAddress(address)}
               </p>
             </>
           ) : (
             <>
-              <p className="text-[var(--white)] text-sm font-semibold mb-1 ">
+              <p className="mb-1 text-sm font-semibold text-(--white)">
                 Add Delivery Address
               </p>
-              <p className="text-[var(--quick-silver)] text-xs">
+              <p className="text-xs text-(--quick-silver)">
                 Tap to add your delivery address
               </p>
             </>
@@ -67,7 +67,7 @@ export default function DeliveryAddress({
         {/* Chevron indicator */}
         <ChevronRight
           size={16}
-          className="text-[var(--quick-silver)] active:text-[var(--gold-crayola)] shrink-0"
+          className="shrink-0 text-(--quick-silver) active:text-(--gold-crayola)"
         />
       </button>
     </div>

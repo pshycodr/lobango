@@ -13,24 +13,24 @@ export const StatusPopup = ({
   onClose: () => void;
   onCopy: (text: string) => void;
 }) => (
-  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-    <div className="bg-[var(--smoky-black-1)] border border-[var(--white-alpha-10)] rounded-lg p-6 max-w-md w-full relative">
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+    <div className="relative w-full max-w-md rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-1) p-6">
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"
+        className="absolute top-4 right-4 text-white/70 transition-colors hover:text-white"
       >
         <X size={20} />
       </button>
 
-      <div className="text-center mb-6">
+      <div className="mb-6 text-center">
         {submitStatus.type === "success" ? (
-          <CheckCircle size={48} className="text-green-400 mx-auto mb-4" />
+          <CheckCircle size={48} className="mx-auto mb-4 text-green-400" />
         ) : (
-          <AlertCircle size={48} className="text-red-400 mx-auto mb-4" />
+          <AlertCircle size={48} className="mx-auto mb-4 text-red-400" />
         )}
 
         <h3
-          className={`text-xl font-bold mb-2 ${
+          className={`mb-2 text-xl font-bold ${
             submitStatus.type === "success" ? "text-green-400" : "text-red-400"
           }`}
         >
@@ -39,7 +39,7 @@ export const StatusPopup = ({
             : "Booking Failed"}
         </h3>
 
-        <p className="text-white/80 mb-4">{submitStatus.message}</p>
+        <p className="mb-4 text-white/80">{submitStatus.message}</p>
 
         {submitStatus.bookingId && (
           <BookingIdSection
@@ -52,7 +52,7 @@ export const StatusPopup = ({
 
       <button
         onClick={onClose}
-        className="w-full bg-[var(--gold-crayola)] text-black font-bold py-3 rounded hover:bg-[var(--gold-crayola)]/80 transition-colors"
+        className="w-full rounded bg-(--gold-crayola) py-3 font-bold text-black transition-colors hover:bg-(--gold-crayola)/80"
       >
         {submitStatus.type === "success" ? "Great!" : "Try Again"}
       </button>

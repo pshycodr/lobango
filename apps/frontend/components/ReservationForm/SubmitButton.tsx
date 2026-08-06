@@ -8,14 +8,14 @@ export const SubmitButton = ({
   <button
     type="submit"
     disabled={isSubmitting || !isFormValid}
-    className={`relative w-full font-bold uppercase tracking-[3px] px-11 py-3 overflow-hidden z-10 transition-all duration-500 group ${
+    className={`group relative z-10 w-full overflow-hidden px-11 py-3 font-bold tracking-[3px] uppercase transition-all duration-500 ${
       isSubmitting || !isFormValid
-        ? "bg-gray-500 text-gray-300 cursor-not-allowed"
-        : "bg-[var(--gold-crayola)] text-black hover:text-white"
+        ? "cursor-not-allowed bg-gray-500 text-gray-300"
+        : "bg-(--gold-crayola) text-black hover:text-white"
     }`}
   >
     {!isSubmitting && (
-      <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-[200%] h-[200%] rounded-full bg-[var(--smoky-black-1)] transition-all duration-500 -z-10 group-hover:bottom-[-50%]"></div>
+      <div className="absolute bottom-full left-1/2 -z-10 h-[200%] w-[200%] -translate-x-1/2 rounded-full bg-(--smoky-black-1) transition-all duration-500 group-hover:bottom-[-50%]"></div>
     )}
     <span
       className={`block transition-transform duration-250 ${isSubmitting ? "" : "group-hover:-translate-y-10"}`}
@@ -23,7 +23,7 @@ export const SubmitButton = ({
       {isSubmitting ? "Booking..." : "Book A Table"}
     </span>
     {!isSubmitting && (
-      <span className="absolute top-full left-1/2 -translate-x-1/2 min-w-max text-white transition-all duration-250 group-hover:top-1/2 group-hover:-translate-y-1/2">
+      <span className="absolute top-full left-1/2 min-w-max -translate-x-1/2 text-white transition-all duration-250 group-hover:top-1/2 group-hover:-translate-y-1/2">
         Book A Table
       </span>
     )}

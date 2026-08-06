@@ -16,7 +16,7 @@ const rubik = Rubik({ subsets: ["latin"] });
 export default function MenuPage() {
   // @ts-ignore
   const [filteredCategories, setFilteredCategories] = useState<Category[]>(
-    menuData.menu,
+    menuData.menu
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,7 +30,7 @@ export default function MenuPage() {
   // console.log(newOrders);
 
   const sectionIds = filteredCategories.map((category) =>
-    category.category.replace(/\s+/g, "-").toLowerCase(),
+    category.category.replace(/\s+/g, "-").toLowerCase()
   );
 
   const activeSection = useScrollSpy(sectionIds, 100);
@@ -38,7 +38,7 @@ export default function MenuPage() {
   const activeCategory =
     filteredCategories.find(
       (category) =>
-        category.category.replace(/\s+/g, "-").toLowerCase() === activeSection,
+        category.category.replace(/\s+/g, "-").toLowerCase() === activeSection
     )?.category ||
     filteredCategories[0]?.category ||
     "";
@@ -81,7 +81,7 @@ export default function MenuPage() {
               item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
               category.category
                 .toLowerCase()
-                .includes(searchQuery.toLowerCase()),
+                .includes(searchQuery.toLowerCase())
           ),
         }))
         .filter((category) => category.items.length > 0);
@@ -105,9 +105,7 @@ export default function MenuPage() {
 
   return (
     <>
-      <div
-        className={`min-h-screen bg-[var(--smoky-black-1)] ${rubik.className}`}
-      >
+      <div className={`min-h-screen bg-(--smoky-black-1) ${rubik.className}`}>
         <div className="flex">
           <MobileMenuToggle
             isOpen={isMobileMenuOpen}

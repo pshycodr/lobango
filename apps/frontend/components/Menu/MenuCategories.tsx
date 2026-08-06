@@ -14,16 +14,16 @@ export const MenuCategories = ({
       <button
         key={category.category}
         onClick={() => onSelectCategory(category.category)}
-        className={`w-full text-left px-4 py-3 rounded-md transition-all duration-200 group ${
+        className={`group w-full rounded-md px-4 py-3 text-left transition-all duration-200 ${
           activeCategory === category.category
-            ? "bg-[var(--white-alpha-10)] text-[var(--gold-crayola)] border-l-2 border-[var(--gold-crayola)]"
-            : "text-[var(--quick-silver)] hover:bg-[var(--white-alpha-10)] hover:text-[var(--white)] hover:pl-5"
+            ? "border-l-2 border-(--gold-crayola) bg-(--white-alpha-10) text-(--gold-crayola)"
+            : "text-(--quick-silver) hover:bg-(--white-alpha-10) hover:pl-5 hover:text-(--white)"
         }`}
       >
         <div className="flex items-center justify-between">
-          <span className="font-normal text-sm">{category.category}</span>
+          <span className="text-sm font-normal">{category.category}</span>
           <span
-            className={`text-xs text-[var(--quick-silver)] ${
+            className={`text-xs text-(--quick-silver) ${
               activeCategory === category.category
                 ? "opacity-100"
                 : "opacity-0 group-hover:opacity-60"

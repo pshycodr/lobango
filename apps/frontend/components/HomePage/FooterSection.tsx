@@ -32,17 +32,17 @@ const FooterSection = () => {
 
   return (
     <footer
-      className="relative py-[var(--section-space)] text-center bg-cover bg-center bg-no-repeat"
+      className="relative bg-cover bg-center bg-no-repeat py-(--section-space) text-center"
       style={{ backgroundImage: "url('/assets/images/footer-bg.jpg')" }}
     >
       <div className="container mx-auto px-4">
-        <div className="grid gap-10 mb-[70px] lg:grid-cols-[0.45fr_1fr_0.45fr] lg:items-center">
+        <div className="mb-[70px] grid gap-10 lg:grid-cols-[0.45fr_1fr_0.45fr] lg:items-center">
           {/* Footer Brand */}
-          <div className="relative py-12 px-10 bg-[var(--smoky-black-1)] bg-[url('/assets/images/footer-form-bg.png')] bg-top bg-repeat lg:order-1 lg:py-25 lg:px-15">
-            <div className="absolute top-0 left-0 w-4 h-full bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
-            <div className="absolute top-0 right-0 w-4 h-full bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
+          <div className="relative bg-(--smoky-black-1) bg-[url('/assets/images/footer-form-bg.png')] bg-top bg-repeat px-10 py-12 lg:order-1 lg:px-15 lg:py-25">
+            <div className="absolute top-0 left-0 h-full w-4 bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
+            <div className="absolute top-0 right-0 h-full w-4 bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
 
-            <Link href="/" className="block max-w-max mx-auto mb-10">
+            <Link href="/" className="mx-auto mb-10 block max-w-max">
               <Image
                 src="/assets/images/logo.png"
                 width={160}
@@ -52,77 +52,71 @@ const FooterSection = () => {
               />
             </Link>
 
-            <address className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] not-italic mb-2">
+            <address className="mb-2 leading-(--lineHeight-3) text-(--quick-silver) not-italic">
               BHATAR, PURBA BORDHAMAN, WEST BENGAL, IND
             </address>
 
             <a
               href="mailto: lobangorestaurant@gmail.com"
-              className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] block my-1.5 transition-colors hover:text-[var(--gold-crayola)]"
+              className="my-1.5 block leading-(--lineHeight-3) text-(--quick-silver) transition-colors hover:text-(--gold-crayola)"
             >
               lobangorestaurant@gmail.com
             </a>
 
             <a
               href="tel:+916296832453"
-              className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] block my-1.5 transition-colors hover:text-[var(--gold-crayola)]"
+              className="my-1.5 block leading-(--lineHeight-3) text-(--quick-silver) transition-colors hover:text-(--gold-crayola)"
             >
               Booking Request : +91 6296832453
             </a>
 
-            <p className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)] mb-10">
+            <p className="mb-10 leading-(--lineHeight-3) text-(--quick-silver)">
               Open : 11:00 am - 10:00 pm
             </p>
 
-            <div className="flex justify-center gap-0.5 mb-6">
-              <div className="w-2 h-2 border border-[var(--gold-crayola)] rotate-45 spin-slow"></div>
-              <div className="w-2 h-2 border border-[var(--gold-crayola)] rotate-45 spin-slow"></div>
-              <div className="w-2 h-2 border border-[var(--gold-crayola)] rotate-45 spin-slow"></div>
+            <div className="mb-6 flex justify-center gap-0.5">
+              <div className="spin-slow h-2 w-2 rotate-45 border border-(--gold-crayola)"></div>
+              <div className="spin-slow h-2 w-2 rotate-45 border border-(--gold-crayola)"></div>
+              <div className="spin-slow h-2 w-2 rotate-45 border border-(--gold-crayola)"></div>
             </div>
 
-            <p className="text-white font-[var(--fontFamily-forum)] mb-8">
-              Like our{" "}
-              <span className="text-[var(--gold-crayola)]">Service!</span> Drop
-              a <span className="text-[var(--gold-crayola)]">Review</span>
+            <p className="mb-8 font-(--fontFamily-forum) text-white">
+              Like our <span className="text-(--gold-crayola)">Service!</span>{" "}
+              Drop a <span className="text-(--gold-crayola)">Review</span>
             </p>
 
             <textarea
               name="message"
               placeholder="Message"
-              className="bg-[var(--eerie-black-2)] text-white h-35 p-5 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] w-full resize-none leading-none mb-5 placeholder:text-white"
+              className="mb-5 h-35 w-full resize-none border border-(--white-alpha-10) bg-(--eerie-black-2) p-5 leading-none text-white transition-colors outline-none placeholder:text-white focus:border-(--gold-crayola)"
             ></textarea>
 
             <form
               onSubmit={handleSubscribe}
-              className="relative flex flex-col gap-4 sm:gap-0 sm:block"
+              className="relative flex flex-col gap-4 sm:block sm:gap-0"
             >
               <div className="relative w-full">
-                <Mail className="absolute top-1/2 left-4 text-white -translate-y-1/2 w-4 h-4 pointer-events-none" />
+                <Mail className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-white" />
                 <input
                   type="email"
                   name="email_address"
                   placeholder="Your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-[var(--eerie-black-2)] text-white h-14 pl-10 pr-5 lg:pr-52 border border-[var(--white-alpha-10)] outline-none transition-colors focus:border-[var(--gold-crayola)] w-full placeholder:text-white"
+                  className="h-14 w-full border border-(--white-alpha-10) bg-(--eerie-black-2) pr-5 pl-10 text-white transition-colors outline-none placeholder:text-white focus:border-(--gold-crayola) lg:pr-52"
                   required
                 />
               </div>
 
               <button
                 type="submit"
-                className="
-                  bg-[var(--gold-crayola)] text-black font-bold uppercase tracking-[3px] 
-                  px-11 overflow-hidden z-10 transition-all duration-500 hover:text-white group min-w-max
-                  h-14
-                  w-full sm:w-auto
-                  relative sm:absolute sm:top-0 sm:right-0 sm:bottom-0"
+                className="group relative z-10 h-14 w-full min-w-max overflow-hidden bg-(--gold-crayola) px-11 font-bold tracking-[3px] text-black uppercase transition-all duration-500 hover:text-white sm:absolute sm:top-0 sm:right-0 sm:bottom-0 sm:w-auto"
               >
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-[200%] h-[200%] rounded-full bg-[var(--smoky-black-1)] transition-all duration-500 -z-10 group-hover:bottom-[-50%]" />
+                <div className="absolute bottom-full left-1/2 -z-10 h-[200%] w-[200%] -translate-x-1/2 rounded-full bg-(--smoky-black-1) transition-all duration-500 group-hover:bottom-[-50%]" />
                 <span className="block transition-transform duration-250 group-hover:-translate-y-10">
                   Send
                 </span>
-                <span className="absolute top-full left-1/2 -translate-x-1/2 min-w-max text-white transition-all duration-250 group-hover:top-1/2 group-hover:-translate-y-1/2">
+                <span className="absolute top-full left-1/2 min-w-max -translate-x-1/2 text-white transition-all duration-250 group-hover:top-1/2 group-hover:-translate-y-1/2">
                   Subscribe
                 </span>
               </button>
@@ -135,7 +129,7 @@ const FooterSection = () => {
               <li key={index}>
                 <Link
                   href={item.href}
-                  className="text-[var(--quick-silver)] font-bold uppercase tracking-[var(--letterSpacing-4)] mx-auto transition-colors hover:text-[var(--gold-crayola)] block max-w-max"
+                  className="mx-auto block max-w-max font-bold tracking-(--letterSpacing-4) text-(--quick-silver) uppercase transition-colors hover:text-(--gold-crayola)"
                 >
                   {item.label}
                 </Link>
@@ -151,7 +145,7 @@ const FooterSection = () => {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--quick-silver)] font-bold uppercase tracking-[var(--letterSpacing-4)] mx-auto transition-colors hover:text-[var(--gold-crayola)] block max-w-max"
+                  className="mx-auto block max-w-max font-bold tracking-(--letterSpacing-4) text-(--quick-silver) uppercase transition-colors hover:text-(--gold-crayola)"
                 >
                   {item.label}
                 </a>
@@ -161,13 +155,13 @@ const FooterSection = () => {
         </div>
 
         {/* Copyright */}
-        <div className="pt-6 border-t border-[var(--white-alpha-20)]">
-          <p className="text-[var(--quick-silver)] leading-[var(--lineHeight-3)]">
+        <div className="border-t border-(--white-alpha-20) pt-6">
+          <p className="leading-(--lineHeight-3) text-(--quick-silver)">
             &copy; 2025 labanga. All Rights Reserved | Crafted by{" "}
             <a
               href="https://webcheap.in"
               target="_blank"
-              className="text-[var(--gold-crayola)] underline"
+              className="text-(--gold-crayola) underline"
             >
               webcheap.in
             </a>

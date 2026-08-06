@@ -19,14 +19,14 @@ export default function OrderItems({ items, total }: OrderItemsProps) {
   };
 
   return (
-    <div className="bg-[var(--eerie-black-2)] rounded-xl p-6 md:p-8 border border-[var(--white-alpha-10)]">
-      <div className="flex items-center justify-between mb-6">
+    <div className="rounded-xl border border-(--white-alpha-10) bg-(--eerie-black-2) p-6 md:p-8">
+      <div className="mb-6 flex items-center justify-between">
         <h2
-          className={`${playfair.className} text-xl md:text-2xl font-semibold text-[var(--gold-crayola)]`}
+          className={`${playfair.className} text-xl font-semibold text-(--gold-crayola) md:text-2xl`}
         >
           Your Order
         </h2>
-        <div className="bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] px-3 py-1 rounded-full text-sm font-semibold">
+        <div className="rounded-full bg-(--gold-crayola) px-3 py-1 text-sm font-semibold text-(--smoky-black-1)">
           {items.length} item{items.length > 1 ? "s" : ""}
         </div>
       </div>
@@ -35,26 +35,26 @@ export default function OrderItems({ items, total }: OrderItemsProps) {
         {items.map((item, index) => (
           <div
             key={index}
-            className="group hover:bg-[var(--smoky-black-3)] transition-all duration-300 rounded-lg p-4 border border-transparent hover:border-[var(--white-alpha-10)]"
+            className="group rounded-lg border border-transparent p-4 transition-all duration-300 hover:border-(--white-alpha-10) hover:bg-(--smoky-black-3)"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
+                <div className="mb-2 flex items-center space-x-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-(--gold-crayola) text-sm font-bold text-(--smoky-black-1)">
                     {item.quantity}
                   </div>
-                  <h3 className="text-[var(--white)] font-semibold text-lg group-hover:text-[var(--gold-crayola)] transition-colors">
+                  <h3 className="text-lg font-semibold text-(--white) transition-colors group-hover:text-(--gold-crayola)">
                     {item.name}
                   </h3>
                 </div>
                 <div className="ml-11">
-                  <p className="text-[var(--quick-silver)] text-sm">
+                  <p className="text-sm text-(--quick-silver)">
                     {formatPrice(item.price)} × {item.quantity}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-[var(--gold-crayola)] font-bold text-lg">
+                <p className="text-lg font-bold text-(--gold-crayola)">
                   {formatPrice(item.price * item.quantity)}
                 </p>
               </div>
@@ -63,22 +63,22 @@ export default function OrderItems({ items, total }: OrderItemsProps) {
         ))}
       </div>
 
-      <div className="mt-8 bg-gradient-to-r from-[var(--gold-crayola)] to-[var(--gold-crayola)] p-0.5 rounded-xl">
-        <div className="bg-[var(--eerie-black-2)] rounded-xl p-6">
+      <div className="mt-8 rounded-xl bg-linear-to-r from-(--gold-crayola) to-(--gold-crayola) p-0.5">
+        <div className="rounded-xl bg-(--eerie-black-2) p-6">
           <div className="flex items-center justify-between">
             <div>
               <span
-                className={`${playfair.className} text-xl font-bold text-[var(--white)] block`}
+                className={`${playfair.className} block text-xl font-bold text-(--white)`}
               >
                 Total Amount
               </span>
-              <span className="text-[var(--quick-silver)] text-sm">
+              <span className="text-sm text-(--quick-silver)">
                 Including all taxes
               </span>
             </div>
             <div className="text-right">
               <span
-                className={`text-2xl font-bold text-[var(--gold-crayola)] animate-pulse`}
+                className={`animate-pulse text-2xl font-bold text-(--gold-crayola)`}
               >
                 {formatPrice(total)}
               </span>

@@ -7,24 +7,24 @@ export const MenuHero = () => {
   const { newOrders } = usePermissionsStore();
 
   return (
-    <div className="mb-16 text-center px-4">
+    <div className="mb-16 px-4 text-center">
       <h2
-        className={`text-3xl md:text-4xl lg:text-5xl font-light text-[var(--white)] mb-6 ${playfair.className} tracking-wide`}
+        className={`mb-6 text-3xl font-light text-(--white) md:text-4xl lg:text-5xl ${playfair.className} tracking-wide`}
       >
         Our Menu
       </h2>
-      <p className="text-[var(--quick-silver)] text-base lg:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+      <p className="mx-auto max-w-2xl text-base leading-relaxed font-light text-(--quick-silver) lg:text-lg">
         Carefully crafted dishes that celebrate flavor, tradition, and culinary
         artistry
       </p>
-      <div className="flex justify-center items-center gap-4 mt-8">
-        <div className="h-px w-12 bg-[var(--gold-crayola)] opacity-40"></div>
-        <div className="w-1 h-1 bg-[var(--gold-crayola)] rounded-full opacity-60"></div>
-        <div className="h-px w-12 bg-[var(--gold-crayola)] opacity-40"></div>
+      <div className="mt-8 flex items-center justify-center gap-4">
+        <div className="h-px w-12 bg-(--gold-crayola) opacity-40"></div>
+        <div className="h-1 w-1 rounded-full bg-(--gold-crayola) opacity-60"></div>
+        <div className="h-px w-12 bg-(--gold-crayola) opacity-40"></div>
       </div>
       {newOrders === false ? (
-        <div className="flex justify-center items-center w-full">
-          <p className="p-4 mt-5 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500 ">
+        <div className="flex w-full items-center justify-center">
+          <p className="mt-5 flex items-center justify-center gap-3 rounded-md border-2 border-red-500 p-4 text-center text-xl font-semibold tracking-tighter text-red-500">
             Online orders are currently closed.
           </p>
         </div>

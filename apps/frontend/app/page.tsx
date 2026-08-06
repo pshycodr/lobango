@@ -30,7 +30,7 @@ export default function Home() {
       <Preloader />
       <Header />
 
-      <main className="bg-[var(--eerie-black-1)]">
+      <main className="bg-(--eerie-black-1)">
         <HeroSection />
         <ServiceSection />
         <HomeMenuSection />

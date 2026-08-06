@@ -44,13 +44,13 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
   }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--smoky-black-1)] relative overflow-hidden flex items-center justify-center p-4 md:p-6">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-(--smoky-black-1) p-4 md:p-6">
       {/* Animated Background Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute animate-float opacity-20"
+            className="animate-float absolute opacity-20"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -58,27 +58,27 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
               animationDuration: `${3 + Math.random() * 2}s`,
             }}
           >
-            <div className="w-1 h-1 bg-[var(--gold-crayola)] rounded-full"></div>
+            <div className="h-1 w-1 rounded-full bg-(--gold-crayola)"></div>
           </div>
         ))}
       </div>
 
       {/* Success Ripple Effect */}
       {showSuccess && (
-        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-10">
-          <div className="animate-ripple-1 bg-[var(--gold-crayola)] opacity-20 rounded-full"></div>
-          <div className="animate-ripple-2 bg-[var(--gold-crayola)] opacity-15 rounded-full"></div>
-          <div className="animate-ripple-3 bg-[var(--gold-crayola)] opacity-10 rounded-full"></div>
+        <div className="pointer-events-none fixed inset-0 z-10 flex items-center justify-center">
+          <div className="animate-ripple-1 rounded-full bg-(--gold-crayola) opacity-20"></div>
+          <div className="animate-ripple-2 rounded-full bg-(--gold-crayola) opacity-15"></div>
+          <div className="animate-ripple-3 rounded-full bg-(--gold-crayola) opacity-10"></div>
         </div>
       )}
 
       {/* Confetti Animation */}
       {showSuccess && (
-        <div className="fixed inset-0 pointer-events-none z-20">
+        <div className="pointer-events-none fixed inset-0 z-20">
           {[...Array(30)].map((_, i) => (
             <div
               key={i}
-              className="absolute animate-confetti"
+              className="animate-confetti absolute"
               style={{
                 left: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 1}s`,
@@ -86,7 +86,7 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
               }}
             >
               <div
-                className="w-2 h-2 rounded-full"
+                className="h-2 w-2 rounded-full"
                 style={{
                   backgroundColor:
                     Math.random() > 0.5
@@ -99,95 +99,95 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
         </div>
       )}
 
-      <div className="w-full max-w-sm mx-auto relative z-30">
+      <div className="relative z-30 mx-auto w-full max-w-sm">
         {/* Main Success Animation Container */}
         <div className="text-center">
           {/* Success Icon with Animation */}
           <div
-            className={`relative mb-6 md:mb-8 transform transition-all duration-1000 ${
+            className={`relative mb-6 transform transition-all duration-1000 md:mb-8 ${
               showSuccess ? "scale-100 opacity-100" : "scale-0 opacity-0"
             }`}
           >
             {/* Pulsing Background Ring */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 md:w-24 md:h-24 bg-[var(--gold-crayola)] opacity-20 rounded-full animate-ping"></div>
+              <div className="h-20 w-20 animate-ping rounded-full bg-(--gold-crayola) opacity-20 md:h-24 md:w-24"></div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
               <div
-                className="w-28 h-28 md:w-32 md:h-32 bg-[var(--gold-crayola)] opacity-10 rounded-full animate-ping"
+                className="h-28 w-28 animate-ping rounded-full bg-(--gold-crayola) opacity-10 md:h-32 md:w-32"
                 style={{ animationDelay: "0.5s" }}
               ></div>
             </div>
 
             {/* Main Success Icon */}
-            <div className="relative flex items-center justify-center w-16 h-16 md:w-20 md:h-20 mx-auto bg-[var(--gold-crayola)] rounded-full shadow-lg animate-bounce-once">
-              <CheckCircle className="w-8 h-8 md:w-10 md:h-10 text-[var(--smoky-black-1)]" />
+            <div className="animate-bounce-once relative mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-(--gold-crayola) shadow-lg md:h-20 md:w-20">
+              <CheckCircle className="h-8 w-8 text-(--smoky-black-1) md:h-10 md:w-10" />
             </div>
 
             {/* Floating Sparkles around icon */}
-            <div className="absolute -top-2 -right-2 animate-sparkle-1">
-              <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-[var(--gold-crayola)]" />
+            <div className="animate-sparkle-1 absolute -top-2 -right-2">
+              <Sparkles className="h-3 w-3 text-(--gold-crayola) md:h-4 md:w-4" />
             </div>
-            <div className="absolute -bottom-2 -left-2 animate-sparkle-2">
-              <Sparkles className="w-2.5 h-2.5 md:w-3 md:h-3 text-[var(--gold-crayola)]" />
+            <div className="animate-sparkle-2 absolute -bottom-2 -left-2">
+              <Sparkles className="h-2.5 w-2.5 text-(--gold-crayola) md:h-3 md:w-3" />
             </div>
-            <div className="absolute top-0 -left-4 animate-sparkle-3">
-              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[var(--gold-crayola)] rounded-full"></div>
+            <div className="animate-sparkle-3 absolute top-0 -left-4">
+              <div className="h-1.5 w-1.5 rounded-full bg-(--gold-crayola) md:h-2 md:w-2"></div>
             </div>
           </div>
 
           {/* Success Message */}
           <div
-            className={`mb-6 md:mb-8 transform transition-all duration-800 delay-300 ${
+            className={`mb-6 transform transition-all delay-300 duration-800 md:mb-8 ${
               showSuccess
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0"
             }`}
           >
-            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-[var(--white)] mb-2 md:mb-3 leading-tight">
+            <h1 className="mb-2 text-xl leading-tight font-bold text-(--white) md:mb-3 md:text-2xl lg:text-3xl">
               Payment Successful! 🎉
             </h1>
-            <p className="text-[var(--quick-silver)] text-sm md:text-base mb-1 md:mb-2 leading-relaxed">
+            <p className="mb-1 text-sm leading-relaxed text-(--quick-silver) md:mb-2 md:text-base">
               Thank you {customerName}!
             </p>
-            <p className="text-[var(--quick-silver)] text-xs md:text-sm mb-4 md:mb-6 leading-relaxed">
+            <p className="mb-4 text-xs leading-relaxed text-(--quick-silver) md:mb-6 md:text-sm">
               Your order has been confirmed and we&apos;re preparing it with
               love
             </p>
 
             {/* Payment Details Card */}
-            <div className="bg-[var(--eerie-black-2)] rounded-xl md:rounded-2xl p-4 md:p-6 border border-[var(--eerie-black-3)] shadow-lg">
-              <div className="flex justify-between items-center mb-3 md:mb-4">
-                <span className="text-[var(--quick-silver)] text-xs md:text-sm">
+            <div className="rounded-xl border border-(--eerie-black-3) bg-(--eerie-black-2) p-4 shadow-lg md:rounded-2xl md:p-6">
+              <div className="mb-3 flex items-center justify-between md:mb-4">
+                <span className="text-xs text-(--quick-silver) md:text-sm">
                   Amount Paid
                 </span>
-                <span className="text-[var(--gold-crayola)] text-xl md:text-2xl font-bold">
+                <span className="text-xl font-bold text-(--gold-crayola) md:text-2xl">
                   ₹{amount.toFixed(2)}
                 </span>
               </div>
-              <div className="flex justify-between items-center mb-3 md:mb-4">
-                <span className="text-[var(--quick-silver)] text-xs md:text-sm">
+              <div className="mb-3 flex items-center justify-between md:mb-4">
+                <span className="text-xs text-(--quick-silver) md:text-sm">
                   Order ID
                 </span>
-                <span className="text-[var(--white)] text-xs md:text-sm font-mono truncate max-w-[120px] md:max-w-[160px]">
+                <span className="max-w-[120px] truncate font-mono text-xs text-(--white) md:max-w-[160px] md:text-sm">
                   {orderId}
                 </span>
               </div>
-              <div className="flex justify-between items-center mb-3 md:mb-4">
-                <span className="text-[var(--quick-silver)] text-xs md:text-sm">
+              <div className="mb-3 flex items-center justify-between md:mb-4">
+                <span className="text-xs text-(--quick-silver) md:text-sm">
                   Payment ID
                 </span>
-                <span className="text-[var(--white)] text-2xs md:text-xs font-mono truncate max-w-[120px] md:max-w-[160px]">
+                <span className="text-2xs max-w-[120px] truncate font-mono text-(--white) md:max-w-[160px] md:text-xs">
                   {paymentId}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-[var(--quick-silver)] text-xs md:text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-(--quick-silver) md:text-sm">
                   Status
                 </span>
                 <div className="flex items-center gap-1 md:gap-2">
-                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-green-400 text-xs md:text-sm font-medium">
+                  <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500 md:h-2 md:w-2"></div>
+                  <span className="text-xs font-medium text-green-400 md:text-sm">
                     Completed
                   </span>
                 </div>
@@ -197,42 +197,42 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
 
           {/* Action Buttons - Appear after 2 seconds */}
           <div
-            className={`space-y-2 md:space-y-3 transform transition-all duration-700 ${
+            className={`transform space-y-2 transition-all duration-700 md:space-y-3 ${
               showButton
-                ? "translate-y-0 opacity-100 scale-100"
-                : "translate-y-8 opacity-0 scale-95"
+                ? "translate-y-0 scale-100 opacity-100"
+                : "translate-y-8 scale-95 opacity-0"
             }`}
           >
             <button
               onClick={onViewOrder}
-              className="w-full bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] font-bold py-3 md:py-4 px-4 md:px-6 rounded-xl md:rounded-2xl hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 group shadow-lg active:scale-95"
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-(--gold-crayola) px-4 py-3 font-bold text-(--smoky-black-1) shadow-lg transition-all duration-300 hover:brightness-110 active:scale-95 md:gap-3 md:rounded-2xl md:px-6 md:py-4"
             >
               <span className="text-sm md:text-base">View Order Status</span>
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 md:h-5 md:w-5" />
             </button>
 
             {/* Secondary Button */}
             <button
               onClick={onGoHome}
-              className="w-full bg-[var(--eerie-black-2)] border border-[var(--eerie-black-3)] text-[var(--quick-silver)] font-medium py-2.5 md:py-3 px-4 md:px-6 rounded-xl md:rounded-2xl hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)] transition-all duration-300 active:scale-95 text-sm md:text-base"
+              className="w-full rounded-xl border border-(--eerie-black-3) bg-(--eerie-black-2) px-4 py-2.5 text-sm font-medium text-(--quick-silver) transition-all duration-300 hover:bg-(--eerie-black-3) hover:text-(--white) active:scale-95 md:rounded-2xl md:px-6 md:py-3 md:text-base"
             >
               Continue Shopping
             </button>
 
             {/* Subtle hint text */}
-            <p className="text-[var(--quick-silver)] text-2xs md:text-xs mt-2 md:mt-3 opacity-75">
+            <p className="text-2xs mt-2 text-(--quick-silver) opacity-75 md:mt-3 md:text-xs">
               Track your order in real-time
             </p>
           </div>
         </div>
 
         {/* Bottom Decorative Elements */}
-        <div className="absolute -bottom-8 md:-bottom-10 left-1/2 transform -translate-x-1/2 pointer-events-none">
+        <div className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 transform md:-bottom-10">
           <div className="flex gap-1 md:gap-2">
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className={`w-1.5 h-1.5 md:w-2 md:h-2 bg-[var(--gold-crayola)] rounded-full animate-bounce opacity-60 ${
+                className={`h-1.5 w-1.5 animate-bounce rounded-full bg-(--gold-crayola) opacity-60 md:h-2 md:w-2 ${
                   showSuccess ? "animate-bounce" : ""
                 }`}
                 style={{ animationDelay: `${i * 0.2}s` }}
