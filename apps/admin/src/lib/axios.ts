@@ -1,7 +1,14 @@
 import axios from "axios";
 
+declare const process: {
+  env: {
+    BACKEND_URL?: string;
+    [key: string]: string | undefined;
+  };
+};
+
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8787",
+  baseURL: process.env.BACKEND_URL || "http://localhost:8787",
   withCredentials: true,
 });
 

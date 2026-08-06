@@ -1,14 +1,15 @@
 import api from "@/lib/axios";
 import {
-    Booking,
-    BookingResponse,
-    SubmitStatus,
+  Booking,
+  BookingResponse,
+  SubmitStatus,
 } from "@lobango/contracts/bookings";
+import type { GetNewBookingPermissionResponse } from "@lobango/contracts/permissions";
 import { useEffect, useState } from "react";
 import {
-    copyToClipboard,
-    getErrorMessage,
-    prepareBookingData,
+  copyToClipboard,
+  getErrorMessage,
+  prepareBookingData,
 } from "../utils/bookingUtils";
 
 export const useBooking = () => {
@@ -31,14 +32,16 @@ export const useBooking = () => {
   const [copied, setCopied] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [isBookingAllowed, setIsBookingAllowed] = useState<boolean | null>(
-    null,
+    null
   );
 
   useEffect(() => {
     const fetchPermission = async () => {
       try {
-        const res = await api.get("/api/v1/permission/new-booking");
-        setIsBookingAllowed(res.data);
+        const res = await api.get<GetNewBookingPermissionResponse>(
+          "/api/v1/permission/new-booking"
+        );
+        setIsBookingAllowed(res.data.new_bookings);
       } catch (error) {
         console.error("Failed to fetch booking permission:", error);
         setIsBookingAllowed(false);
@@ -78,7 +81,7 @@ export const useBooking = () => {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -131,7 +134,7 @@ export const useBooking = () => {
       if (error.response?.data) {
         const errorMessage = getErrorMessage(
           error.response,
-          error.response.data,
+          error.response.data
         );
         setSubmitStatus({
           type: "error",

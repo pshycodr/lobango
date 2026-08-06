@@ -1,3 +1,12 @@
+import type {
+  GetNewBookingPermissionResponse,
+  GetNewOrderPermissionResponse,
+  SetNewBookingPermissionRequest,
+  SetNewBookingPermissionResponse,
+  SetNewOrderPermissionRequest,
+  SetNewOrderPermissionResponse,
+} from "@lobango/contracts/permissions";
+import type { AxiosResponse } from "axios";
 import { create } from "zustand";
 import api from "../../lib/axios";
 
@@ -19,13 +28,18 @@ export const usePermissionsStore = create<AdminPermissionState>((set) => ({
     set({ loading: true });
     try {
       const [ordersRes, bookingsRes] = await Promise.all([
-        api.get("/api/v1/permission/new-order", { withCredentials: true }),
-        api.get("/api/v1/permission/new-booking", { withCredentials: true }),
+        api.get<GetNewOrderPermissionResponse>("/api/v1/permission/new-order", {
+          withCredentials: true,
+        }),
+        api.get<GetNewBookingPermissionResponse>(
+          "/api/v1/permission/new-booking",
+          { withCredentials: true }
+        ),
       ]);
 
       set({
-        newOrders: ordersRes.data, // API returns boolean directly
-        newBookings: bookingsRes.data, // API returns boolean directly
+        newOrders: ordersRes.data.new_orders,
+        newBookings: bookingsRes.data.new_bookings,
         loading: false,
       });
     } catch (error) {
@@ -34,13 +48,21 @@ export const usePermissionsStore = create<AdminPermissionState>((set) => ({
     }
   },
 
-  setNewOrderPermission: async (allowed) => {
+  setNewOrderPermission: async (allowed: boolean) => {
     set({ loading: true });
     try {
-      await api.post("/api/v1/admin/permission/update/new-orders", {
+      const { data } = await api.post<
+        SetNewOrderPermissionResponse,
+        AxiosResponse<SetNewOrderPermissionResponse>,
+        SetNewOrderPermissionRequest
+      >("/api/v1/admin/permission/update/new-orders", {
         value: allowed,
       });
-      set({ newOrders: allowed, loading: false });
+
+      set({
+        newOrders: data.new_orders,
+        loading: false,
+      });
     } catch (error) {
       console.error("Failed to update new order permission", error);
       set({ loading: false });
@@ -48,13 +70,21 @@ export const usePermissionsStore = create<AdminPermissionState>((set) => ({
     }
   },
 
-  setNewBookingPermission: async (allowed) => {
+  setNewBookingPermission: async (allowed: boolean) => {
     set({ loading: true });
     try {
-      await api.post("/api/v1/admin/permission/update/new-bookings", {
+      const { data } = await api.post<
+        SetNewBookingPermissionResponse,
+        AxiosResponse<SetNewBookingPermissionResponse>,
+        SetNewBookingPermissionRequest
+      >("/api/v1/admin/permission/update/new-bookings", {
         value: allowed,
       });
-      set({ newBookings: allowed, loading: false });
+
+      set({
+        newBookings: data.new_bookings,
+        loading: false,
+      });
     } catch (error) {
       console.error("Failed to update new booking permission", error);
       set({ loading: false });

@@ -1,5 +1,9 @@
 import { create } from "zustand";
 import api from "@/lib/axios";
+import {
+  GetNewBookingPermissionResponse,
+  GetNewOrderPermissionResponse,
+} from "@lobango/contracts/permissions";
 
 interface PermissionsState {
   newOrders: boolean | null;
@@ -18,13 +22,15 @@ export const usePermissionsStore = create<PermissionsState>((set) => ({
       set({ loading: true });
 
       const [ordersRes, bookingsRes] = await Promise.all([
-        api.get("/api/v1/permission/new-order"),
-        api.get("/api/v1/permission/new-booking"),
+        api.get<GetNewOrderPermissionResponse>("/api/v1/permission/new-order"),
+        api.get<GetNewBookingPermissionResponse>(
+          "/api/v1/permission/new-booking"
+        ),
       ]);
 
       set({
-        newOrders: Boolean(ordersRes.data),
-        newBookings: Boolean(bookingsRes.data),
+        newOrders: ordersRes.data.new_orders,
+        newBookings: bookingsRes.data.new_bookings,
         loading: false,
       });
     } catch (error) {

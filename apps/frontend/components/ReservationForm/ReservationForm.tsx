@@ -1,16 +1,16 @@
 import { Clock, User } from "lucide-react";
 import { Forum } from "next/font/google";
 import {
-    personOptions,
-    personValues,
-    timeOptions,
-    timeValues,
+  personOptions,
+  personValues,
+  timeOptions,
+  timeValues,
 } from "../../utils/bookingUtils";
 import {
-    DatePickerInput,
-    SelectInput,
-    TextAreaInput,
-    TextInput,
+  DatePickerInput,
+  SelectInput,
+  TextAreaInput,
+  TextInput,
 } from "./FormInputs";
 import { SubmitButton } from "./SubmitButton";
 
@@ -29,7 +29,7 @@ interface ReservationFormProps {
   onInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    >
   ) => void;
   onDateChange: (date: Date | null) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -52,18 +52,18 @@ export const ReservationForm = ({
   return (
     <form className="p-10 lg:p-16" onSubmit={onSubmit}>
       {isBookingAllowed === false ? (
-        <div className="p-8 text-center text-red-500 text-xl font-semibold flex justify-center items-center gap-3 tracking-tighter border-2 rounded-md border-red-500 mb-5">
+        <div className="mb-5 flex items-center justify-center gap-3 rounded-md border-2 border-red-500 p-8 text-center text-xl font-semibold tracking-tighter text-red-500">
           <p>Bookings are currently closed. Please check back later.</p>
         </div>
       ) : (
         ""
       )}
 
-      <h2 className={`text-3xl text-white ${forum.className} text-center mb-6`}>
+      <h2 className={`text-3xl text-white ${forum.className} mb-6 text-center`}>
         Online Reservation
       </h2>
 
-      <p className="text-center mb-10 text-amber-50">
+      <p className="mb-10 text-center text-amber-50">
         Booking request{" "}
         <a
           href="tel:+916296832453"
@@ -74,7 +74,7 @@ export const ReservationForm = ({
         or fill out the order form
       </p>
 
-      <div className="grid gap-5 mb-5 md:grid-cols-2">
+      <div className="mb-5 grid gap-5 md:grid-cols-2">
         <TextInput
           name="name"
           placeholder="Your Name"
@@ -108,7 +108,7 @@ export const ReservationForm = ({
         />
       </div>
 
-      <div className="grid gap-5 mb-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mb-5 grid gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <SelectInput
           name="person"
           value={formData.person}
