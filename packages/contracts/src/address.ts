@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import { Briefcase, Building2, Home } from "lucide-react";
 
 export interface Address {
@@ -22,7 +23,11 @@ export interface AddressModalProps {
   currentAddress?: Address;
 }
 
-export const ADDRESS_TYPES = [
+export const ADDRESS_TYPES: Array<{
+  type: Address["type"];
+  label: string;
+  icon: LucideIcon;
+}> = [
   { type: "home" as const, label: "Home", icon: Home },
   { type: "work" as const, label: "Work", icon: Briefcase },
   { type: "other" as const, label: "Other", icon: Building2 },

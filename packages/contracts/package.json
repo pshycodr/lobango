@@ -5,17 +5,19 @@
     "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": "./index.ts",
-    "./address": "./address.ts",
-    "./bookings": "./bookings.ts",
-    "./cart": "./cart.ts",
-    "./menu": "./menu.ts",
-    "./order": "./order.ts",
-    "./admin": "./admin/index.ts",
-    "./permissions": "./permissions.ts"
+    ".": "./src/index.ts",
+    "./address": "./src/address.ts",
+    "./bookings": "./src/bookings.ts",
+    "./menu": "./src/menu.ts",
+    "./order": "./src/order.ts",
+    "./permissions": "./src/permissions.ts",
+    "./admin": "./src/admin/index.ts"
   },
   "dependencies": {
     "zod": "^4.4.3",
     "lucide-react": "^1.25.0"
+  },
+  "devDependencies": {
+    "@lobango/typescript-config": "workspace:*"
   }
 }
