@@ -6,10 +6,10 @@ const FilterButton: React.FC<{
 }> = ({ label, isActive, count, onClick }) => (
   <button
     onClick={onClick}
-    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+    className={`rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 ${
       isActive
-        ? "bg-[var(--gold-crayola)] text-[var(--smoky-black-1)]"
-        : "bg-[var(--eerie-black-2)] text-[var(--quick-silver)] hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)]"
+        ? "bg-(--gold-crayola) text-(--smoky-black-1)"
+        : "bg-(--eerie-black-2) text-(--quick-silver) hover:bg-(--eerie-black-3) hover:text-(--white)"
     }`}
   >
     {label} {count > 0 && `(${count})`}

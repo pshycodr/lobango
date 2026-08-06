@@ -108,7 +108,7 @@ const AdminSettingsPage: React.FC = () => {
 
   const downloadForMobile = async (
     workbook: XLSX.WorkBook,
-    filename: string,
+    filename: string
   ) => {
     try {
       const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "base64" });
@@ -180,7 +180,7 @@ const AdminSettingsPage: React.FC = () => {
     setDownloading(true);
     try {
       const response = await api.get<DownloadResponse>(
-        "/api/v1/admin/download-data",
+        "/api/v1/admin/download-data"
       );
 
       if (!response.data.success) {
@@ -226,7 +226,7 @@ const AdminSettingsPage: React.FC = () => {
           Email: customer.email || "N/A",
           Phone: customer.phone || "N/A",
           Source: customer.source,
-        })),
+        }))
       );
 
       XLSX.utils.book_append_sheet(workbook, customerSheet, "Customer Data");
@@ -238,7 +238,7 @@ const AdminSettingsPage: React.FC = () => {
             Name: customer.name || "N/A",
             Email: customer.email || "N/A",
             Phone: customer.phone || "N/A",
-          })),
+          }))
         );
         XLSX.utils.book_append_sheet(workbook, ordersSheet, "Orders");
       }
@@ -250,7 +250,7 @@ const AdminSettingsPage: React.FC = () => {
             Name: customer.name || "N/A",
             Email: customer.email || "N/A",
             Phone: customer.phone || "N/A",
-          })),
+          }))
         );
         XLSX.utils.book_append_sheet(workbook, bookingsSheet, "Bookings");
       }
@@ -261,7 +261,7 @@ const AdminSettingsPage: React.FC = () => {
 
       const isMobile =
         /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent,
+          navigator.userAgent
         ) || window.Capacitor?.isNativePlatform();
 
       if (isMobile) {
@@ -278,37 +278,37 @@ const AdminSettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--smoky-black-1)] text-[var(--white)]">
-      <header className="sticky top-0 z-40 bg-[var(--smoky-black-1)] bg-opacity-95 backdrop-blur-md border-b border-[var(--eerie-black-4)]">
-        <div className="flex items-center p-4 pb-3 justify-between max-w-4xl mx-auto">
-          <h1 className="text-lg md:text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">
+    <div className="min-h-screen bg-(--smoky-black-1) text-(--white)">
+      <header className="bg-opacity-95 sticky top-0 z-40 border-b border-(--eerie-black-4) bg-(--smoky-black-1) backdrop-blur-md">
+        <div className="mx-auto flex max-w-4xl items-center justify-between p-4 pb-3">
+          <h1 className="flex-1 pr-10 text-center text-lg leading-tight font-bold tracking-[-0.015em] md:text-xl">
             Settings
           </h1>
         </div>
       </header>
 
-      <main className="flex-1 px-4 pt-5 pb-24 md:pb-8 max-w-4xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+      <main className="mx-auto max-w-4xl flex-1 px-4 pt-5 pb-24 md:pb-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           <section className="lg:col-span-2">
             <SectionHeader
               title="Razor-Pay Settings"
               icon={<CreditCard size={24} />}
             />
             <SettingsCard>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="text-[var(--white)] flex items-center justify-center rounded-xl bg-[var(--eerie-black-4)] shrink-0 size-14 md:size-16">
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-(--eerie-black-4) text-(--white) md:size-16">
                   <CreditCard size={28} />
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="text-[var(--white)] text-base md:text-lg font-semibold">
+                  <div className="mb-1 flex items-center gap-2">
+                    <p className="text-base font-semibold text-(--white) md:text-lg">
                       Connected Razor-Pay Account
                     </p>
-                    <div className="w-2 h-2 bg-green-500 rounded-full" />
+                    <div className="h-2 w-2 rounded-full bg-green-500" />
                   </div>
                 </div>
               </div>
-              <button className="w-full bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] rounded-xl px-6 py-3 font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-[0.98]">
+              <button className="hover:bg-opacity-90 w-full transform rounded-xl bg-(--gold-crayola) px-6 py-3 font-semibold text-(--smoky-black-1) transition-all duration-200 hover:scale-[0.98]">
                 Manage Razor-Pay Account
               </button>
             </SettingsCard>
@@ -353,17 +353,17 @@ const AdminSettingsPage: React.FC = () => {
           </section>
         </div>
 
-        <div className="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mt-8">
+        <div className="mt-8 hidden grid-cols-1 gap-6 md:grid lg:grid-cols-2 lg:gap-8">
           <section className="lg:col-span-2">
-            <SettingsCard className="bg-gradient-to-r from-[var(--eerie-black-2)] to-[var(--eerie-black-3)] border-[var(--gold-crayola)] border-opacity-20">
-              <div className="text-center py-4">
-                <div className="w-12 h-12 bg-[var(--gold-crayola)] bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Check className="text-[var(--smoky-black-1)]" size={24} />
+            <SettingsCard className="border-opacity-20 border-(--gold-crayola) bg-linear-to-r from-(--eerie-black-2) to-(--eerie-black-3)">
+              <div className="py-4 text-center">
+                <div className="bg-opacity-20 mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-(--gold-crayola)">
+                  <Check className="text-(--smoky-black-1)" size={24} />
                 </div>
-                <h3 className="text-lg font-semibold text-[var(--white)] mb-2">
+                <h3 className="mb-2 text-lg font-semibold text-(--white)">
                   Settings Saved Successfully
                 </h3>
-                <p className="text-[var(--quick-silver)] text-sm">
+                <p className="text-sm text-(--quick-silver)">
                   All your preferences have been automatically saved and
                   applied.
                 </p>

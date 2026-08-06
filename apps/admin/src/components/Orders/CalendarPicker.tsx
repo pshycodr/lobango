@@ -94,60 +94,60 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50">
-      <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-2xl w-full max-w-xs sm:max-w-sm md:max-w-md shadow-2xl mx-auto my-auto max-h-screen overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 backdrop-blur-sm sm:p-4">
+      <div className="mx-auto my-auto max-h-screen w-full max-w-xs overflow-y-auto rounded-2xl border border-(--eerie-black-4) bg-(--eerie-black-2) shadow-2xl sm:max-w-sm md:max-w-md">
         {/* Scrollable content container */}
         <div className="p-4 sm:p-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <h3 className="text-[var(--white)] font-semibold text-lg sm:text-xl">
+          <div className="mb-4 flex items-center justify-between sm:mb-6">
+            <h3 className="text-lg font-semibold text-(--white) sm:text-xl">
               Select Date
             </h3>
             <button
               onClick={onClose}
-              className="text-[var(--quick-silver)] hover:text-[var(--white)] p-1 sm:p-2 rounded-lg hover:bg-[var(--eerie-black-3)] transition-all touch-manipulation"
+              className="touch-manipulation rounded-lg p-1 text-(--quick-silver) transition-all hover:bg-(--eerie-black-3) hover:text-(--white) sm:p-2"
               aria-label="Close calendar"
             >
-              <X size={18} className="sm:w-5 sm:h-5" />
+              <X size={18} className="sm:h-5 sm:w-5" />
             </button>
           </div>
 
           {/* Month Navigation */}
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="mb-4 flex items-center justify-between sm:mb-6">
             <button
               onClick={() => navigateMonth("prev")}
-              className="p-2 sm:p-2 text-[var(--quick-silver)] hover:text-[var(--gold-crayola)] rounded-lg hover:bg-[var(--eerie-black-3)] transition-all touch-manipulation"
+              className="touch-manipulation rounded-lg p-2 text-(--quick-silver) transition-all hover:bg-(--eerie-black-3) hover:text-(--gold-crayola) sm:p-2"
               aria-label="Previous month"
             >
-              <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
+              <ChevronLeft size={18} className="sm:h-5 sm:w-5" />
             </button>
-            <span className="text-[var(--white)] font-semibold text-base sm:text-lg text-center px-2">
+            <span className="px-2 text-center text-base font-semibold text-(--white) sm:text-lg">
               {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
             </span>
             <button
               onClick={() => navigateMonth("next")}
-              className="p-2 sm:p-2 text-[var(--quick-silver)] hover:text-[var(--gold-crayola)] rounded-lg hover:bg-[var(--eerie-black-3)] transition-all touch-manipulation"
+              className="touch-manipulation rounded-lg p-2 text-(--quick-silver) transition-all hover:bg-(--eerie-black-3) hover:text-(--gold-crayola) sm:p-2"
               aria-label="Next month"
             >
-              <ChevronRight size={18} className="sm:w-5 sm:h-5" />
+              <ChevronRight size={18} className="sm:h-5 sm:w-5" />
             </button>
           </div>
 
           {/* Days of Week */}
-          <div className="grid grid-cols-7 gap-0.5 sm:gap-1 mb-2 sm:mb-3">
+          <div className="mb-2 grid grid-cols-7 gap-0.5 sm:mb-3 sm:gap-1">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
               <div
                 key={day}
-                className="text-center text-[var(--quick-silver)] text-xs sm:text-sm font-medium py-2 sm:py-3"
+                className="py-2 text-center text-xs font-medium text-(--quick-silver) sm:py-3 sm:text-sm"
               >
-                <span className="hidden xs:inline">{day}</span>
+                <span className="xs:inline hidden">{day}</span>
                 <span className="xs:hidden">{day.charAt(0)}</span>
               </div>
             ))}
           </div>
 
           {/* Calendar Days */}
-          <div className="grid grid-cols-7 gap-0.5 sm:gap-1 mb-4 sm:mb-6">
+          <div className="mb-4 grid grid-cols-7 gap-0.5 sm:mb-6 sm:gap-1">
             {days.map((dayObj, index) => {
               const dateStr = formatDateForComparison(dayObj.date);
               const isSelected = selectedDate === dateStr;
@@ -159,20 +159,17 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
                   key={index}
                   onClick={() => handleDateClick(dayObj.date)}
                   disabled={isFutureDate}
-                  className={`
-                                        aspect-square min-h-[40px] sm:min-h-[48px] text-xs sm:text-sm rounded-lg sm:rounded-xl transition-all duration-200 font-medium touch-manipulation active:scale-95
-                                        ${
-                                          !dayObj.isCurrentMonth
-                                            ? "text-[var(--quick-silver)]/40"
-                                            : isSelected
-                                              ? "bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] shadow-lg scale-105"
-                                              : isToday
-                                                ? "bg-[var(--gold-crayola)]/20 text-[var(--gold-crayola)] font-bold border border-[var(--gold-crayola)]/40"
-                                                : isFutureDate
-                                                  ? "text-[var(--quick-silver)]/30 cursor-not-allowed"
-                                                  : "text-[var(--white)] hover:bg-[var(--eerie-black-3)] hover:scale-105 active:bg-[var(--eerie-black-4)]"
-                                        }
-                                    `}
+                  className={`aspect-square min-h-[40px] touch-manipulation rounded-lg text-xs font-medium transition-all duration-200 active:scale-95 sm:min-h-[48px] sm:rounded-xl sm:text-sm ${
+                    !dayObj.isCurrentMonth
+                      ? "text-(--quick-silver)/40"
+                      : isSelected
+                        ? "scale-105 bg-(--gold-crayola) text-(--smoky-black-1) shadow-lg"
+                        : isToday
+                          ? "border border-(--gold-crayola)/40 bg-(--gold-crayola)/20 font-bold text-(--gold-crayola)"
+                          : isFutureDate
+                            ? "cursor-not-allowed text-(--quick-silver)/30"
+                            : "text-(--white) hover:scale-105 hover:bg-(--eerie-black-3) active:bg-(--eerie-black-4)"
+                  } `}
                   aria-label={`Select ${dayObj.date.toDateString()}`}
                 >
                   {dayObj.date.getDate()}
@@ -182,19 +179,19 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col xs:flex-row gap-2 sm:gap-3">
+          <div className="xs:flex-row flex flex-col gap-2 sm:gap-3">
             <button
               onClick={() => {
                 onDateSelect(null);
                 onClose();
               }}
-              className="order-2 xs:order-1 flex-1 py-3 px-4 bg-[var(--eerie-black-3)] text-[var(--quick-silver)] rounded-xl hover:bg-[var(--eerie-black-4)] hover:text-[var(--white)] active:bg-[var(--eerie-black-4)] transition-all font-medium touch-manipulation"
+              className="xs:order-1 order-2 flex-1 touch-manipulation rounded-xl bg-(--eerie-black-3) px-4 py-3 font-medium text-(--quick-silver) transition-all hover:bg-(--eerie-black-4) hover:text-(--white) active:bg-(--eerie-black-4)"
             >
               Clear Date
             </button>
             <button
               onClick={onClose}
-              className="order-1 xs:order-2 flex-1 py-3 px-4 bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] rounded-xl hover:bg-[var(--gold-crayola)]/90 active:bg-[var(--gold-crayola)]/80 transition-all font-semibold touch-manipulation"
+              className="xs:order-2 order-1 flex-1 touch-manipulation rounded-xl bg-(--gold-crayola) px-4 py-3 font-semibold text-(--smoky-black-1) transition-all hover:bg-(--gold-crayola)/90 active:bg-(--gold-crayola)/80"
             >
               Done
             </button>

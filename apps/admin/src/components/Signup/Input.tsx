@@ -17,7 +17,7 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className="mb-6">
-      <label className="block text-[var(--white)] text-sm font-medium mb-3">
+      <label className="mb-3 block text-sm font-medium text-(--white)">
         {label}
       </label>
       <input
@@ -26,10 +26,7 @@ const InputField: React.FC<InputFieldProps> = ({
         value={value}
         required={required}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-6 py-4 bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] 
-                     rounded-lg text-[var(--white)] placeholder-[var(--quick-silver)] 
-                     focus:outline-none focus:ring-2 focus:ring-[var(--gold-crayola)] 
-                     focus:border-transparent transition-all duration-300"
+        className="w-full rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-2) px-6 py-4 text-(--white) placeholder-(--quick-silver) transition-all duration-300 focus:border-transparent focus:ring-2 focus:ring-(--gold-crayola) focus:outline-none"
       />
     </div>
   );

@@ -26,20 +26,16 @@ const SettingItem: React.FC<SettingItemProps> = ({
 }) => {
   return (
     <div
-      className={`
-                flex items-center justify-between py-4 px-1
-                ${showBorder ? "border-b border-[var(--eerie-black-4)]" : ""}
-                ${type === "action" && !loading ? "cursor-pointer hover:bg-[var(--eerie-black-4)] hover:bg-opacity-30 rounded-lg transition-colors duration-200 -mx-1" : ""}
-            `}
+      className={`flex items-center justify-between px-1 py-4 ${showBorder ? "border-b border-(--eerie-black-4)" : ""} ${type === "action" && !loading ? "hover:bg-opacity-30 -mx-1 cursor-pointer rounded-lg transition-colors duration-200 hover:bg-(--eerie-black-4)" : ""} `}
       onClick={type === "action" && !loading ? onAction : undefined}
     >
       <div className="flex items-center gap-3">
-        {icon && <div className="text-[var(--gold-crayola)]">{icon}</div>}
+        {icon && <div className="text-(--gold-crayola)">{icon}</div>}
         <div>
-          <p className="text-[var(--white)] font-medium text-sm md:text-base">
+          <p className="text-sm font-medium text-(--white) md:text-base">
             {title}
           </p>
-          <p className="text-[var(--quick-silver)] text-xs md:text-sm mt-1">
+          <p className="mt-1 text-xs text-(--quick-silver) md:text-sm">
             {description}
           </p>
         </div>
@@ -50,7 +46,7 @@ const SettingItem: React.FC<SettingItemProps> = ({
       )}
 
       {type === "action" && (
-        <div className="text-[var(--white)]">
+        <div className="text-(--white)">
           {loading ? (
             <Loader2 size={20} className="animate-spin" />
           ) : (

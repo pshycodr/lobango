@@ -19,7 +19,7 @@ type OrderResponse = {
 
 const AdminOrdersView: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<"all" | Order["status"]>(
-    "all",
+    "all"
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -189,15 +189,15 @@ const AdminOrdersView: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-[var(--smoky-black-1)] h-screen flex justify-center items-center">
+      <div className="flex h-screen items-center justify-center bg-(--smoky-black-1)">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[var(--smoky-black-1)] p-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-(--smoky-black-1) p-4">
+      <div className="mx-auto max-w-7xl">
         <Header
           totalOrders={orders.length}
           searchQuery={searchQuery}
@@ -213,9 +213,9 @@ const AdminOrdersView: React.FC = () => {
 
         {/* Date Filter - 3 Options Only */}
         <div className="mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Calendar size={18} className="text-[var(--quick-silver)]" />
-            <span className="text-[var(--quick-silver)] text-sm font-medium">
+          <div className="mb-4 flex items-center gap-2">
+            <Calendar size={18} className="text-(--quick-silver)" />
+            <span className="text-sm font-medium text-(--quick-silver)">
               Date filter
             </span>
           </div>
@@ -229,10 +229,10 @@ const AdminOrdersView: React.FC = () => {
                 setShowAllOrders(false);
                 setActiveFilter("all");
               }}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                 !showAllOrders && selectedDate === getTodayDate()
-                  ? "bg-[var(--gold-crayola)] text-[var(--smoky-black-1)]"
-                  : "bg-[var(--eerie-black-2)] text-[var(--quick-silver)] hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)]"
+                  ? "bg-(--gold-crayola) text-(--smoky-black-1)"
+                  : "bg-(--eerie-black-2) text-(--quick-silver) hover:bg-(--eerie-black-3) hover:text-(--white)"
               }`}
             >
               Today
@@ -245,10 +245,10 @@ const AdminOrdersView: React.FC = () => {
             {/* All Orders */}
             <button
               onClick={handleShowAllOrders}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                 showAllOrders
-                  ? "bg-[var(--gold-crayola)] text-[var(--smoky-black-1)]"
-                  : "bg-[var(--eerie-black-2)] text-[var(--quick-silver)] hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)]"
+                  ? "bg-(--gold-crayola) text-(--smoky-black-1)"
+                  : "bg-(--eerie-black-2) text-(--quick-silver) hover:bg-(--eerie-black-3) hover:text-(--white)"
               }`}
             >
               All Orders
@@ -258,12 +258,12 @@ const AdminOrdersView: React.FC = () => {
             {/* Select Date */}
             <button
               onClick={() => setShowCalendar(true)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+              className={`rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                 !showAllOrders &&
                 selectedDate &&
                 selectedDate !== getTodayDate()
-                  ? "bg-[var(--gold-crayola)] text-[var(--smoky-black-1)]"
-                  : "bg-[var(--eerie-black-2)] text-[var(--quick-silver)] hover:bg-[var(--eerie-black-3)] hover:text-[var(--white)]"
+                  ? "bg-(--gold-crayola) text-(--smoky-black-1)"
+                  : "bg-(--eerie-black-2) text-(--quick-silver) hover:bg-(--eerie-black-3) hover:text-(--white)"
               }`}
             >
               {!showAllOrders && selectedDate && selectedDate !== getTodayDate()
@@ -280,14 +280,14 @@ const AdminOrdersView: React.FC = () => {
 
         {/* Status Filters */}
         <div className="mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter size={18} className="text-[var(--quick-silver)]" />
-            <span className="text-[var(--quick-silver)] text-sm font-medium">
+          <div className="mb-4 flex items-center gap-2">
+            <Filter size={18} className="text-(--quick-silver)" />
+            <span className="text-sm font-medium text-(--quick-silver)">
               Filter by status
             </span>
           </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[var(--eerie-black-4)] scrollbar-track-transparent">
+          <div className="flex scrollbar-thin scrollbar-thumb-(--eerie-black-4) scrollbar-track-transparent gap-2 overflow-x-auto pb-2">
             {filters.map((filter) => (
               <FilterButton
                 key={filter.key}
@@ -302,17 +302,14 @@ const AdminOrdersView: React.FC = () => {
 
         {/* Orders Grid */}
         {filteredOrders.length === 0 ? (
-          <div className="text-center py-12">
-            <Package
-              size={48}
-              className="text-[var(--quick-silver)] mx-auto mb-4"
-            />
-            <h3 className="text-[var(--white)] text-lg font-medium mb-2">
+          <div className="py-12 text-center">
+            <Package size={48} className="mx-auto mb-4 text-(--quick-silver)" />
+            <h3 className="mb-2 text-lg font-medium text-(--white)">
               {searchQuery.trim() || (!showAllOrders && selectedDate)
                 ? "No matching orders found"
                 : "No orders found"}
             </h3>
-            <p className="text-[var(--quick-silver)] mb-4">
+            <p className="mb-4 text-(--quick-silver)">
               {searchQuery.trim()
                 ? `No orders match your search "${searchQuery}"${activeFilter !== "all" ? ` with status "${activeFilter}"` : ""}.`
                 : !showAllOrders && selectedDate
@@ -321,11 +318,11 @@ const AdminOrdersView: React.FC = () => {
                     ? "There are no orders yet."
                     : `No orders with status "${activeFilter}".`}
             </p>
-            <div className="flex gap-2 justify-center">
+            <div className="flex justify-center gap-2">
               {searchQuery.trim() && (
                 <button
                   onClick={clearSearch}
-                  className="bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] px-4 py-2 rounded-lg font-medium hover:bg-[var(--gold-crayola)]/90 transition-colors"
+                  className="rounded-lg bg-(--gold-crayola) px-4 py-2 font-medium text-(--smoky-black-1) transition-colors hover:bg-(--gold-crayola)/90"
                 >
                   Clear search
                 </button>
@@ -333,7 +330,7 @@ const AdminOrdersView: React.FC = () => {
               {!showAllOrders && (
                 <button
                   onClick={handleShowAllOrders}
-                  className="bg-[var(--eerie-black-3)] text-[var(--white)] px-4 py-2 rounded-lg font-medium hover:bg-[var(--eerie-black-4)] transition-colors"
+                  className="rounded-lg bg-(--eerie-black-3) px-4 py-2 font-medium text-(--white) transition-colors hover:bg-(--eerie-black-4)"
                 >
                   Show all orders
                 </button>
@@ -341,7 +338,7 @@ const AdminOrdersView: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredOrders.map((order) => (
               <OrderCard
                 key={order.orderId}

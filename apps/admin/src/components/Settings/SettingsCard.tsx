@@ -9,12 +9,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
 }) => {
   return (
     <div
-      className={`
-        bg-[var(--eerie-black-2)] rounded-xl p-4 md:p-6 
-        border border-[var(--eerie-black-4)] 
-        shadow-lg backdrop-blur-sm
-        ${className}
-      `}
+      className={`rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-4 shadow-lg backdrop-blur-sm md:p-6 ${className} `}
     >
       {children}
     </div>

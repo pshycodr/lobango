@@ -44,7 +44,7 @@ const AdminOrderDetails: React.FC = () => {
   }, [orderId, getOrderById]);
 
   const formatDateTime = (
-    dateString: string,
+    dateString: string
   ): { date: string; time: string } => {
     try {
       const date = new Date(dateString);
@@ -88,8 +88,8 @@ const AdminOrderDetails: React.FC = () => {
       const ordersStore = useOrdersStore.getState();
       ordersStore.setOrders(
         ordersStore.orders.map((o) =>
-          o.orderId === orderId ? { ...o, status: newStatus } : o,
-        ),
+          o.orderId === orderId ? { ...o, status: newStatus } : o
+        )
       );
 
       setShowStatusModal(false);
@@ -112,8 +112,8 @@ const AdminOrderDetails: React.FC = () => {
   // Loading state
   if (!orderId) {
     return (
-      <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center">
-        <div className="text-center text-[var(--white)]">
+      <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
+        <div className="text-center text-(--white)">
           <p>Invalid order ID.</p>
         </div>
       </div>
@@ -123,19 +123,16 @@ const AdminOrderDetails: React.FC = () => {
   // Order not found
   if (!order) {
     return (
-      <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center">
-        <div className="text-center text-[var(--white)] p-10">
-          <Package
-            size={48}
-            className="mx-auto mb-4 text-[var(--quick-silver)]"
-          />
-          <h2 className="text-xl font-semibold mb-2">Order Not Found</h2>
-          <p className="text-[var(--quick-silver)] mb-4">
+      <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
+        <div className="p-10 text-center text-(--white)">
+          <Package size={48} className="mx-auto mb-4 text-(--quick-silver)" />
+          <h2 className="mb-2 text-xl font-semibold">Order Not Found</h2>
+          <p className="mb-4 text-(--quick-silver)">
             The order with ID #{orderId} could not be found.
           </p>
           <button
             onClick={handleBack}
-            className="px-4 py-2 bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] rounded-lg hover:bg-[var(--gold-crayola)]/90 transition-colors font-medium"
+            className="rounded-lg bg-(--gold-crayola) px-4 py-2 font-medium text-(--smoky-black-1) transition-colors hover:bg-(--gold-crayola)/90"
           >
             Go Back
           </button>
@@ -153,24 +150,24 @@ const AdminOrderDetails: React.FC = () => {
   const { date, time } = formatDateTime(order.createdAt);
 
   return (
-    <div className="min-h-screen bg-[var(--smoky-black-1)]">
+    <div className="min-h-screen bg-(--smoky-black-1)">
       {/* Header */}
-      <div className="sticky top-0 bg-[var(--smoky-black-1)]/95 backdrop-blur-sm border-b border-[var(--eerie-black-4)] z-40">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+      <div className="sticky top-0 z-40 border-b border-(--eerie-black-4) bg-(--smoky-black-1)/95 backdrop-blur-sm">
+        <div className="mx-auto max-w-6xl px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={handleBack}
-                className="text-[var(--quick-silver)] hover:text-[var(--white)] transition-colors p-2 rounded-lg hover:bg-[var(--eerie-black-2)]"
+                className="rounded-lg p-2 text-(--quick-silver) transition-colors hover:bg-(--eerie-black-2) hover:text-(--white)"
                 aria-label="Go back"
               >
                 <ArrowLeft size={24} />
               </button>
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-[var(--white)]">
+                <h1 className="text-xl font-bold text-(--white) md:text-2xl">
                   Order #{order.orderId}
                 </h1>
-                <div className="flex items-center gap-2 text-[var(--quick-silver)] text-sm">
+                <div className="flex items-center gap-2 text-sm text-(--quick-silver)">
                   <Clock size={12} />
                   <span>
                     {date} • {time}
@@ -182,11 +179,11 @@ const AdminOrderDetails: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6 px-4 py-6">
         {/* Order Status */}
-        <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-6">
+        <div className="rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-[var(--white)]">
+            <h2 className="text-lg font-semibold text-(--white)">
               Order Status
             </h2>
             <StatusBadge
@@ -199,27 +196,27 @@ const AdminOrderDetails: React.FC = () => {
         </div>
 
         {/* Info Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <InfoCard
             icon={<User size={20} />}
             title="Customer Information"
             content={
               <div className="space-y-3">
-                <div className="text-[var(--white)] font-medium text-lg">
+                <div className="text-lg font-medium text-(--white)">
                   {order.name || "N/A"}
                 </div>
                 <div className="flex items-center gap-3">
-                  <Phone size={14} className="text-[var(--gold-crayola)]" />
-                  <span className="text-[var(--quick-silver)]">
+                  <Phone size={14} className="text-(--gold-crayola)" />
+                  <span className="text-(--quick-silver)">
                     {order.phone || "N/A"}
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPin
                     size={14}
-                    className="text-[var(--gold-crayola)] mt-0.5 flex-shrink-0"
+                    className="mt-0.5 shrink-0 text-(--gold-crayola)"
                   />
-                  <span className="text-[var(--quick-silver)] flex-1 leading-relaxed">
+                  <span className="flex-1 leading-relaxed text-(--quick-silver)">
                     {order.address || "No address provided"}
                   </span>
                 </div>
@@ -232,27 +229,27 @@ const AdminOrderDetails: React.FC = () => {
             title="Payment Information"
             content={
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-[var(--quick-silver)]">Method:</span>
-                  <span className="text-[var(--white)] capitalize font-medium">
+                <div className="flex items-center justify-between">
+                  <span className="text-(--quick-silver)">Method:</span>
+                  <span className="font-medium text-(--white) capitalize">
                     {order.paymentMethod || "N/A"}
                   </span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[var(--quick-silver)]">Status:</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-(--quick-silver)">Status:</span>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${
                       order.paymentStatus === "paid"
-                        ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                        : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                        ? "border border-green-500/30 bg-green-500/20 text-green-400"
+                        : "border border-orange-500/30 bg-orange-500/20 text-orange-400"
                     }`}
                   >
                     {order.paymentStatus || "pending"}
                   </span>
                 </div>
-                <div className="flex justify-between items-center pt-2 border-t border-[var(--eerie-black-4)]">
-                  <span className="text-[var(--quick-silver)]">Total:</span>
-                  <span className="text-[var(--gold-crayola)] font-semibold text-lg">
+                <div className="flex items-center justify-between border-t border-(--eerie-black-4) pt-2">
+                  <span className="text-(--quick-silver)">Total:</span>
+                  <span className="text-lg font-semibold text-(--gold-crayola)">
                     ₹{order.total?.toFixed(2) || "0.00"}
                   </span>
                 </div>
@@ -277,7 +274,7 @@ const AdminOrderDetails: React.FC = () => {
             icon={<Edit3 size={20} />}
             title="Special Instructions"
             content={
-              <div className="text-[var(--white)] bg-[var(--eerie-black-3)] p-4 rounded-lg border border-[var(--eerie-black-4)]">
+              <div className="rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-3) p-4 text-(--white)">
                 {order.notes}
               </div>
             }
@@ -285,16 +282,16 @@ const AdminOrderDetails: React.FC = () => {
         )}
 
         {/* Order Items */}
-        <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 p-6 border-b border-[var(--eerie-black-4)]">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[var(--gold-crayola)]/10">
-              <ShoppingBag size={20} className="text-[var(--gold-crayola)]" />
+        <div className="overflow-hidden rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2)">
+          <div className="flex items-center gap-3 border-b border-(--eerie-black-4) p-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--gold-crayola)/10">
+              <ShoppingBag size={20} className="text-(--gold-crayola)" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-[var(--white)]">
+              <h2 className="text-lg font-semibold text-(--white)">
                 Order Items
               </h2>
-              <p className="text-[var(--quick-silver)] text-sm">
+              <p className="text-sm text-(--quick-silver)">
                 {order.items?.length || 0} item
                 {(order.items?.length || 0) !== 1 ? "s" : ""}
               </p>
@@ -309,7 +306,7 @@ const AdminOrderDetails: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-[var(--quick-silver)]">
+              <div className="py-8 text-center text-(--quick-silver)">
                 <ShoppingBag size={48} className="mx-auto mb-3 opacity-50" />
                 <p>No items found in this order</p>
               </div>
@@ -318,34 +315,34 @@ const AdminOrderDetails: React.FC = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 p-6 border-b border-[var(--eerie-black-4)]">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[var(--gold-crayola)]/10">
-              <IndianRupee size={20} className="text-[var(--gold-crayola)]" />
+        <div className="overflow-hidden rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2)">
+          <div className="flex items-center gap-3 border-b border-(--eerie-black-4) p-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--gold-crayola)/10">
+              <IndianRupee size={20} className="text-(--gold-crayola)" />
             </div>
-            <h3 className="text-lg font-semibold text-[var(--white)]">
+            <h3 className="text-lg font-semibold text-(--white)">
               Order Summary
             </h3>
           </div>
 
           <div className="p-6">
             <div className="space-y-4">
-              <div className="flex justify-between items-center text-[var(--quick-silver)]">
+              <div className="flex items-center justify-between text-(--quick-silver)">
                 <span>Subtotal</span>
                 <span>₹{subtotal.toFixed(2)}</span>
               </div>
-              {/* <div className="flex justify-between items-center text-[var(--quick-silver)]">
+              {/* <div className="flex justify-between items-center text-(--quick-silver)">
                 <span>Taxes (8%)</span>
                 <span>₹{taxes.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between items-center text-[var(--quick-silver)]">
+              <div className="flex justify-between items-center text-(--quick-silver)">
                 <span>Delivery Fee</span>
                 <span>₹{deliveryFee.toFixed(2)}</span>
               </div> */}
-              <div className="border-t border-[var(--eerie-black-4)] pt-4">
-                <div className="flex justify-between items-center text-xl font-bold">
-                  <span className="text-[var(--white)]">Total</span>
-                  <span className="text-[var(--gold-crayola)]">
+              <div className="border-t border-(--eerie-black-4) pt-4">
+                <div className="flex items-center justify-between text-xl font-bold">
+                  <span className="text-(--white)">Total</span>
+                  <span className="text-(--gold-crayola)">
                     ₹{order.total?.toFixed(2) || "0.00"}
                   </span>
                 </div>

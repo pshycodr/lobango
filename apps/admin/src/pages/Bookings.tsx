@@ -51,7 +51,7 @@ const BookingsAdminPage: React.FC = () => {
           booking.booking_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
           booking.customer_email
             .toLowerCase()
-            .includes(searchTerm.toLowerCase()),
+            .includes(searchTerm.toLowerCase())
       );
     }
 
@@ -71,7 +71,7 @@ const BookingsAdminPage: React.FC = () => {
 
   const handleStatusChange = async (
     bookingId: string,
-    newStatus: "pending" | "accepted" | "rejected",
+    newStatus: "pending" | "accepted" | "rejected"
   ) => {
     try {
       console.log(bookingId);
@@ -86,8 +86,8 @@ const BookingsAdminPage: React.FC = () => {
         prevBookings.map((booking) =>
           booking.booking_id === bookingId
             ? { ...booking, status: newStatus }
-            : booking,
-        ),
+            : booking
+        )
       );
     } catch (error) {
       console.log(error);
@@ -114,69 +114,67 @@ const BookingsAdminPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[var(--smoky-black-1)] flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[var(--smoky-black-1)] text-[var(--white)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="min-h-screen bg-(--smoky-black-1) text-(--white)">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--white)] mb-2">
+          <h1 className="mb-2 text-2xl font-bold text-(--white) sm:text-3xl">
             Table Bookings
           </h1>
-          <p className="text-[var(--quick-silver)]">
+          <p className="text-(--quick-silver)">
             Manage and track restaurant table reservations
           </p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-4">
-            <div className="text-2xl font-bold text-[var(--white)] mb-1">
+        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className="rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-4">
+            <div className="mb-1 text-2xl font-bold text-(--white)">
               {statusCounts.total}
             </div>
-            <div className="text-sm text-[var(--quick-silver)]">
-              Total Bookings
-            </div>
+            <div className="text-sm text-(--quick-silver)">Total Bookings</div>
           </div>
-          <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-4">
-            <div className="text-2xl font-bold text-yellow-400 mb-1">
+          <div className="rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-4">
+            <div className="mb-1 text-2xl font-bold text-yellow-400">
               {statusCounts.pending}
             </div>
-            <div className="text-sm text-[var(--quick-silver)]">Pending</div>
+            <div className="text-sm text-(--quick-silver)">Pending</div>
           </div>
-          <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-4">
-            <div className="text-2xl font-bold text-green-400 mb-1">
+          <div className="rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-4">
+            <div className="mb-1 text-2xl font-bold text-green-400">
               {statusCounts.accepted}
             </div>
-            <div className="text-sm text-[var(--quick-silver)]">Accepted</div>
+            <div className="text-sm text-(--quick-silver)">Accepted</div>
           </div>
-          <div className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-4">
-            <div className="text-2xl font-bold text-red-400 mb-1">
+          <div className="rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-4">
+            <div className="mb-1 text-2xl font-bold text-red-400">
               {statusCounts.rejected}
             </div>
-            <div className="text-sm text-[var(--quick-silver)]">Rejected</div>
+            <div className="text-sm text-(--quick-silver)">Rejected</div>
           </div>
         </div>
 
         {/* Filters and Search */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row">
           <div className="flex-1">
             <div className="relative">
               <Search
                 size={20}
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[var(--quick-silver)]"
+                className="absolute top-1/2 left-3 -translate-y-1/2 transform text-(--quick-silver)"
               />
               <input
                 type="text"
                 placeholder="Search by name, booking ID, or email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-lg text-[var(--white)] placeholder-[var(--quick-silver)] focus:outline-none focus:border-[var(--gold-crayola)]/50 focus:ring-1 focus:ring-[var(--gold-crayola)]/50"
+                className="w-full rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-2) py-3 pr-4 pl-10 text-(--white) placeholder-(--quick-silver) focus:border-(--gold-crayola)/50 focus:ring-1 focus:ring-(--gold-crayola)/50 focus:outline-none"
               />
             </div>
           </div>
@@ -198,25 +196,25 @@ const BookingsAdminPage: React.FC = () => {
 
         {/* Results Count */}
         <div className="mb-6">
-          <p className="text-[var(--quick-silver)] text-sm">
+          <p className="text-sm text-(--quick-silver)">
             Showing {filteredBookings.length} of {bookings.length} bookings
           </p>
         </div>
 
         {/* Bookings Grid */}
         {filteredBookings.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-[var(--quick-silver)] text-lg mb-4">
+          <div className="py-12 text-center">
+            <div className="mb-4 text-lg text-(--quick-silver)">
               No bookings found
             </div>
-            <p className="text-[var(--quick-silver)]/70 text-sm">
+            <p className="text-sm text-(--quick-silver)/70">
               {bookings.length === 0
                 ? "There are no bookings to display."
                 : "Try adjusting your filters or search terms."}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredBookings.map((booking) => (
               <BookingCard
                 key={booking.id}

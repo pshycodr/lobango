@@ -15,18 +15,18 @@ const SearchResultsInfo: React.FC<SearchResultsInfoProps> = ({
   if (!searchQuery.trim()) return null;
 
   return (
-    <div className="mb-4 flex items-center justify-between bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-lg p-3">
+    <div className="mb-4 flex items-center justify-between rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-2) p-3">
       <div className="flex items-center gap-2">
-        <span className="text-[var(--white)] text-sm">
+        <span className="text-sm text-(--white)">
           Showing {resultCount} result{resultCount !== 1 ? "s" : ""} for
         </span>
-        <span className="text-[var(--gold-crayola)] font-medium text-sm">
+        <span className="text-sm font-medium text-(--gold-crayola)">
           "{searchQuery}"
         </span>
       </div>
       <button
         onClick={onClearSearch}
-        className="flex items-center gap-1 text-[var(--quick-silver)] hover:text-[var(--white)] text-sm transition-colors"
+        className="flex items-center gap-1 text-sm text-(--quick-silver) transition-colors hover:text-(--white)"
       >
         <X size={16} />
         Clear search

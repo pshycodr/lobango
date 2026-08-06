@@ -25,40 +25,34 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
   return (
     <div
       onClick={onClick}
-      className="bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-xl p-4 
-                   hover:bg-[var(--eerie-black-3)] hover:border-[var(--gold-crayola)]/30 
-                   transition-all duration-300 cursor-pointer group active:scale-[0.98]"
+      className="group cursor-pointer rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-4 transition-all duration-300 hover:border-(--gold-crayola)/30 hover:bg-(--eerie-black-3) active:scale-[0.98]"
     >
       {/* Header */}
-      <div className="flex justify-between items-start mb-3">
+      <div className="mb-3 flex items-start justify-between">
         <div>
-          <h3 className="text-[var(--white)] font-semibold text-lg">
-            {order.name}
-          </h3>
-          <p className="text-[var(--quick-silver)] text-sm">#{order.orderId}</p>
+          <h3 className="text-lg font-semibold text-(--white)">{order.name}</h3>
+          <p className="text-sm text-(--quick-silver)">#{order.orderId}</p>
         </div>
         <StatusBadge status={order.status} />
       </div>
 
       {/* Order Details */}
-      <div className="space-y-2 mb-4">
-        <div className="flex justify-between items-center">
-          <span className="text-[var(--quick-silver)] text-sm">
-            Total Amount
-          </span>
-          <span className="text-[var(--gold-crayola)] font-semibold text-lg">
+      <div className="mb-4 space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-(--quick-silver)">Total Amount</span>
+          <span className="text-lg font-semibold text-(--gold-crayola)">
             ₹{order.total.toFixed(2)}
           </span>
         </div>
 
-        <div className="flex justify-between items-center">
-          <span className="text-[var(--quick-silver)] text-sm">Payment</span>
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-(--quick-silver)">Payment</span>
           <div className="flex items-center gap-2">
-            <span className="text-[var(--white)] text-sm capitalize">
+            <span className="text-sm text-(--white) capitalize">
               {order.paymentMethod}
             </span>
             <span
-              className={`text-xs px-2 py-0.5 rounded-full ${
+              className={`rounded-full px-2 py-0.5 text-xs ${
                 order.paymentStatus === "paid"
                   ? "bg-green-500/20 text-green-400"
                   : "bg-orange-500/20 text-orange-400"
@@ -69,20 +63,20 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
           </div>
         </div>
 
-        <div className="flex justify-between items-center">
-          <span className="text-[var(--quick-silver)] text-sm">Items</span>
-          <span className="text-[var(--white)] text-sm">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-(--quick-silver)">Items</span>
+          <span className="text-sm text-(--white)">
             {order.items.length} item{order.items.length > 1 ? "s" : ""}
           </span>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="flex justify-between items-center pt-3 border-t border-[var(--eerie-black-4)]">
-        <div className="text-[var(--quick-silver)] text-xs">
+      <div className="flex items-center justify-between border-t border-(--eerie-black-4) pt-3">
+        <div className="text-xs text-(--quick-silver)">
           {formatDate(order.createdAt)} • {formatTime(order.createdAt)}
         </div>
-        <div className="text-[var(--gold-crayola)] text-sm font-medium group-hover:text-[var(--white)] transition-colors">
+        <div className="text-sm font-medium text-(--gold-crayola) transition-colors group-hover:text-(--white)">
           View Details →
         </div>
       </div>

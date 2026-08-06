@@ -5,9 +5,9 @@ interface SectionHeaderProps {
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({ title, icon }) => {
   return (
-    <div className="flex items-center gap-3 mb-4">
-      {icon && <div className="text-[var(--gold-crayola)]">{icon}</div>}
-      <h2 className="text-xl md:text-2xl font-semibold text-[var(--gold-crayola)]">
+    <div className="mb-4 flex items-center gap-3">
+      {icon && <div className="text-(--gold-crayola)">{icon}</div>}
+      <h2 className="text-xl font-semibold text-(--gold-crayola) md:text-2xl">
         {title}
       </h2>
     </div>

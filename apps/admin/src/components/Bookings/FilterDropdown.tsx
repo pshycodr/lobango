@@ -23,9 +23,9 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 bg-[var(--eerie-black-2)] border border-[var(--eerie-black-4)] rounded-lg text-[var(--white)] text-sm hover:border-[var(--gold-crayola)]/30 transition-colors w-full sm:w-auto min-w-[140px]"
+        className="flex w-full min-w-[140px] items-center gap-2 rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-2) px-4 py-2 text-sm text-(--white) transition-colors hover:border-(--gold-crayola)/30 sm:w-auto"
       >
-        <Icon size={16} className="text-[var(--gold-crayola)]" />
+        <Icon size={16} className="text-(--gold-crayola)" />
         <span className="flex-1 text-left">{value || label}</span>
         <ChevronDown
           size={16}
@@ -34,14 +34,14 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full mt-1 left-0 right-0 sm:right-auto sm:min-w-[180px] bg-[var(--eerie-black-1)] border border-[var(--eerie-black-4)] rounded-lg shadow-xl z-10">
+        <div className="absolute top-full right-0 left-0 z-10 mt-1 rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-1) shadow-xl sm:right-auto sm:min-w-[180px]">
           <div className="py-1">
             <button
               onClick={() => {
                 onChange("");
                 setIsOpen(false);
               }}
-              className="block w-full text-left px-4 py-2 text-[var(--white)] hover:bg-[var(--eerie-black-3)] text-sm"
+              className="block w-full px-4 py-2 text-left text-sm text-(--white) hover:bg-(--eerie-black-3)"
             >
               All {label}
             </button>
@@ -52,7 +52,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                   onChange(option.value);
                   setIsOpen(false);
                 }}
-                className="block w-full text-left px-4 py-2 text-[var(--white)] hover:bg-[var(--eerie-black-3)] text-sm capitalize"
+                className="block w-full px-4 py-2 text-left text-sm text-(--white) capitalize hover:bg-(--eerie-black-3)"
               >
                 {option.label}
               </button>

@@ -52,29 +52,29 @@ const StatusUpdateModal: React.FC<{
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[var(--black-alpha-80)] z-50 flex items-center justify-center p-4">
-      <div className="bg-[var(--eerie-black-1)] rounded-xl border border-[var(--eerie-black-4)] w-full max-w-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-(--black-alpha-80) p-4">
+      <div className="w-full max-w-md rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-1)">
         <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-semibold text-[var(--white)]">
+          <div className="mb-6 flex items-center justify-between">
+            <h3 className="text-xl font-semibold text-(--white)">
               Update Order Status
             </h3>
             <button
               onClick={onClose}
-              className="text-[var(--quick-silver)] hover:text-[var(--white)] transition-colors"
+              className="text-(--quick-silver) transition-colors hover:text-(--white)"
             >
               <X size={20} />
             </button>
           </div>
 
-          <div className="space-y-3 mb-6">
+          <div className="mb-6 space-y-3">
             {statuses.map((status) => (
               <label
                 key={status.key}
-                className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-all ${
                   selectedStatus === status.key
-                    ? "border-[var(--gold-crayola)] bg-[var(--gold-crayola)]/10"
-                    : "border-[var(--eerie-black-4)] hover:border-[var(--eerie-black-3)]"
+                    ? "border-(--gold-crayola) bg-(--gold-crayola)/10"
+                    : "border-(--eerie-black-4) hover:border-(--eerie-black-3)"
                 }`}
               >
                 <input
@@ -85,13 +85,13 @@ const StatusUpdateModal: React.FC<{
                   onChange={(e) =>
                     setSelectedStatus(e.target.value as Order["status"])
                   }
-                  className="mt-1 text-[var(--gold-crayola)] focus:ring-[var(--gold-crayola)]"
+                  className="mt-1 text-(--gold-crayola) focus:ring-(--gold-crayola)"
                 />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="mb-1 flex items-center gap-2">
                     <StatusBadge status={status.key} disabled={false} />
                   </div>
-                  <p className="text-[var(--quick-silver)] text-sm">
+                  <p className="text-sm text-(--quick-silver)">
                     {status.description}
                   </p>
                 </div>
@@ -102,13 +102,13 @@ const StatusUpdateModal: React.FC<{
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="flex-1 py-2.5 px-4 border border-[var(--eerie-black-4)] rounded-lg text-[var(--quick-silver)] hover:text-[var(--white)] hover:border-[var(--eerie-black-3)] transition-all"
+              className="flex-1 rounded-lg border border-(--eerie-black-4) px-4 py-2.5 text-(--quick-silver) transition-all hover:border-(--eerie-black-3) hover:text-(--white)"
             >
               Cancel
             </button>
             <button
               onClick={handleUpdate}
-              className="flex-1 py-2.5 px-4 bg-[var(--gold-crayola)] text-[var(--smoky-black-1)] rounded-lg font-medium hover:bg-opacity-90 transition-all"
+              className="hover:bg-opacity-90 flex-1 rounded-lg bg-(--gold-crayola) px-4 py-2.5 font-medium text-(--smoky-black-1) transition-all"
             >
               Update Status
             </button>
