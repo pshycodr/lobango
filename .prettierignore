@@ -1,0 +1,12 @@
+node_modules
+.turbo
+.next
+dist
+build
+coverage
+pnpm-lock.yaml
+package-lock.json
+bun.lockb
+android
+.tanstack
+routeTree.gen.ts
