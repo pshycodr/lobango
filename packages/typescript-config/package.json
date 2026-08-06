@@ -1,0 +1,14 @@
+{
+  "name": "@lobango/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./base": "./src/base.json",
+    "./nextjs": "./src/nextjs.json",
+    "./react-library": "./src/react-library.json"
+  }
+}
