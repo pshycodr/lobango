@@ -5,4 +5,4 @@ export const UpdateBookingSchema = z.object({
   status: z.enum(["pending", "accepted", "rejected"]),
 });
 
-export type UpdateBooking = z.infer<typeof UpdateBookingSchema>
+export type UpdateBooking = z.infer<typeof UpdateBookingSchema>;

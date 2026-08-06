@@ -5,15 +5,10 @@ import adminRouter from "./routes/admin.routes";
 import clientRouter from "./routes/clients.routes";
 import paymentRouter from "./routes/payments.routes";
 import permissionsRouter from "./routes/permissons.route";
-
-type Env = {
-  BREVO_API_KEY: string;
-  BREVO_SENDER_EMAIL: string;
-  BREVO_SENDER_NAME: string;
-};
+import { Bindings } from "@/types/env";
 
 const app = new Hono<{
-  Bindings: Env;
+  Bindings: Bindings;
 }>();
 
 const allowedOrigins = [

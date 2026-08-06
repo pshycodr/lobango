@@ -1,17 +1,14 @@
-import { Context } from "hono";
-import { getDB } from "../../../db/db";
-import { permissions } from "../../../db/schema/permissions";
-import { eq } from "drizzle-orm";
+import { AppContext } from "@/types/hono";
+import { PERMISSIONS } from "@/types/kvKeys";
+import type { SetNewBookingPermissionResponse } from "@lobango/contracts/permissions";
 import { z } from "zod";
 
 const bodySchema = z.object({
   value: z.boolean(),
 });
 
-export const setNewBookingPermission = async (c: Context) => {
+export const setNewBookingPermission = async (c: AppContext) => {
   try {
-    const db = getDB(c.env.DB);
-
     const body = await c.req.json();
     const parsed = bodySchema.safeParse(body);
 
@@ -19,12 +16,13 @@ export const setNewBookingPermission = async (c: Context) => {
       return c.json({ error: "Invalid request body" }, 400);
     }
 
-    await db
-      .update(permissions)
-      .set({ new_bookings: parsed.data.value })
-      .where(eq(permissions.id, 1));
+    await c.env.KV.put(PERMISSIONS.NEW_BOOKINGS, String(parsed.data.value));
 
-    return c.json({ new_bookings: parsed.data.value });
+    const response: SetNewBookingPermissionResponse = {
+      new_bookings: parsed.data.value,
+    };
+
+    return c.json(response, 200);
   } catch (error) {
     console.error(error);
     return c.json({ error: "Failed to update permission" }, 500);

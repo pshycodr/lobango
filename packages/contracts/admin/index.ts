@@ -1,3 +1,2 @@
-export * from "./updateBookingStatus"
-export * from "./updateOrderStatus"
-
+export * from "./updateBookingStatus";
+export * from "./updateOrderStatus";

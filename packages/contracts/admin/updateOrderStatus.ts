@@ -1,6 +1,4 @@
-
-import {z} from "zod"
-
+import { z } from "zod";
 
 export const OrderStatusUpdateSchema = z.object({
   orderId: z.string(),
@@ -13,5 +11,4 @@ export const OrderStatusUpdateSchema = z.object({
   ]),
 });
 
-
-export type OrderStatusUpdate = z.infer<typeof OrderStatusUpdateSchema>
+export type OrderStatusUpdate = z.infer<typeof OrderStatusUpdateSchema>;

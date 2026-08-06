@@ -1,23 +1,23 @@
-import { Context } from "hono";
-import { getDB } from "../../db/db";
-import { permissions } from "../../db/schema/permissions";
-import { eq } from "drizzle-orm";
+import type { AppContext } from "@/types/hono";
+import { PERMISSIONS } from "@/types/kvKeys";
+import { GetNewBookingPermissionResponse } from "@lobango/contracts";
 
-export const getNewBookingPermission = async (c: Context) => {
+export const getNewBookingPermission = async (c: AppContext) => {
   try {
-    const db = getDB(c.env.DB);
-    const res = await db
-      .select({ new_bookings: permissions.new_bookings })
-      .from(permissions)
-      .where(eq(permissions.id, 1));
+    const value = await c.env.KV.get(PERMISSIONS.NEW_BOOKINGS);
 
-    if (res.length === 0) {
-      return c.json({ error: "Permission row not found" }, 404);
+    if (value === null) {
+      return c.json({ error: "Permission not found" }, 404);
     }
 
-    return c.json(Boolean(res[0].new_bookings));
+    const response: GetNewBookingPermissionResponse = {
+      new_bookings: value === "true",
+    };
+
+    return c.json(response, 200);
   } catch (error) {
     console.error(error);
+
     return c.json({ error: "Failed to fetch permission" }, 500);
   }
 };

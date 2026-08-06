@@ -11,7 +11,8 @@
     "./cart": "./cart.ts",
     "./menu": "./menu.ts",
     "./order": "./order.ts",
-    "./admin": "./admin/index.ts"
+    "./admin": "./admin/index.ts",
+    "./permissions": "./permissions.ts"
   },
   "dependencies": {
     "zod": "^4.4.3",

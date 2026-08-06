@@ -5,8 +5,6 @@ import { getDB } from "../../../db/db";
 import { bookings } from "../../../db/schema";
 import { sendBookingEmail } from "../../../utils/sendEmail";
 
-
-
 const updateBookingStatus = async (c: Context) => {
   try {
     const body = await c.req.json();

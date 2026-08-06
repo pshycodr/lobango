@@ -4,7 +4,6 @@ import { Context } from "hono";
 import { getDB } from "../../../db/db";
 import { orders } from "../../../db/schema";
 
-
 export const updateOrderStatus = async (c: Context) => {
   try {
     const body: unknown = await c.req.json();
