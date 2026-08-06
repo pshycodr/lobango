@@ -10,3 +10,4 @@ bun.lockb
 android
 .tanstack
 routeTree.gen.ts
+migrations
