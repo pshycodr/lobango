@@ -1,3 +1,4 @@
+import { HttpStatus } from "@/constants/httpStatusCodes";
 import { D1Database } from "@cloudflare/workers-types";
 import { OrderRequestSchema } from "@lobango/contracts/order";
 import crypto from "crypto";
@@ -22,7 +23,7 @@ function verifyRazorpaySignature(
   orderId: string,
   paymentId: string,
   signature: string,
-  secret: string,
+  secret: string
 ) {
   const body = `${orderId}|${paymentId}`;
   const expectedSignature = crypto
@@ -40,7 +41,7 @@ export async function placeOrder(c: Context) {
     const parsed = OrderRequestSchema.safeParse(body);
 
     if (!parsed.success) {
-      return c.json({ error: parsed.error.message }, 400);
+      return c.json({ error: parsed.error.message }, HttpStatus.BadRequest);
     }
 
     const { order, razorpay } = parsed.data;
@@ -48,7 +49,7 @@ export async function placeOrder(c: Context) {
     const created_at = new Date().toISOString();
     const total_amount = order.items.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0,
+      0
     );
 
     if (order.paymentMethod === "razorpay") {
@@ -56,18 +57,24 @@ export async function placeOrder(c: Context) {
         razorpay;
 
       if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-        return c.json({ error: "Missing Razorpay payment details" }, 400);
+        return c.json(
+          { error: "Missing Razorpay payment details" },
+          HttpStatus.BadRequest
+        );
       }
       const RAZORPAY_SECRET = c.env.RAZORPAY_SECRET_KEY;
       const isValid = verifyRazorpaySignature(
         razorpay_order_id,
         razorpay_payment_id,
         razorpay_signature,
-        RAZORPAY_SECRET,
+        RAZORPAY_SECRET
       );
 
       if (!isValid) {
-        return c.json({ error: "Invalid Razorpay payment signature" }, 400);
+        return c.json(
+          { error: "Invalid Razorpay payment signature" },
+          HttpStatus.BadRequest
+        );
       }
     }
 
@@ -105,7 +112,7 @@ export async function placeOrder(c: Context) {
         name: item.name.trim(),
         price: item.price.toString(),
         quantity: item.quantity.toString(),
-      }),
+      })
     );
 
     // Execute batch
@@ -121,18 +128,24 @@ export async function placeOrder(c: Context) {
       customerAddress: order.customerAddress.trim(),
     });
 
-    return c.json({
-      success: true,
-      orderId: order_id,
-      totalAmount: total_amount,
-      createdAt: created_at,
-      message: "Order placed successfully",
-    });
+    return c.json(
+      {
+        success: true,
+        orderId: order_id,
+        totalAmount: total_amount,
+        createdAt: created_at,
+        message: "Order placed successfully",
+      },
+      HttpStatus.Ok
+    );
   } catch (error) {
     console.error("Order Placement Failed", {
       error,
       timestamp: new Date().toISOString(),
     });
-    return c.json({ error: "Internal Server Error" }, 500);
+    return c.json(
+      { error: "Internal Server Error" },
+      HttpStatus.InternalServerError
+    );
   }
 }

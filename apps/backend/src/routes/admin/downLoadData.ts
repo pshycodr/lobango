@@ -1,6 +1,7 @@
 import { Context } from "hono";
 import { getDB } from "../../db/db";
 import { orders, bookings } from "../../db/schema";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 export async function downloadData(c: Context) {
   try {
@@ -64,12 +65,15 @@ export async function downloadData(c: Context) {
 
     const uniqueCustomers = Array.from(customerMap.values());
 
-    return c.json({
-      success: true,
-      customers: uniqueCustomers,
-      orders: ordersData,
-      bookings: bookingsData,
-    });
+    return c.json(
+      {
+        success: true,
+        customers: uniqueCustomers,
+        orders: ordersData,
+        bookings: bookingsData,
+      },
+      HttpStatus.Ok
+    );
   } catch (error) {
     console.error("Failed to fetch data:", error);
     return c.json(
@@ -77,7 +81,7 @@ export async function downloadData(c: Context) {
         success: false,
         error: "Unable to fetch data. Please try again later.",
       },
-      500,
+      HttpStatus.InternalServerError
     );
   }
 }

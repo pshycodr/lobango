@@ -4,6 +4,7 @@ import { Context } from "hono";
 import { customAlphabet } from "nanoid";
 import { getDB } from "../../db/db";
 import { bookings } from "../../db/schema";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 const generateBookingId = () => {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 10);
@@ -23,7 +24,7 @@ const addBooking = async (c: Context) => {
           error: "Invalid data",
           issues: parseResult.error.issues,
         },
-        400,
+        HttpStatus.BadRequest
       );
     }
 
@@ -41,7 +42,7 @@ const addBooking = async (c: Context) => {
     if (existing.length > 0) {
       return c.json(
         { success: false, error: "You already have a booking." },
-        409,
+        HttpStatus.Conflict
       );
     }
 
@@ -57,12 +58,12 @@ const addBooking = async (c: Context) => {
       created_at,
     });
 
-    return c.json({ success: true, booking_id }, 201);
+    return c.json({ success: true, booking_id }, HttpStatus.Created);
   } catch (error) {
     console.error("Booking error:", error);
     return c.json(
       { success: false, error: "Something went wrong. Please try again." },
-      500,
+      HttpStatus.InternalServerError
     );
   }
 };

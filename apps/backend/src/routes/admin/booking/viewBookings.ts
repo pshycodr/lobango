@@ -1,6 +1,7 @@
 import { Context } from "hono";
 import { getDB } from "../../../db/db";
 import { bookings } from "../../../db/schema";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 const viewBookings = async (c: Context) => {
   try {
@@ -24,7 +25,7 @@ const viewBookings = async (c: Context) => {
         success: false,
         error: "Unable to fetch bookings. Please try again later.",
       },
-      500,
+      HttpStatus.InternalServerError
     );
   }
 };

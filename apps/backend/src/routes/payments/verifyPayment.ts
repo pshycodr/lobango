@@ -1,5 +1,6 @@
-import { Context } from "hono";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 import crypto from "crypto";
+import { Context } from "hono";
 import z from "zod";
 
 const verifyRazorPaySchema = z.object({
@@ -16,9 +17,12 @@ export async function verifyRazorpaySignature(c: Context) {
     const { success } = verifyRazorPaySchema.safeParse(data);
 
     if (!success) {
-      return c.json({
-        success: false,
-      });
+      return c.json(
+        {
+          success: false,
+        },
+        HttpStatus.BadRequest
+      );
     }
 
     const body = `${data.orderId}|${data.paymentId}`;
@@ -26,12 +30,19 @@ export async function verifyRazorpaySignature(c: Context) {
       .createHmac("sha256", c.env.RAZORPAY_SECRET_KEY)
       .update(body)
       .digest("hex");
-    return c.json({
-      success: expectedSignature === data.signature,
-    });
+
+    return c.json(
+      {
+        success: expectedSignature === data.signature,
+      },
+      HttpStatus.Ok
+    );
   } catch (error) {
-    return c.json({
-      success: false,
-    });
+    return c.json(
+      {
+        success: false,
+      },
+      HttpStatus.InternalServerError
+    );
   }
 }

@@ -1,5 +1,6 @@
 import Razorpay from "razorpay";
 import { Context } from "hono";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 export async function createRazorpayOrder(c: Context) {
   const razorpay = new Razorpay({
@@ -10,7 +11,7 @@ export async function createRazorpayOrder(c: Context) {
   const { amount, currency = "INR" } = await c.req.json();
 
   if (!amount || isNaN(amount)) {
-    return c.json({ error: "Amount is required" }, 400);
+    return c.json({ error: "Amount is required" }, HttpStatus.BadRequest);
   }
 
   try {
@@ -31,6 +32,9 @@ export async function createRazorpayOrder(c: Context) {
     });
   } catch (err) {
     console.error("Failed to create Razorpay order", err);
-    return c.json({ error: "Failed to create order" }, 500);
+    return c.json(
+      { error: "Failed to create order" },
+      HttpStatus.InternalServerError
+    );
   }
 }

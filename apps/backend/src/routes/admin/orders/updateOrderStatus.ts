@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { Context } from "hono";
 import { getDB } from "../../../db/db";
 import { orders } from "../../../db/schema";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 export const updateOrderStatus = async (c: Context) => {
   try {
@@ -10,7 +11,10 @@ export const updateOrderStatus = async (c: Context) => {
     const parsed = OrderStatusUpdateSchema.safeParse(body);
 
     if (!parsed.success) {
-      return c.json({ success: false, message: "Invalid request body" }, 400);
+      return c.json(
+        { success: false, message: "Invalid request body" },
+        HttpStatus.BadRequest
+      );
     }
 
     const { orderId, status } = parsed.data;
@@ -21,9 +25,15 @@ export const updateOrderStatus = async (c: Context) => {
       .set({ status })
       .where(eq(orders.order_id, orderId));
 
-    return c.json({ success: true, updated: res.rowsAffected ?? 0, status });
+    return c.json(
+      { success: true, updated: res.rowsAffected ?? 0, status },
+      HttpStatus.Ok
+    );
   } catch (error) {
     console.error("Error updating order status:", error);
-    return c.json({ success: false, message: "Internal Server Error" }, 500);
+    return c.json(
+      { success: false, message: "Internal Server Error" },
+      HttpStatus.InternalServerError
+    );
   }
 };

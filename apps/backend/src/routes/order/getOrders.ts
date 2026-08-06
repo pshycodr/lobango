@@ -1,8 +1,9 @@
 import { Context } from "hono";
 import z from "zod";
-import { getDB } from "../../db/db";
-import { orders, orderItems } from "../../db/schema";
+import { getDB } from "@/db/db";
+import { orders, orderItems } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 const GetOrdersSchema = z.object({
   order_id: z.string().trim(),
@@ -16,7 +17,10 @@ export async function getOrders(c: Context) {
     const parsedBody = GetOrdersSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return c.json({ error: parsedBody.error.flatten() }, 400);
+      return c.json(
+        { error: parsedBody.error.flatten() },
+        HttpStatus.BadRequest
+      );
     }
 
     const data: GetOrder = parsedBody.data;
@@ -33,7 +37,7 @@ export async function getOrders(c: Context) {
       .where(eq(orders.order_id, data.order_id));
 
     if (joined.length === 0) {
-      return c.json({ error: "Order not found" }, 404);
+      return c.json({ error: "Order not found" }, HttpStatus.NotFound);
     }
 
     const { order } = joined[0];
@@ -41,11 +45,11 @@ export async function getOrders(c: Context) {
     const items = joined
       .filter(
         (
-          j,
+          j
         ): j is {
           order: typeof orders.$inferSelect;
           item: typeof orderItems.$inferSelect;
-        } => j.item !== null,
+        } => j.item !== null
       )
       .map((j) => ({
         name: j.item.name,
@@ -53,26 +57,32 @@ export async function getOrders(c: Context) {
         quantity: j.item.quantity,
       }));
 
-    return c.json({
-      success: true,
-      order: {
-        orderId: order.order_id,
-        name: order.customer_name,
-        phone: order.customer_phone,
-        address: order.customer_address,
-        total: order.total_amount,
-        paymentMethod: order.payment_method,
-        paymentStatus: order.payment_status,
-        status: order.status,
-        createdAt: order.created_at,
+    return c.json(
+      {
+        success: true,
+        order: {
+          orderId: order.order_id,
+          name: order.customer_name,
+          phone: order.customer_phone,
+          address: order.customer_address,
+          total: order.total_amount,
+          paymentMethod: order.payment_method,
+          paymentStatus: order.payment_status,
+          status: order.status,
+          createdAt: order.created_at,
+        },
+        items,
       },
-      items,
-    });
+      HttpStatus.Ok
+    );
   } catch (error: any) {
     console.error("Order lookup failed", {
       error,
       timestamp: new Date().toISOString(),
     });
-    return c.json({ error: "Internal Server Error" }, 500);
+    return c.json(
+      { error: "Internal Server Error" },
+      HttpStatus.InternalServerError
+    );
   }
 }

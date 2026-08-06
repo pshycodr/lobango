@@ -1,8 +1,9 @@
+import { HttpStatus } from "@/constants/httpStatusCodes";
+import { and, desc, eq, gte, lt } from "drizzle-orm";
 import { Context } from "hono";
-import { getDB } from "../../../db/db";
-import { orders, orderItems } from "../../../db/schema";
-import { eq, desc, and, gte, lt } from "drizzle-orm";
 import { z } from "zod";
+import { getDB } from "../../../db/db";
+import { orderItems, orders } from "../../../db/schema";
 
 // Schema for query params
 const querySchema = z.object({
@@ -33,7 +34,7 @@ export async function viewOrders(c: Context) {
           error: "Invalid query params",
           issues: parseResult.error.format(),
         },
-        400,
+        HttpStatus.BadRequest
       );
     }
 
@@ -48,15 +49,15 @@ export async function viewOrders(c: Context) {
         Date.UTC(
           targetDate.getUTCFullYear(),
           targetDate.getUTCMonth(),
-          targetDate.getUTCDate(),
-        ),
+          targetDate.getUTCDate()
+        )
       );
       const startOfNextDay = new Date(startOfDay);
       startOfNextDay.setUTCDate(startOfNextDay.getUTCDate() + 1);
 
       whereCondition = and(
         gte(orders.created_at, startOfDay.toISOString()),
-        lt(orders.created_at, startOfNextDay.toISOString()),
+        lt(orders.created_at, startOfNextDay.toISOString())
       );
     } else if (from && to) {
       // range filter (UTC-safe)
@@ -67,22 +68,22 @@ export async function viewOrders(c: Context) {
         Date.UTC(
           fromDate.getUTCFullYear(),
           fromDate.getUTCMonth(),
-          fromDate.getUTCDate(),
-        ),
+          fromDate.getUTCDate()
+        )
       );
       const startOfTo = new Date(
         Date.UTC(
           toDate.getUTCFullYear(),
           toDate.getUTCMonth(),
-          toDate.getUTCDate(),
-        ),
+          toDate.getUTCDate()
+        )
       );
       const startOfNextDay = new Date(startOfTo);
       startOfNextDay.setUTCDate(startOfNextDay.getUTCDate() + 1);
 
       whereCondition = and(
         gte(orders.created_at, startOfFrom.toISOString()),
-        lt(orders.created_at, startOfNextDay.toISOString()),
+        lt(orders.created_at, startOfNextDay.toISOString())
       );
     }
 
@@ -136,16 +137,22 @@ export async function viewOrders(c: Context) {
       items,
     }));
 
-    return c.json({
-      success: true,
-      count: result.length,
-      orders: result,
-    });
+    return c.json(
+      {
+        success: true,
+        count: result.length,
+        orders: result,
+      },
+      HttpStatus.Ok
+    );
   } catch (error: any) {
     console.error("Fetch orders failed", {
       error,
       timestamp: new Date().toISOString(),
     });
-    return c.json({ error: "Internal Server Error" }, 500);
+    return c.json(
+      { error: "Internal Server Error" },
+      HttpStatus.InternalServerError
+    );
   }
 }

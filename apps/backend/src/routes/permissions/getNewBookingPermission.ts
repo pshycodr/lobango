@@ -1,3 +1,4 @@
+import { HttpStatus } from "@/constants/httpStatusCodes";
 import type { AppContext } from "@/types/hono";
 import { PERMISSIONS } from "@/types/kvKeys";
 import { GetNewBookingPermissionResponse } from "@lobango/contracts";
@@ -7,17 +8,20 @@ export const getNewBookingPermission = async (c: AppContext) => {
     const value = await c.env.KV.get(PERMISSIONS.NEW_BOOKINGS);
 
     if (value === null) {
-      return c.json({ error: "Permission not found" }, 404);
+      return c.json({ error: "Permission not found" }, HttpStatus.NotFound);
     }
 
     const response: GetNewBookingPermissionResponse = {
       new_bookings: value === "true",
     };
 
-    return c.json(response, 200);
+    return c.json(response, HttpStatus.Ok);
   } catch (error) {
     console.error(error);
 
-    return c.json({ error: "Failed to fetch permission" }, 500);
+    return c.json(
+      { error: "Failed to fetch permission" },
+      HttpStatus.InternalServerError
+    );
   }
 };

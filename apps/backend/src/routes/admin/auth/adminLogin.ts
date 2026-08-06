@@ -5,7 +5,8 @@ import { getDB } from "../../../db/db";
 import { admin } from "../../../db/schema";
 import { eq } from "drizzle-orm";
 import { setCookie } from "hono/cookie";
-import z, { infer } from "zod";
+import z, { httpUrl, infer } from "zod";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 const AdminSchema = z.object({
   username: z.string(),
@@ -21,7 +22,7 @@ export async function adminLogin(c: Context) {
 
   const { success } = AdminSchema.safeParse(body);
 
-  if (!success) return c.text("Invalid credentials", 401);
+  if (!success) return c.text("Invalid credentials", HttpStatus.Unauthorized);
 
   const { username, password } = body;
 
@@ -41,12 +42,12 @@ export async function adminLogin(c: Context) {
     .where(eq(admin.username, username))
     .limit(1);
 
-  if (!result.length) return c.text("Invalid user", 401);
+  if (!result.length) return c.text("Invalid user", HttpStatus.Unauthorized);
 
   const user = result[0];
   const isValid = await bcrypt.compare(password, user.password);
 
-  if (!isValid) return c.text("Invalid credentials", 401);
+  if (!isValid) return c.text("Invalid credentials", HttpStatus.BadRequest);
 
   const token = await sign(
     {
@@ -54,7 +55,7 @@ export async function adminLogin(c: Context) {
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
     },
     c.env.JWT_SECRET,
-    "HS256",
+    "HS256"
   );
 
   setCookie(c, "admin_token", token, {
@@ -65,5 +66,5 @@ export async function adminLogin(c: Context) {
     maxAge: 60 * 60 * 24 * 7,
   });
 
-  return c.json({ success: true });
+  return c.json({ success: true }, HttpStatus.Ok);
 }

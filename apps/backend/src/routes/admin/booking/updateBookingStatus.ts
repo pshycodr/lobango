@@ -4,6 +4,7 @@ import { Context } from "hono";
 import { getDB } from "../../../db/db";
 import { bookings } from "../../../db/schema";
 import { sendBookingEmail } from "../../../utils/sendEmail";
+import { HttpStatus } from "@/constants/httpStatusCodes";
 
 const updateBookingStatus = async (c: Context) => {
   try {
@@ -11,7 +12,10 @@ const updateBookingStatus = async (c: Context) => {
     const parsed = UpdateBookingSchema.safeParse(body);
 
     if (!parsed.success) {
-      return c.json({ success: false, error: "Invalid data." }, 400);
+      return c.json(
+        { success: false, error: "Invalid data." },
+        HttpStatus.BadRequest
+      );
     }
 
     const { booking_id, status } = parsed.data;
@@ -24,7 +28,10 @@ const updateBookingStatus = async (c: Context) => {
       .run();
 
     if (result.meta.changes === 0) {
-      return c.json({ success: false, error: "Booking not found." }, 404);
+      return c.json(
+        { success: false, error: "Booking not found." },
+        HttpStatus.NotFound
+      );
     }
 
     // Fetch updated booking
@@ -37,7 +44,7 @@ const updateBookingStatus = async (c: Context) => {
     if (!updatedBooking) {
       return c.json(
         { success: false, error: "Booking not found after update." },
-        404,
+        HttpStatus.NotFound
       );
     }
 
@@ -53,12 +60,18 @@ const updateBookingStatus = async (c: Context) => {
       number_of_people: updatedBooking.number_of_people,
     });
 
-    return c.json({
-      success: true,
-    });
+    return c.json(
+      {
+        success: true,
+      },
+      HttpStatus.Ok
+    );
   } catch (error) {
     console.error("Booking status update failed:", error);
-    return c.json({ success: false, error: "Server error." }, 500);
+    return c.json(
+      { success: false, error: "Server error." },
+      HttpStatus.InternalServerError
+    );
   }
 };
 

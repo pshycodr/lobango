@@ -1,3 +1,4 @@
+import { HttpStatus } from "@/constants/httpStatusCodes";
 import { AppContext } from "@/types/hono";
 import { PERMISSIONS } from "@/types/kvKeys";
 import type { SetNewBookingPermissionResponse } from "@lobango/contracts/permissions";
@@ -13,7 +14,7 @@ export const setNewBookingPermission = async (c: AppContext) => {
     const parsed = bodySchema.safeParse(body);
 
     if (!parsed.success) {
-      return c.json({ error: "Invalid request body" }, 400);
+      return c.json({ error: "Invalid request body" }, HttpStatus.BadRequest);
     }
 
     await c.env.KV.put(PERMISSIONS.NEW_BOOKINGS, String(parsed.data.value));
@@ -22,9 +23,12 @@ export const setNewBookingPermission = async (c: AppContext) => {
       new_bookings: parsed.data.value,
     };
 
-    return c.json(response, 200);
+    return c.json(response, HttpStatus.Ok);
   } catch (error) {
     console.error(error);
-    return c.json({ error: "Failed to update permission" }, 500);
+    return c.json(
+      { error: "Failed to update permission" },
+      HttpStatus.InternalServerError
+    );
   }
 };

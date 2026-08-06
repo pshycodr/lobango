@@ -1,8 +1,9 @@
+import { HttpStatus } from "@/constants/httpStatusCodes";
+import { eq } from "drizzle-orm";
 import { Context } from "hono";
 import z from "zod";
 import { getDB } from "../../db/db";
 import { orders } from "../../db/schema";
-import { eq } from "drizzle-orm";
 
 const CancelOrderSchema = z.object({
   order_id: z.string().trim(),
@@ -17,7 +18,7 @@ export async function cancelOrder(c: Context) {
     const parsed = CancelOrderSchema.safeParse(body);
 
     if (!parsed.success) {
-      return c.json({ error: parsed.error.flatten() }, 400);
+      return c.json({ error: parsed.error.flatten() }, HttpStatus.BadRequest);
     }
 
     const data: CancelOrderRequest = parsed.data;
@@ -29,15 +30,18 @@ export async function cancelOrder(c: Context) {
     });
 
     if (!existing) {
-      return c.json({ error: "Order not found" }, 404);
+      return c.json({ error: "Order not found" }, HttpStatus.NotFound);
     }
 
     if (existing.customer_phone !== data.ph_no) {
-      return c.json({ error: "Phone number does not match this order." }, 403);
+      return c.json(
+        { error: "Phone number does not match this order." },
+        HttpStatus.Forbidden
+      );
     }
 
     if (existing.status === "cancelled") {
-      return c.json({ message: "Order already cancelled." }, 200);
+      return c.json({ message: "Order already cancelled." }, HttpStatus.Ok);
     }
 
     // Update order status
@@ -56,6 +60,9 @@ export async function cancelOrder(c: Context) {
       error,
       timestamp: new Date().toISOString(),
     });
-    return c.json({ error: "Internal Server Error" }, 500);
+    return c.json(
+      { error: "Internal Server Error" },
+      HttpStatus.InternalServerError
+    );
   }
 }

@@ -1,3 +1,4 @@
+import { HttpStatus } from "@/constants/httpStatusCodes";
 import { Context, Next } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
@@ -5,13 +6,13 @@ import { verify } from "hono/jwt";
 export const adminCheck = async (c: Context, next: Next) => {
   const token = getCookie(c, "admin_token");
 
-  if (!token) return c.text("Unauthorized", 401);
+  if (!token) return c.text("Unauthorized", HttpStatus.Unauthorized);
 
   try {
     const payload = await verify(token, c.env.JWT_SECRET, "HS256");
     c.set("admin", payload);
     return next();
   } catch {
-    return c.text("Invalid or expired token", 401);
+    return c.text("Invalid or expired token", HttpStatus.Unauthorized);
   }
 };
