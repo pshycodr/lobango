@@ -23,7 +23,7 @@ export const updateOrderStatus = async (c: Context) => {
     const res = await db
       .update(orders)
       .set({ status })
-      .where(eq(orders.order_id, orderId));
+      .where(eq(orders.orderId, orderId));
 
     return c.json(
       { success: true, updated: res.rowsAffected ?? 0, status },

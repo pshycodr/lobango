@@ -56,8 +56,8 @@ export async function viewOrders(c: Context) {
       startOfNextDay.setUTCDate(startOfNextDay.getUTCDate() + 1);
 
       whereCondition = and(
-        gte(orders.created_at, startOfDay.toISOString()),
-        lt(orders.created_at, startOfNextDay.toISOString())
+        gte(orders.createdAt, startOfDay.toISOString()),
+        lt(orders.createdAt, startOfNextDay.toISOString())
       );
     } else if (from && to) {
       // range filter (UTC-safe)
@@ -82,8 +82,8 @@ export async function viewOrders(c: Context) {
       startOfNextDay.setUTCDate(startOfNextDay.getUTCDate() + 1);
 
       whereCondition = and(
-        gte(orders.created_at, startOfFrom.toISOString()),
-        lt(orders.created_at, startOfNextDay.toISOString())
+        gte(orders.createdAt, startOfFrom.toISOString()),
+        lt(orders.createdAt, startOfNextDay.toISOString())
       );
     }
 
@@ -93,9 +93,9 @@ export async function viewOrders(c: Context) {
         item: orderItems,
       })
       .from(orders)
-      .leftJoin(orderItems, eq(orders.order_id, orderItems.order_id))
+      .leftJoin(orderItems, eq(orders.orderId, orderItems.orderId))
       .where(whereCondition) // if undefined => all orders
-      .orderBy(desc(orders.created_at));
+      .orderBy(desc(orders.createdAt));
 
     const ordersMap = new Map<
       string,
@@ -106,7 +106,7 @@ export async function viewOrders(c: Context) {
     >();
 
     for (const row of joined) {
-      const orderId = row.order.order_id;
+      const orderId = row.order.orderId;
       if (!ordersMap.has(orderId)) {
         ordersMap.set(orderId, {
           order: row.order,
@@ -123,17 +123,17 @@ export async function viewOrders(c: Context) {
     }
 
     const result = Array.from(ordersMap.values()).map(({ order, items }) => ({
-      orderId: order.order_id,
-      name: order.customer_name,
-      phone: order.customer_phone,
-      address: order.customer_address,
+      orderId: order.orderId,
+      name: order.customerName,
+      phone: order.customerPhone,
+      address: order.customerAddress,
       longitude: order.longitude,
       latitude: order.latitude,
-      total: order.total_amount,
-      paymentMethod: order.payment_method,
-      paymentStatus: order.payment_status,
+      total: order.totalAmount,
+      paymentMethod: order.paymentMethod,
+      paymentStatus: order.paymentStatus,
       status: order.status,
-      createdAt: order.created_at,
+      createdAt: order.createdAt,
       items,
     }));
 

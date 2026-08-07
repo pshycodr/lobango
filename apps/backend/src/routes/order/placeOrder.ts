@@ -8,6 +8,7 @@ import { getDB } from "../../db/db";
 import { orderItems } from "../../db/schema/orderItems";
 import { orders } from "../../db/schema/orders";
 import { sendOrderEmail } from "../../utils/sendEmail";
+
 export interface Env {
   DB: D1Database;
 }
@@ -30,6 +31,7 @@ function verifyRazorpaySignature(
     .createHmac("sha256", secret)
     .update(body)
     .digest("hex");
+
   return expectedSignature === signature;
 }
 
@@ -46,8 +48,10 @@ export async function placeOrder(c: Context) {
 
     const { order, razorpay } = parsed.data;
     const db = getDB(c.env.DB);
-    const created_at = new Date().toISOString();
-    const total_amount = order.items.reduce(
+
+    const createdAt = new Date().toISOString();
+
+    const totalAmount = order.items.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
@@ -62,7 +66,9 @@ export async function placeOrder(c: Context) {
           HttpStatus.BadRequest
         );
       }
+
       const RAZORPAY_SECRET = c.env.RAZORPAY_SECRET_KEY;
+
       const isValid = verifyRazorpaySignature(
         razorpay_order_id,
         razorpay_payment_id,
@@ -78,52 +84,53 @@ export async function placeOrder(c: Context) {
       }
     }
 
-    let order_id: string;
+    let orderId: string;
+
     while (true) {
-      order_id = generateOrderId();
+      orderId = generateOrderId();
+
       const existing = await db.query.orders.findFirst({
-        where: (fields, { eq }) => eq(fields.order_id, order_id),
+        where: (fields, { eq }) => eq(fields.orderId, orderId),
       });
+
       if (!existing) break;
     }
 
-    // Create batch of queries
     const insertOrderQuery = db.insert(orders).values({
-      order_id,
-      customer_name: order.customerName.trim(),
-      customer_phone: order.customerPhone,
-      customer_address: order.customerAddress.trim(),
+      orderId,
+      customerName: order.customerName.trim(),
+      customerPhone: order.customerPhone,
+      customerAddress: order.customerAddress.trim(),
       longitude: order.longitude,
       latitude: order.latitude,
-      total_amount,
-      customer_email: order.customerEmail,
+      totalAmount,
+      customerEmail: order.customerEmail,
       status: "pending",
-      payment_method: order.paymentMethod,
-      payment_status: order.paymentMethod === "razorpay" ? "paid" : "pending",
-      razorpay_order_id: razorpay.razorpay_order_id ?? null,
-      razorpay_payment_id: razorpay.razorpay_payment_id ?? null,
-      razorpay_signature: razorpay.razorpay_signature ?? null,
-      created_at,
+      paymentMethod: order.paymentMethod,
+      paymentStatus: order.paymentMethod === "razorpay" ? "paid" : "pending",
+      razorpayOrderId: razorpay.razorpay_order_id ?? null,
+      razorpayPaymentId: razorpay.razorpay_payment_id ?? null,
+      razorpaySignature: razorpay.razorpay_signature ?? null,
+      createdAt,
     });
 
     const insertItemQueries = order.items.map((item) =>
       db.insert(orderItems).values({
-        order_id,
+        orderId,
         name: item.name.trim(),
         price: item.price.toString(),
         quantity: item.quantity.toString(),
       })
     );
 
-    // Execute batch
     await db.batch([insertOrderQuery, ...insertItemQueries]);
 
     await sendOrderEmail({
       env: c.env,
       to: order.customerEmail,
       name: order.customerName,
-      total: total_amount.toString(),
-      orderId: order_id,
+      total: totalAmount.toString(),
+      orderId,
       customerPhone: order.customerPhone,
       customerAddress: order.customerAddress.trim(),
     });
@@ -131,9 +138,9 @@ export async function placeOrder(c: Context) {
     return c.json(
       {
         success: true,
-        orderId: order_id,
-        totalAmount: total_amount,
-        createdAt: created_at,
+        orderId,
+        totalAmount,
+        createdAt,
         message: "Order placed successfully",
       },
       HttpStatus.Ok
@@ -143,6 +150,7 @@ export async function placeOrder(c: Context) {
       error,
       timestamp: new Date().toISOString(),
     });
+
     return c.json(
       { error: "Internal Server Error" },
       HttpStatus.InternalServerError

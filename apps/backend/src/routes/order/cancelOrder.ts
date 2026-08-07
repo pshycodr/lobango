@@ -26,14 +26,14 @@ export async function cancelOrder(c: Context) {
 
     // Fetch order
     const existing = await db.query.orders.findFirst({
-      where: eq(orders.order_id, data.order_id),
+      where: eq(orders.orderId, data.order_id),
     });
 
     if (!existing) {
       return c.json({ error: "Order not found" }, HttpStatus.NotFound);
     }
 
-    if (existing.customer_phone !== data.ph_no) {
+    if (existing.customerPhone !== data.ph_no) {
       return c.json(
         { error: "Phone number does not match this order." },
         HttpStatus.Forbidden
@@ -48,7 +48,7 @@ export async function cancelOrder(c: Context) {
     await db
       .update(orders)
       .set({ status: "cancelled" })
-      .where(eq(orders.order_id, data.order_id))
+      .where(eq(orders.orderId, data.order_id))
       .run();
 
     return c.json({

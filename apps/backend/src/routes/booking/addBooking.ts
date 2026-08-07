@@ -15,7 +15,7 @@ const addBooking = async (c: Context) => {
   try {
     const body = await c.req.json();
     const parseResult = BookingSchema.safeParse(body);
-    const created_at = new Date().toISOString();
+    const createdAt = new Date().toISOString();
 
     if (!parseResult.success) {
       return c.json(
@@ -30,14 +30,14 @@ const addBooking = async (c: Context) => {
 
     const data = parseResult.data;
 
-    const booking_id = generateBookingId();
+    const bookingId = generateBookingId();
     const db = getDB(c.env.DB);
 
     // check for duplicate booking (same phone + date + time)
     const existing = await db
       .select()
       .from(bookings)
-      .where(eq(bookings.customer_phone, data.phone));
+      .where(eq(bookings.customerPhone, data.phone));
 
     if (existing.length > 0) {
       return c.json(
@@ -47,18 +47,18 @@ const addBooking = async (c: Context) => {
     }
 
     const result = await db.insert(bookings).values({
-      booking_id,
-      customer_name: data.name,
-      customer_phone: data.phone,
-      customer_email: data.email,
+      bookingId: bookingId,
+      customerName: data.name,
+      customerPhone: data.phone,
+      customerEmail: data.email,
       date: data.date,
       time: data.time,
-      number_of_people: parseInt(data.person, 10),
+      numberOfPeople: parseInt(data.person, 10),
       message: data.message || "N/A",
-      created_at,
+      createdAt: createdAt,
     });
 
-    return c.json({ success: true, booking_id }, HttpStatus.Created);
+    return c.json({ success: true, bookingId }, HttpStatus.Created);
   } catch (error) {
     console.error("Booking error:", error);
     return c.json(

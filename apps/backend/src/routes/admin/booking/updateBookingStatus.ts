@@ -24,7 +24,7 @@ const updateBookingStatus = async (c: Context) => {
     const result = await db
       .update(bookings)
       .set({ status })
-      .where(eq(bookings.booking_id, booking_id))
+      .where(eq(bookings.bookingId, booking_id))
       .run();
 
     if (result.meta.changes === 0) {
@@ -38,7 +38,7 @@ const updateBookingStatus = async (c: Context) => {
     const updatedBooking = await db
       .select()
       .from(bookings)
-      .where(eq(bookings.booking_id, booking_id))
+      .where(eq(bookings.bookingId, booking_id))
       .get();
 
     if (!updatedBooking) {
@@ -50,14 +50,14 @@ const updateBookingStatus = async (c: Context) => {
 
     await sendBookingEmail({
       env: c.env,
-      to: updatedBooking.customer_email,
-      customer_name: updatedBooking.customer_name,
-      booking_id: updatedBooking.booking_id,
-      customer_phone: updatedBooking.customer_phone,
-      customer_email: updatedBooking.customer_email,
+      to: updatedBooking.customerEmail,
+      customer_name: updatedBooking.customerName,
+      booking_id: updatedBooking.bookingId,
+      customer_phone: updatedBooking.customerPhone,
+      customer_email: updatedBooking.customerEmail,
       date: updatedBooking.date,
       time: updatedBooking.time,
-      number_of_people: updatedBooking.number_of_people,
+      number_of_people: updatedBooking.numberOfPeople,
     });
 
     return c.json(

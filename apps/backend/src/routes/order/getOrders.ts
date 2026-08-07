@@ -33,8 +33,8 @@ export async function getOrders(c: Context) {
         item: orderItems,
       })
       .from(orders)
-      .leftJoin(orderItems, eq(orders.order_id, orderItems.order_id))
-      .where(eq(orders.order_id, data.order_id));
+      .leftJoin(orderItems, eq(orders.orderId, orderItems.orderId))
+      .where(eq(orders.orderId, data.order_id));
 
     if (joined.length === 0) {
       return c.json({ error: "Order not found" }, HttpStatus.NotFound);
@@ -61,15 +61,15 @@ export async function getOrders(c: Context) {
       {
         success: true,
         order: {
-          orderId: order.order_id,
-          name: order.customer_name,
-          phone: order.customer_phone,
-          address: order.customer_address,
-          total: order.total_amount,
-          paymentMethod: order.payment_method,
-          paymentStatus: order.payment_status,
+          orderId: order.orderId,
+          name: order.customerName,
+          phone: order.customerPhone,
+          address: order.customerAddress,
+          total: order.totalAmount,
+          paymentMethod: order.paymentMethod,
+          paymentStatus: order.paymentStatus,
           status: order.status,
-          createdAt: order.created_at,
+          createdAt: order.createdAt,
         },
         items,
       },

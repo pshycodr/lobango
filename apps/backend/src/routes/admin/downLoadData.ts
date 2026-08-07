@@ -9,17 +9,17 @@ export async function downloadData(c: Context) {
 
     const ordersData = await db
       .select({
-        name: orders.customer_name,
-        email: orders.customer_email,
-        phone: orders.customer_phone,
+        name: orders.customerName,
+        email: orders.customerEmail,
+        phone: orders.customerPhone,
       })
       .from(orders);
 
     const bookingsData = await db
       .select({
-        name: bookings.customer_name,
-        email: bookings.customer_email,
-        phone: bookings.customer_phone,
+        name: bookings.customerName,
+        email: bookings.customerEmail,
+        phone: bookings.customerPhone,
       })
       .from(bookings);
 
