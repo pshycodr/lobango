@@ -1,11 +1,12 @@
 import { sqliteTable, int, text } from "drizzle-orm/sqlite-core";
 import { orders } from "./orders";
+import { createSelectSchema } from "drizzle-zod";
 
 export const orderItems = sqliteTable("orderItems", {
   id: int("id").primaryKey({ autoIncrement: true }),
-  order_id: text("order_id")
+  orderId: text("order_id")
     .notNull()
-    .references(() => orders.order_id, {
+    .references(() => orders.orderId, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
@@ -13,3 +14,5 @@ export const orderItems = sqliteTable("orderItems", {
   price: text("price").notNull(),
   quantity: text("quantity").default("1"),
 });
+
+export const orderItemSelectSchema = createSelectSchema(orderItems);
