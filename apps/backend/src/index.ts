@@ -1,15 +1,13 @@
+import { adminRouter } from "@/orpc/routers/admin";
+import { clientRouter } from "@/orpc/routers/client";
+import { paymentRouter } from "@/orpc/routers/payment";
+import { Bindings } from "@/types/env";
+import { onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import orderRouter from "./routes/clients.routes";
-import adminRouter from "./routes/admin.routes";
-import clientRouter from "./routes/clients.routes";
-import paymentRouter from "./routes/payments.routes";
-import permissionsRouter from "./routes/permissons.route";
-import { Bindings } from "@/types/env";
 
-const app = new Hono<{
-  Bindings: Bindings;
-}>();
+const app = new Hono<{ Bindings: Bindings }>();
 
 const allowedOrigins = [
   "https://adminlobango.vercel.app",
@@ -29,14 +27,48 @@ app.use(
     credentials: true,
     allowMethods: ["GET", "POST", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
-  }),
+  })
 );
 
 app.get("/", (c) => c.text("Hello Hono!"));
 
-app.route("/api/v1/client", clientRouter);
-app.route("/api/v1/admin", adminRouter);
-app.route("/api/v1/payment", paymentRouter);
-app.route("/api/v1/permission", permissionsRouter);
+const clientHandler = new RPCHandler(clientRouter, {
+  interceptors: [onError((err) => console.error(err))],
+});
+
+const adminHandler = new RPCHandler(adminRouter, {
+  interceptors: [onError((err) => console.error(err))],
+});
+
+const paymentHandler = new RPCHandler(paymentRouter, {
+  interceptors: [onError((err) => console.error(err))],
+});
+
+app.use("/api/v1/client/*", async (c, next) => {
+  const { matched, response } = await clientHandler.handle(c.req.raw, {
+    prefix: "/api/v1/client",
+    context: { env: c.env },
+  });
+  if (matched) return c.newResponse(response.body, response);
+  await next();
+});
+
+app.use("/api/v1/admin/*", async (c, next) => {
+  const { matched, response } = await adminHandler.handle(c.req.raw, {
+    prefix: "/api/v1/admin",
+    context: { env: c.env },
+  });
+  if (matched) return c.newResponse(response.body, response);
+  await next();
+});
+
+app.use("/api/v1/payment/*", async (c, next) => {
+  const { matched, response } = await paymentHandler.handle(c.req.raw, {
+    prefix: "/api/v1/payment",
+    context: { env: c.env },
+  });
+  if (matched) return c.newResponse(response.body, response);
+  await next();
+});
 
 export default app;

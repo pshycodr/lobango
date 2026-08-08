@@ -132,6 +132,9 @@ importers:
       '@getbrevo/brevo':
         specifier: ^3.0.4
         version: 3.0.4
+      '@orpc/server':
+        specifier: ^1.14.14
+        version: 1.14.14(ws@8.21.0)
       '@yankeguo/hono-cookie-session':
         specifier: github:yankeguo/hono-cookie-session
         version: https://codeload.github.com/yankeguo/hono-cookie-session/tar.gz/0609e0c495b126c9d71ef5aad17aa4b004612b2b(hono@4.12.30)
@@ -147,6 +150,9 @@ importers:
       drizzle-orm:
         specifier: ^0.45.2
         version: 0.45.2(@cloudflare/workers-types@5.20260718.1)(better-sqlite3@12.11.1)
+      drizzle-zod:
+        specifier: ^0.8.3
+        version: 0.8.3(drizzle-orm@0.45.2(@cloudflare/workers-types@5.20260718.1)(better-sqlite3@12.11.1))(zod@4.4.3)
       hono:
         specifier: ^4.12.30
         version: 4.12.30
@@ -199,6 +205,12 @@ importers:
       '@ionic/react':
         specifier: ^8.8.14
         version: 8.8.14(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@orpc/client':
+        specifier: ^1.14.14
+        version: 1.14.14
+      '@orpc/server':
+        specifier: ^1.14.14
+        version: 1.14.14(ws@8.21.0)
       axios:
         specifier: ^1.18.1
         version: 1.18.1
@@ -233,6 +245,9 @@ importers:
       '@eslint/eslintrc':
         specifier: ^3.3.6
         version: 3.3.6
+      '@lobango/backend':
+        specifier: 'workspace:'
+        version: link:../backend
       '@lobango/contracts':
         specifier: 'workspace:'
         version: link:../../packages/contracts
@@ -1360,6 +1375,57 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
 
+  '@orpc/client@1.14.14':
+    resolution: {integrity: sha512-WVUbwZmjzX55kqv2NLWtzh7AW40VeK0sX2XowCOxedJBcANXR1ZVK4lDSNyXBiD0UNfCdTtqtypigVZj2na1RA==}
+
+  '@orpc/contract@1.14.14':
+    resolution: {integrity: sha512-yaNVt+nBll02mo2UgRjrCnfrjaux9ez8S1Kq3VAOqMS4cAkkA4lAvc+UCVYk+hsLZhHL+7rIWTdJHtnNKwIvQA==}
+
+  '@orpc/interop@1.14.14':
+    resolution: {integrity: sha512-zAdgDPmxPeB6rEg2E+GdcxKXnDWuh1YUNgrz/WGFP4Jm5gW9qdGt8dNC6AMTsO6pb91r0eBYz7p/T8ew4Iuuyg==}
+
+  '@orpc/server@1.14.14':
+    resolution: {integrity: sha512-5hW9Iq43LqSWcd7fb5nurSLpXxSNXY+NXj8eMGabMMOGfWLlXmTOkdGxerT6pUf1WryfcHbRrjPe2wB22+Egjg==}
+    peerDependencies:
+      crossws: '>=0.3.4'
+      ws: '>=8.18.1'
+    peerDependenciesMeta:
+      crossws:
+        optional: true
+      ws:
+        optional: true
+
+  '@orpc/shared@1.14.14':
+    resolution: {integrity: sha512-jd0LNout5hhS1G3DFoIHQAtxW0rQKdc7ogP3/XbzH2a/Zm/9hATiDO2pDMKGoiNh4MAO8KAgmDz6Nc6iJ+LdFw==}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.9.0'
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+
+  '@orpc/standard-server-aws-lambda@1.14.14':
+    resolution: {integrity: sha512-GEFrBdXIJTZw+3ShimRhH2w+uSMeg5FICH9bx74ICE+4N2IEVjLOBiDDmM9rEQ0eOswVhh6f49GulF8B5R09kA==}
+
+  '@orpc/standard-server-fastify@1.14.14':
+    resolution: {integrity: sha512-0RQPsk5QWzyEe8omEg4KOklGQoKSE8w1bF8MyK1ThoAnqKQchECTdC+PI0WonhfLEVSH0/Q1PP51euCn+hPuXw==}
+    peerDependencies:
+      fastify: '>=5.6.1'
+    peerDependenciesMeta:
+      fastify:
+        optional: true
+
+  '@orpc/standard-server-fetch@1.14.14':
+    resolution: {integrity: sha512-6MD3/LlziO6mTJWF8rxVSHTvywa2Uvge/okSeyvc31rCtS+hxBjv03tHOWDxDOlNa7FGlvIZmKdslZQq1LLDMw==}
+
+  '@orpc/standard-server-node@1.14.14':
+    resolution: {integrity: sha512-h144Acy78gr2apXHbJCfAnkPfl9/pXQ4FkSE92U8lEa1eVHRg8YzoBIyY2lAitnD2w0rBv+CLXqxZ2KawbMP6w==}
+
+  '@orpc/standard-server-peer@1.14.14':
+    resolution: {integrity: sha512-Xu86k9QudylVGl00n4vWMJPkHkZ+9Mjv50whpPtu6dlKCMjYmhV2aAsA5p3AbNkuLMtO7I5tCM/c1e4e+BYCdQ==}
+
+  '@orpc/standard-server@1.14.14':
+    resolution: {integrity: sha512-VOAm1xZblk1O2P+YH1O9ZpIWRCL8078JPw5wht5QEpDxCdZ4ZHg6qXr4oBsGUWuRVZ+3Hs5aSG7w9kOD/o+w9w==}
+
   '@oxc-project/types@0.139.0':
     resolution: {integrity: sha512-r9gHphtCs+1M7J0pw6Sn/hh/Wpa/iQrOOkrNAlVLF/gHq+/CJmHIWKKUUhdWjcD6CIa8idarspCsASiXCXvFUw==}
 
@@ -1523,6 +1589,9 @@ packages:
 
   '@speed-highlight/core@1.2.17':
     resolution: {integrity: sha512-Z92FwKpCtfaW1V0jTU/fh3QzYEZN8wDwrzRIBoADCJfn4mJCNcJN/XegifX7BDrQ8/h9Xh/JnbyMchL0FqXrkg==}
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@stencil/core@4.43.5':
     resolution: {integrity: sha512-cgWD+GeuvJpTe1WQn40p02+BJ2j0j1YJ17GdkF2qKIQ23s2e3Zivq5yISXS3dcuV6oUJFN93jprdk+nk/sq99Q==}
@@ -2492,6 +2561,12 @@ packages:
         optional: true
       sqlite3:
         optional: true
+
+  drizzle-zod@0.8.3:
+    resolution: {integrity: sha512-66yVOuvGhKJnTdiqj1/Xaaz9/qzOdRJADpDa68enqS6g3t0kpNkwNYjUuaeXgZfO/UWuIM9HIhSlJ6C5ZraMww==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: ^3.25.0 || ^4.0.0
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -3514,6 +3589,9 @@ packages:
     resolution: {integrity: sha512-7x81NCL719oNbsq/3mh+hVrAWmFuEYUqrq/Iw3kUzH8ReypT9QQ0BLoJS7/G9k6N81XjW4qHWtjWwe/9eLy1EQ==}
     engines: {node: '>=12'}
 
+  openapi-types@12.1.3:
+    resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
+
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -3685,6 +3763,10 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+
+  radash@12.1.1:
+    resolution: {integrity: sha512-h36JMxKRqrAxVD8201FrCpyeNuUY9Y5zZwujr20fFO77tpUtGa6EZzfKw/3WaiBX95fq7+MpsuMLNdSnORAwSA==}
+    engines: {node: '>=14.18.0'}
 
   razorpay@2.9.8:
     resolution: {integrity: sha512-Uqv3KV7JAfpLlabGdg8Cw7e7ieGkK/DighFq6iGkNnz0Y+it6+/lFmPCTfkcptc2EagL2Og25VWUxc+Fgp/+nA==}
@@ -3992,6 +4074,10 @@ packages:
   tabbable@6.5.0:
     resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
 
+  tagged-tag@1.0.0:
+    resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
+    engines: {node: '>=20'}
+
   tailwindcss@4.3.3:
     resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
 
@@ -4063,6 +4149,10 @@ packages:
   type-fest@0.20.2:
     resolution: {integrity: sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==}
     engines: {node: '>=10'}
+
+  type-fest@5.8.0:
+    resolution: {integrity: sha512-YGYEVz3Fm5iy/AybuA0oyNFq7H4CgQNfRp/qfe8nurE1kuCeNm3/vfm9X4Mtl+qLyaKJUh5xrFZwogr41SMjYA==}
+    engines: {node: '>=20'}
 
   typed-array-buffer@1.0.3:
     resolution: {integrity: sha512-nAYYwfY3qnzX30IkA6AQZjVbtK6duGontcQm1WSG1MD94YLqK0515GNApXkoxKOWMusVssAHWLh9SeaoefYFGw==}
@@ -5207,6 +5297,95 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
+  '@orpc/client@1.14.14':
+    dependencies:
+      '@orpc/shared': 1.14.14
+      '@orpc/standard-server': 1.14.14
+      '@orpc/standard-server-fetch': 1.14.14
+      '@orpc/standard-server-peer': 1.14.14
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
+  '@orpc/contract@1.14.14':
+    dependencies:
+      '@orpc/client': 1.14.14
+      '@orpc/shared': 1.14.14
+      '@standard-schema/spec': 1.1.0
+      openapi-types: 12.1.3
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
+  '@orpc/interop@1.14.14': {}
+
+  '@orpc/server@1.14.14(ws@8.21.0)':
+    dependencies:
+      '@orpc/client': 1.14.14
+      '@orpc/contract': 1.14.14
+      '@orpc/interop': 1.14.14
+      '@orpc/shared': 1.14.14
+      '@orpc/standard-server': 1.14.14
+      '@orpc/standard-server-aws-lambda': 1.14.14
+      '@orpc/standard-server-fastify': 1.14.14
+      '@orpc/standard-server-fetch': 1.14.14
+      '@orpc/standard-server-node': 1.14.14
+      '@orpc/standard-server-peer': 1.14.14
+      cookie: 1.1.1
+    optionalDependencies:
+      ws: 8.21.0
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - fastify
+
+  '@orpc/shared@1.14.14':
+    dependencies:
+      radash: 12.1.1
+      type-fest: 5.8.0
+
+  '@orpc/standard-server-aws-lambda@1.14.14':
+    dependencies:
+      '@orpc/shared': 1.14.14
+      '@orpc/standard-server': 1.14.14
+      '@orpc/standard-server-fetch': 1.14.14
+      '@orpc/standard-server-node': 1.14.14
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
+  '@orpc/standard-server-fastify@1.14.14':
+    dependencies:
+      '@orpc/shared': 1.14.14
+      '@orpc/standard-server': 1.14.14
+      '@orpc/standard-server-node': 1.14.14
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
+  '@orpc/standard-server-fetch@1.14.14':
+    dependencies:
+      '@orpc/shared': 1.14.14
+      '@orpc/standard-server': 1.14.14
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
+  '@orpc/standard-server-node@1.14.14':
+    dependencies:
+      '@orpc/shared': 1.14.14
+      '@orpc/standard-server': 1.14.14
+      '@orpc/standard-server-fetch': 1.14.14
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
+  '@orpc/standard-server-peer@1.14.14':
+    dependencies:
+      '@orpc/shared': 1.14.14
+      '@orpc/standard-server': 1.14.14
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
+  '@orpc/standard-server@1.14.14':
+    dependencies:
+      '@orpc/shared': 1.14.14
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+
   '@oxc-project/types@0.139.0': {}
 
   '@poppinss/colors@4.1.6':
@@ -5301,6 +5480,8 @@ snapshots:
   '@sindresorhus/is@7.2.0': {}
 
   '@speed-highlight/core@1.2.17': {}
+
+  '@standard-schema/spec@1.1.0': {}
 
   '@stencil/core@4.43.5':
     optionalDependencies:
@@ -6127,6 +6308,11 @@ snapshots:
     optionalDependencies:
       '@cloudflare/workers-types': 5.20260718.1
       better-sqlite3: 12.11.1
+
+  drizzle-zod@0.8.3(drizzle-orm@0.45.2(@cloudflare/workers-types@5.20260718.1)(better-sqlite3@12.11.1))(zod@4.4.3):
+    dependencies:
+      drizzle-orm: 0.45.2(@cloudflare/workers-types@5.20260718.1)(better-sqlite3@12.11.1)
+      zod: 4.4.3
 
   dunder-proto@1.0.1:
     dependencies:
@@ -7382,6 +7568,8 @@ snapshots:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
+  openapi-types@12.1.3: {}
+
   optionator@0.9.4:
     dependencies:
       deep-is: 0.1.4
@@ -7502,6 +7690,8 @@ snapshots:
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
+
+  radash@12.1.1: {}
 
   razorpay@2.9.8:
     dependencies:
@@ -7885,6 +8075,8 @@ snapshots:
 
   tabbable@6.5.0: {}
 
+  tagged-tag@1.0.0: {}
+
   tailwindcss@4.3.3: {}
 
   tapable@2.3.3: {}
@@ -7968,6 +8160,10 @@ snapshots:
       prelude-ls: 1.2.1
 
   type-fest@0.20.2: {}
+
+  type-fest@5.8.0:
+    dependencies:
+      tagged-tag: 1.0.0
 
   typed-array-buffer@1.0.3:
     dependencies:
