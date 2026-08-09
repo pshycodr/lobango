@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
+    "deploy:env": "wrangler deploy --minify --secrets-file .env.production",
     "build": "rm -rf dist && bun build src/index.ts --bundle --platform=node --outfile=dist/index.js --minify",
     "start": "wrangler dev",
     "lint": "eslint .",
