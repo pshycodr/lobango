@@ -14,4 +14,5 @@ export type Bindings = {
 
   ORDER_CACHE_TTL: number;
   BOOKING_CACHE_TTL: number;
+  ORDER_STATUS_CACHE_TTL: number;
 };
