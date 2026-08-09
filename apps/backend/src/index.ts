@@ -1,11 +1,16 @@
+import { openApiRouter } from "@/orpc/openapi/appRouter";
 import { adminRouter } from "@/orpc/routers/admin";
 import { clientRouter } from "@/orpc/routers/client";
 import { paymentRouter } from "@/orpc/routers/payment";
 import { Bindings } from "@/types/env";
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { API_TAG_DEFINITIONS } from "./orpc/openapi/tags";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -65,6 +70,41 @@ app.use("/api/v1/admin/*", async (c, next) => {
 app.use("/api/v1/payment/*", async (c, next) => {
   const { matched, response } = await paymentHandler.handle(c.req.raw, {
     prefix: "/api/v1/payment",
+    context: { env: c.env },
+  });
+  if (matched) return c.newResponse(response.body, response);
+  await next();
+});
+
+const openApiHandler = new OpenAPIHandler(openApiRouter, {
+  interceptors: [onError((err) => console.error(err))],
+  plugins: [
+    new OpenAPIReferencePlugin({
+      docsProvider: "scalar",
+      schemaConverters: [new ZodToJsonSchemaConverter()],
+      specGenerateOptions: {
+        info: {
+          title: "Lobango API",
+          version: "1.0.0",
+          description:
+            "Public and internal API for Lobango ordering and admin operations.",
+        },
+        tags: API_TAG_DEFINITIONS,
+      },
+      docsConfig: {
+        theme: "deepSpace",
+        layout: "modern",
+        hideDownloadButton: false,
+      },
+      docsPath: "/docs",
+      specPath: "/spec.json",
+    }),
+  ],
+});
+
+app.use("/openapi/*", async (c, next) => {
+  const { matched, response } = await openApiHandler.handle(c.req.raw, {
+    prefix: "/openapi",
     context: { env: c.env },
   });
   if (matched) return c.newResponse(response.body, response);
