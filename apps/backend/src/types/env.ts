@@ -1,5 +1,3 @@
-import { D1Database, KVNamespace, R2Bucket } from "@cloudflare/workers-types";
-
 export type Bindings = {
   DB: D1Database;
   KV: KVNamespace;
@@ -7,7 +5,7 @@ export type Bindings = {
   JWT_SECRET: string;
 
   RAZORPAY_KEY_ID: string;
-  RAZORPAY_KEY_SECRET: string;
+  RAZORPAY_SECRET_KEY: string;
 
   BREVO_API_KEY: string;
   BREVO_SENDER_EMAIL: string;
