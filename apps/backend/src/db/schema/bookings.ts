@@ -1,4 +1,5 @@
-import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
+import { bookingStatusValues } from "@lobango/contracts/enums";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const bookings = sqliteTable("bookings", {
   id: int("id").primaryKey({ autoIncrement: true }),
@@ -12,6 +13,6 @@ export const bookings = sqliteTable("bookings", {
 
   numberOfPeople: int("number_of_people").notNull(),
   message: text("message").default("N/A"), // optional
-  status: text("status").default("pending"),
+  status: text("status", { enum: bookingStatusValues }).default("pending"),
   createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
 });

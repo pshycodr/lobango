@@ -14,7 +14,7 @@ export const OrderSchema = z.object({
   customerAddress: z.string().min(5),
   longitude: z.string(),
   latitude: z.string(),
-  paymentMethod: z.enum(["razorpay", "cash_on_delivery"]),
+  paymentMethod: z.enum(["razorpay"]),
   items: z.array(OrderItemSchema).min(1, "At least one item is required"),
 });
 

@@ -1,3 +1,8 @@
+import {
+  orderStatusValues,
+  paymentMethodValues,
+  paymentStatusValues,
+} from "@lobango/contracts/enums";
 import { int, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 
@@ -11,13 +16,12 @@ export const orders = sqliteTable("orders", {
   longitude: text("longitude").default("none"),
   latitude: text("latitude").default("none"),
   totalAmount: real("total_amount").notNull(),
-  status: text("status").default("pending"),
+  paymentMethod: text("payment_method", { enum: paymentMethodValues }),
+  paymentStatus: text("payment_status", { enum: paymentStatusValues }).default(
+    "pending"
+  ),
   createdAt: text("created_at"),
-  paymentMethod: text("payment_method"),
-  paymentStatus: text("payment_status").default("pending"),
-  razorpaySignature: text("razorpay_signature"),
-  razorpayPaymentId: text("razorpay_payment_id"),
-  razorpayOrderId: text("razorpay_order_id"),
+  status: text("status", { enum: orderStatusValues }).default("pending"),
 });
 
 export const OrdersSelectSchema = createSelectSchema(orders);

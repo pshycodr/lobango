@@ -11,7 +11,8 @@
     "./menu": "./src/menu.ts",
     "./order": "./src/order.ts",
     "./permissions": "./src/permissions.ts",
-    "./admin": "./src/admin/index.ts"
+    "./admin": "./src/admin/index.ts",
+    "./enums": "./src/enums.ts"
   },
   "dependencies": {
     "zod": "^4.4.3",
