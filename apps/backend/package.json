@@ -17,13 +17,13 @@
   },
   "exports": {
     "./rpc/client": {
-      "types": "./dist/types/src/orpc/routers/client.d.ts"
+      "types": "./dist/types/orpc/routers/client.d.ts"
     },
     "./rpc/admin": {
-      "types": "./dist/types/src/orpc/routers/admin.d.ts"
+      "types": "./dist/types/orpc/routers/admin.d.ts"
     },
     "./rpc/payment": {
-      "types": "./dist/types/src/orpc/routers/payment.d.ts"
+      "types": "./dist/types/orpc/routers/payment.d.ts"
     }
   },
   "dependencies": {
