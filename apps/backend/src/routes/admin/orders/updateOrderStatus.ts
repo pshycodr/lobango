@@ -23,10 +23,11 @@ export const updateOrderStatus = async (c: Context) => {
     const res = await db
       .update(orders)
       .set({ status })
-      .where(eq(orders.orderId, orderId));
+      .where(eq(orders.orderId, orderId))
+      .run();
 
     return c.json(
-      { success: true, updated: res.rowsAffected ?? 0, status },
+      { success: true, updated: res.meta?.changes ?? 0, status },
       HttpStatus.Ok
     );
   } catch (error) {
