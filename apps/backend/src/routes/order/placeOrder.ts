@@ -1,5 +1,4 @@
 import { HttpStatus } from "@/constants/httpStatusCodes";
-import { D1Database } from "@cloudflare/workers-types";
 import { OrderRequestSchema } from "@lobango/contracts/order";
 import crypto from "crypto";
 import { Context } from "hono";
