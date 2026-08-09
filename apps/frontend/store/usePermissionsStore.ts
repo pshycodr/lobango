@@ -1,9 +1,5 @@
+import { client } from "@/lib/orpc";
 import { create } from "zustand";
-import api from "@/lib/axios";
-import {
-  GetNewBookingPermissionResponse,
-  GetNewOrderPermissionResponse,
-} from "@lobango/contracts/permissions";
 
 interface PermissionsState {
   newOrders: boolean | null;
@@ -22,15 +18,13 @@ export const usePermissionsStore = create<PermissionsState>((set) => ({
       set({ loading: true });
 
       const [ordersRes, bookingsRes] = await Promise.all([
-        api.get<GetNewOrderPermissionResponse>("/api/v1/permission/new-order"),
-        api.get<GetNewBookingPermissionResponse>(
-          "/api/v1/permission/new-booking"
-        ),
+        client.permission.newOrder(),
+        client.permission.newBooking(),
       ]);
 
       set({
-        newOrders: ordersRes.data.new_orders,
-        newBookings: bookingsRes.data.new_bookings,
+        newOrders: ordersRes.new_orders,
+        newBookings: bookingsRes.new_bookings,
         loading: false,
       });
     } catch (error) {

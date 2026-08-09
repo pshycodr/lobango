@@ -11,6 +11,7 @@ import {
   getErrorMessage,
   prepareBookingData,
 } from "../utils/bookingUtils";
+import { client } from "@/lib/orpc";
 
 export const useBooking = () => {
   const [formData, setFormData] = useState<Booking>({
@@ -38,10 +39,8 @@ export const useBooking = () => {
   useEffect(() => {
     const fetchPermission = async () => {
       try {
-        const res = await api.get<GetNewBookingPermissionResponse>(
-          "/api/v1/permission/new-booking"
-        );
-        setIsBookingAllowed(res.data.new_bookings);
+        const res = await client.permission.newBooking();
+        setIsBookingAllowed(res.new_bookings);
       } catch (error) {
         console.error("Failed to fetch booking permission:", error);
         setIsBookingAllowed(false);
