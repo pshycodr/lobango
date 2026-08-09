@@ -3,7 +3,7 @@ import { orderItems, orders } from "@/db/schema";
 import { payments } from "@/db/schema/payments";
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
-import { generateOrderId } from "@/utils/generateOrderId";
+import { generateOrderId } from "@/utils/generateId";
 import { verifyRazorpaySignature } from "@/utils/verifyRazorpay";
 import { OrderRequestSchema as PlaceOrderRequestSchema } from "@lobango/contracts";
 import { z } from "zod";
