@@ -45,6 +45,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.20.2",
     "@eslint/js": "9.39.5",
     "@lobango/contracts": "workspace:",
     "@types/node": "^26.1.1",
