@@ -2,6 +2,7 @@ import { openApiRouter } from "@/orpc/openapi/appRouter";
 import { adminRouter } from "@/orpc/routers/admin";
 import { clientRouter } from "@/orpc/routers/client";
 import { paymentRouter } from "@/orpc/routers/payment";
+import { createORPCContext } from "@/orpc/context";
 import { Bindings } from "@/types/env";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
@@ -52,7 +53,7 @@ const paymentHandler = new RPCHandler(paymentRouter, {
 app.use("/api/v1/client/*", async (c, next) => {
   const { matched, response } = await clientHandler.handle(c.req.raw, {
     prefix: "/api/v1/client",
-    context: { env: c.env },
+    context: createORPCContext(c.env),
   });
   if (matched) return c.newResponse(response.body, response);
   await next();
@@ -61,7 +62,7 @@ app.use("/api/v1/client/*", async (c, next) => {
 app.use("/api/v1/admin/*", async (c, next) => {
   const { matched, response } = await adminHandler.handle(c.req.raw, {
     prefix: "/api/v1/admin",
-    context: { env: c.env },
+    context: createORPCContext(c.env),
   });
   if (matched) return c.newResponse(response.body, response);
   await next();
@@ -70,7 +71,7 @@ app.use("/api/v1/admin/*", async (c, next) => {
 app.use("/api/v1/payment/*", async (c, next) => {
   const { matched, response } = await paymentHandler.handle(c.req.raw, {
     prefix: "/api/v1/payment",
-    context: { env: c.env },
+    context: createORPCContext(c.env),
   });
   if (matched) return c.newResponse(response.body, response);
   await next();
@@ -105,7 +106,7 @@ const openApiHandler = new OpenAPIHandler(openApiRouter, {
 app.use("/openapi/*", async (c, next) => {
   const { matched, response } = await openApiHandler.handle(c.req.raw, {
     prefix: "/openapi",
-    context: { env: c.env },
+    context: createORPCContext(c.env),
   });
   if (matched) return c.newResponse(response.body, response);
   await next();

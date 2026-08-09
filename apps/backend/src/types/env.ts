@@ -11,4 +11,7 @@ export type Bindings = {
   BREVO_SENDER_EMAIL: string;
   BREVO_SENDER_NAME: string;
   BREVO_SMTP_API_KEY: string;
+
+  ORDER_CACHE_TTL: number;
+  BOOKING_CACHE_TTL: number;
 };
