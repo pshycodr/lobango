@@ -26,7 +26,9 @@ const GetOrdersOutput = z.object({
   items: z.array(OrderItemResponseSchema),
 });
 
-export const getOrders = orpc
+type GetOrdersResult = z.infer<typeof GetOrdersOutput>;
+
+export const getOrdersbById = orpc
   .route({
     method: "GET",
     path: "/orders/{orderId}",
@@ -41,6 +43,13 @@ export const getOrders = orpc
     NOT_FOUND: { message: "Order not found" },
   })
   .handler(async ({ input, context, errors }) => {
+    const cacheKey = context.cache.getKey.orderCache(input.orderId);
+
+    const cached = await context.cache.get<GetOrdersResult>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const db = getDB(context.env.DB);
 
     const joined = await db
@@ -70,9 +79,14 @@ export const getOrders = orpc
         quantity: j.item.quantity,
       }));
 
-    return {
+    const result: GetOrdersResult = {
       success: true as const,
       order,
       items,
     };
+
+    // Cache the response
+    await context.cache.set(cacheKey, result, context.env.ORDER_CACHE_TTL);
+
+    return result;
   });
