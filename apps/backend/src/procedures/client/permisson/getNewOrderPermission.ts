@@ -1,6 +1,5 @@
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
-import { PERMISSIONS } from "@/types/kvKeys";
 import { ORPCError } from "@orpc/server";
 import * as z from "zod";
 
@@ -19,7 +18,8 @@ export const getNewOrderPermission = orpc
   })
   .output(GetNewOrderPermissionOutput)
   .handler(async ({ context }) => {
-    const value = await context.env.KV.get(PERMISSIONS.NEW_ORDERS);
+    const cacheKey = context.cache.getKey.orderPermission();
+    const value = await context.env.KV.get(cacheKey);
 
     if (value === null) {
       throw new ORPCError("NOT_FOUND", { message: "Permission not found" });
