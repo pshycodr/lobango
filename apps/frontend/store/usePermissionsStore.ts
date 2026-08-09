@@ -18,8 +18,8 @@ export const usePermissionsStore = create<PermissionsState>((set) => ({
       set({ loading: true });
 
       const [ordersRes, bookingsRes] = await Promise.all([
-        client.permission.newOrder(),
-        client.permission.newBooking(),
+        client.permission.get.newOrder(),
+        client.permission.get.newBooking(),
       ]);
 
       set({

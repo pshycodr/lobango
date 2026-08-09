@@ -39,7 +39,7 @@ export const useBooking = () => {
   useEffect(() => {
     const fetchPermission = async () => {
       try {
-        const res = await client.permission.newBooking();
+        const res = await client.permission.get.newBooking();
         setIsBookingAllowed(res.new_bookings);
       } catch (error) {
         console.error("Failed to fetch booking permission:", error);

@@ -1,3 +1,5 @@
+import { addBooking } from "@/procedures/client/booking.ts/addBooking";
+import { getBookingById } from "@/procedures/client/booking.ts/getBookingById";
 import { getOrdersbById } from "@/procedures/client/orders/getOrdersById";
 import { placeOrder } from "@/procedures/client/orders/placeOrder";
 import { getNewBookingPermission } from "@/procedures/client/permisson/getNewBookingPermission";
@@ -5,12 +7,18 @@ import { getNewOrderPermission } from "@/procedures/client/permisson/getNewOrder
 
 export const clientRouter = {
   permission: {
-    newOrder: getNewOrderPermission,
-    newBooking: getNewBookingPermission,
+    get: {
+      newOrder: getNewOrderPermission,
+      newBooking: getNewBookingPermission,
+    },
   },
   order: {
-    getOrdersbById: getOrdersbById,
-    placeOrder: placeOrder,
+    getOrdersbById,
+    placeOrder,
+  },
+  booking: {
+    addBooking,
+    getBookingById,
   },
 };
 
