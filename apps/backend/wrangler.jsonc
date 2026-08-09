@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lobango-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-09",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {},
+  "secrets": {
+    "required": [
+      "BREVO_SMTP_API_KEY",
+      "BREVO_SENDER_NAME",
+      "BREVO_SENDER_EMAIL",
+      "RAZORPAY_KEY_ID",
+      "RAZORPAY_SECRET_KEY",
+      "JWT_SECRET"
+    ]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "78c70a4d66464e6883dd5fad025bc08c",
+      "preview_id": "040b1b1011b040ae92581caa1e522524"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "lobangodb",
+      "database_id": "ccde44e8-78a6-4d78-84e6-b93dac2ac215"
+    }
+  ]
+}

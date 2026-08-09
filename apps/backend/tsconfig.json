@@ -16,5 +16,6 @@
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src/**/*.ts", "worker-configuration.d.ts"]
 }

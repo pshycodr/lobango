@@ -4,12 +4,13 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
+    "deploy:env": "wrangler deploy --minify --secrets-file .env.production",
     "build": "rm -rf dist && bun build src/index.ts --bundle --platform=node --outfile=dist/index.js --minify",
     "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
     "start": "wrangler dev",
     "lint": "eslint .",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "check-types": "tsc --noEmit",
+    "cf:gentypes": "wrangler types",
+    "check-types": "pnpm run cf:gentypes && tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply lobangodb --local",
     "db:migrate:deploy": "wrangler d1 migrations apply lobangodb --remote"
@@ -44,8 +45,6 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.20.2",
-    "@cloudflare/workers-types": "^5.20260718.1",
     "@eslint/js": "9.39.5",
     "@lobango/contracts": "workspace:",
     "@types/node": "^26.1.1",
