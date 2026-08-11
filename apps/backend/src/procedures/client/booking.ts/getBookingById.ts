@@ -15,8 +15,6 @@ const GetBookingOutput = z.object({
 
 type GetBookingResult = z.infer<typeof GetBookingOutput>;
 
-const BOOKING_CACHE_TTL_SECONDS = 60 * 10; // 10 minutes
-
 export const getBookingById = orpc
   .route({
     method: "GET",
@@ -53,7 +51,7 @@ export const getBookingById = orpc
       booking,
     };
 
-    await context.cache.set(cacheKey, result, BOOKING_CACHE_TTL_SECONDS);
+    await context.cache.set(cacheKey, result, context.env.BOOKING_CACHE_TTL);
 
     return result;
   });
