@@ -15,7 +15,7 @@ export const orders = sqliteTable("orders", {
   customerEmail: text("customer_email").notNull(),
   longitude: text("longitude").default("none"),
   latitude: text("latitude").default("none"),
-  totalAmount: real("total_amount").notNull(),
+  totalAmount: text("total_amount").notNull(),
   paymentMethod: text("payment_method", { enum: paymentMethodValues }),
   paymentStatus: text("payment_status", { enum: paymentStatusValues }).default(
     "pending"
