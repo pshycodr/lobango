@@ -1,4 +1,4 @@
-import { orpc } from "@/orpc/base";
+import { adminOrpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
 import { z } from "zod";
 
@@ -11,7 +11,7 @@ const SetNewOrderPermissionOutput = z.object({
   new_orders: z.boolean(),
 });
 
-export const setNewOrderPermission = orpc
+export const setNewOrderPermission = adminOrpc
   .route({
     method: "POST",
     path: "/permission/new-order",
