@@ -5,16 +5,10 @@ import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
 import { generateOrderId } from "@/utils/generateId";
 import { verifyRazorpaySignature } from "@/utils/verifyRazorpay";
-import { OrderRequestSchema as PlaceOrderRequestSchema } from "@lobango/contracts";
-import { z } from "zod";
-
-const PlaceOrderResponseSchema = z.object({
-  success: z.boolean(),
-  orderId: z.string(),
-  totalAmount: z.string(),
-  createdAt: z.string(),
-  message: z.string(),
-});
+import {
+  NewOrderRequestSchema,
+  NewOrderResponseSchema,
+} from "@lobango/contracts/order";
 
 export const placeOrder = orpc
   .route({
@@ -24,8 +18,8 @@ export const placeOrder = orpc
     description: "Add/Place a new order in the DB",
     tags: [API_TAGS.ORDERS],
   })
-  .input(PlaceOrderRequestSchema)
-  .output(PlaceOrderResponseSchema)
+  .input(NewOrderRequestSchema)
+  .output(NewOrderResponseSchema)
   .errors({
     BAD_REQUEST: { message: "Missing Razorpay payment details" },
   })

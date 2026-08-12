@@ -3,7 +3,7 @@ import { bookings } from "@/db/schema";
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
 import { generateBookingId } from "@/utils/generateId";
-import { BookingSchema } from "@lobango/contracts/bookings";
+import { NewBookingSchema } from "@lobango/contracts/bookings";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -20,7 +20,7 @@ export const addBooking = orpc
     description: "Create a new table booking",
     tags: [API_TAGS.BOOKINGS],
   })
-  .input(BookingSchema)
+  .input(NewBookingSchema)
   .output(AddBookingResponseSchema)
   .errors({
     CONFLICT: { message: "You already have a booking." },
