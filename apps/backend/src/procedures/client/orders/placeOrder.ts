@@ -79,7 +79,7 @@ export const placeOrder = orpc
       customerAddress: order.customerAddress.trim(),
       longitude: order.longitude,
       latitude: order.latitude,
-      totalAmount,
+      totalAmount: String(totalAmount),
       customerEmail: order.customerEmail,
       status: "pending",
       paymentMethod: order.paymentMethod,

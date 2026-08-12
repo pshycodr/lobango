@@ -1,8 +1,9 @@
 export const orderStatusValues = [
   "pending",
   "accepted",
+  "out_for_delivery",
   "delivered",
-  "cancelled",
+  "canceld",
   "rejected",
 ] as const;
 export type OrderStatus = (typeof orderStatusValues)[number];
