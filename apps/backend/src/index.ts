@@ -1,8 +1,8 @@
+import { createORPCContext } from "@/orpc/context";
 import { openApiRouter } from "@/orpc/openapi/appRouter";
 import { adminRouter } from "@/orpc/routers/admin";
 import { clientRouter } from "@/orpc/routers/client";
 import { paymentRouter } from "@/orpc/routers/payment";
-import { createORPCContext } from "@/orpc/context";
 import { Bindings } from "@/types/env";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
@@ -50,30 +50,30 @@ const paymentHandler = new RPCHandler(paymentRouter, {
   interceptors: [onError((err) => console.error(err))],
 });
 
-app.use("/api/v1/client/*", async (c, next) => {
-  const { matched, response } = await clientHandler.handle(c.req.raw, {
+app.use("/api/v1/client/*", async (context, next) => {
+  const { matched, response } = await clientHandler.handle(context.req.raw, {
     prefix: "/api/v1/client",
-    context: createORPCContext(c.env),
+    context: createORPCContext(context),
   });
-  if (matched) return c.newResponse(response.body, response);
+  if (matched) return context.newResponse(response.body, response);
   await next();
 });
 
-app.use("/api/v1/admin/*", async (c, next) => {
-  const { matched, response } = await adminHandler.handle(c.req.raw, {
+app.use("/api/v1/admin/*", async (context, next) => {
+  const { matched, response } = await adminHandler.handle(context.req.raw, {
     prefix: "/api/v1/admin",
-    context: createORPCContext(c.env),
+    context: createORPCContext(context),
   });
-  if (matched) return c.newResponse(response.body, response);
+  if (matched) return context.newResponse(response.body, response);
   await next();
 });
 
-app.use("/api/v1/payment/*", async (c, next) => {
-  const { matched, response } = await paymentHandler.handle(c.req.raw, {
+app.use("/api/v1/payment/*", async (context, next) => {
+  const { matched, response } = await paymentHandler.handle(context.req.raw, {
     prefix: "/api/v1/payment",
-    context: createORPCContext(c.env),
+    context: createORPCContext(context),
   });
-  if (matched) return c.newResponse(response.body, response);
+  if (matched) return context.newResponse(response.body, response);
   await next();
 });
 
@@ -103,12 +103,12 @@ const openApiHandler = new OpenAPIHandler(openApiRouter, {
   ],
 });
 
-app.use("/openapi/*", async (c, next) => {
-  const { matched, response } = await openApiHandler.handle(c.req.raw, {
+app.use("/openapi/*", async (context, next) => {
+  const { matched, response } = await openApiHandler.handle(context.req.raw, {
     prefix: "/openapi",
-    context: createORPCContext(c.env),
+    context: createORPCContext(context),
   });
-  if (matched) return c.newResponse(response.body, response);
+  if (matched) return context.newResponse(response.body, response);
   await next();
 });
 
