@@ -3,7 +3,7 @@ import {
   paymentMethodValues,
   paymentStatusValues,
 } from "@lobango/contracts/enums";
-import { int, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 
 export const orders = sqliteTable("orders", {
@@ -16,12 +16,16 @@ export const orders = sqliteTable("orders", {
   longitude: text("longitude").default("none"),
   latitude: text("latitude").default("none"),
   totalAmount: text("total_amount").notNull(),
-  paymentMethod: text("payment_method", { enum: paymentMethodValues }),
-  paymentStatus: text("payment_status", { enum: paymentStatusValues }).default(
-    "pending"
-  ),
+  paymentMethod: text("payment_method", {
+    enum: paymentMethodValues,
+  }).notNull(),
+  paymentStatus: text("payment_status", { enum: paymentStatusValues })
+    .default("pending")
+    .notNull(),
   createdAt: text("created_at"),
-  status: text("status", { enum: orderStatusValues }).default("pending"),
+  status: text("status", { enum: orderStatusValues })
+    .default("pending")
+    .notNull(),
 });
 
 export const OrdersSelectSchema = createSelectSchema(orders);
