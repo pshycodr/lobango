@@ -2,32 +2,26 @@ import { getDB } from "@/db/db";
 import { admin } from "@/db/schema";
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
+import {
+  AdminLoginReqSchema,
+  AdminLoginResSchema,
+} from "@lobango/contracts/admin";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { setCookie } from "hono/cookie";
 import { sign } from "hono/jwt";
-import { z } from "zod";
-
-const AdminLoginInput = z.object({
-  username: z.string().trim().min(1),
-  password: z.string().min(1),
-});
-
-const AdminLoginOutput = z.object({
-  success: z.literal(true),
-});
 
 export const adminLogin = orpc
   .route({
     method: "POST",
     path: "/admin/login",
     tags: [API_TAGS.ADMIN],
-    summary: "Authenticate an admin user",
+    summary: "Login Admin user",
     description:
       "Authenticates an admin using username and password and sets an HTTP-only JWT cookie.",
   })
-  .input(AdminLoginInput)
-  .output(AdminLoginOutput)
+  .input(AdminLoginReqSchema)
+  .output(AdminLoginResSchema)
   .errors({
     UNAUTHORIZED: {
       message: "Invalid credentials",
