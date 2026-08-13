@@ -10,5 +10,8 @@
     "./base": "./src/base.json",
     "./nextjs": "./src/nextjs.json",
     "./react-library": "./src/react-library.json"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1"
   }
 }
