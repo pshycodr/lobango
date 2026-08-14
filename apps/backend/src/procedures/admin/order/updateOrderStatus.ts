@@ -2,16 +2,11 @@ import { getDB } from "@/db/db";
 import { orders } from "@/db/schema";
 import { adminOrpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
-import { orderStatusValues } from "@lobango/contracts/enums";
-import { OrderStatusUpdateSchema } from "@lobango/contracts/admin";
+import {
+  UpdateOrderStatusRequestSchema,
+  UpdateOrderStatusResponseSchema,
+} from "@lobango/contracts/order";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
-
-const UpdateOrderStatusOutput = z.object({
-  success: z.literal(true),
-  updated: z.number(),
-  status: z.enum(orderStatusValues),
-});
 
 export const updateOrderStatus = adminOrpc
   .route({
@@ -21,9 +16,12 @@ export const updateOrderStatus = adminOrpc
     summary: "Update order status",
     description: "Updates the status of an order.",
   })
-  .input(OrderStatusUpdateSchema)
-  .output(UpdateOrderStatusOutput)
-  .handler(async ({ input, context }) => {
+  .input(UpdateOrderStatusRequestSchema)
+  .output(UpdateOrderStatusResponseSchema)
+  .errors({
+    NOT_FOUND: { message: "Order not found" },
+  })
+  .handler(async ({ input, context, errors }) => {
     const db = getDB(context.env.DB);
 
     const result = await db
@@ -31,6 +29,14 @@ export const updateOrderStatus = adminOrpc
       .set({ status: input.status })
       .where(eq(orders.orderId, input.orderId))
       .run();
+
+    if ((result.meta?.changes ?? 0) === 0) {
+      throw errors.NOT_FOUND();
+    }
+
+    await context.cache.invalidateVersion(
+      context.cache.getKey.admin.ordersVersion()
+    );
 
     return {
       success: true as const,

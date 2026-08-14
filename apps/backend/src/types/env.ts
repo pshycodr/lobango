@@ -19,6 +19,8 @@ export type Bindings = {
   BOOKING_CACHE_TTL: number;
   ORDER_STATUS_CACHE_TTL: number;
   ADMIN_AUTH_TOKEN_TTL: number;
+  ADMIN_ORDERS_CACHE_TTL: number;
+  ADMIN_BOOKING_CACHE_TTL: number;
 
   ADMIN_AUTH_COOKIE_KEY: string;
 };
