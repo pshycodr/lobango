@@ -12,6 +12,7 @@ import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { API_TAG_DEFINITIONS } from "./orpc/openapi/tags";
+import { withCookies } from "./utils/withCookies";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -55,7 +56,7 @@ app.use("/api/v1/client/*", async (context, next) => {
     prefix: "/api/v1/client",
     context: createORPCContext(context),
   });
-  if (matched) return context.newResponse(response.body, response);
+  if (matched) return withCookies(context, response);
   await next();
 });
 
@@ -64,7 +65,14 @@ app.use("/api/v1/admin/*", async (context, next) => {
     prefix: "/api/v1/admin",
     context: createORPCContext(context),
   });
-  if (matched) return context.newResponse(response.body, response);
+
+  if (matched) {
+    context.res.headers.forEach((value, key) => {
+      response.headers.append(key, value);
+    });
+    return withCookies(context, response);
+  }
+
   await next();
 });
 
@@ -73,7 +81,7 @@ app.use("/api/v1/payment/*", async (context, next) => {
     prefix: "/api/v1/payment",
     context: createORPCContext(context),
   });
-  if (matched) return context.newResponse(response.body, response);
+  if (matched) return withCookies(context, response);
   await next();
 });
 
@@ -108,7 +116,7 @@ app.use("/openapi/*", async (context, next) => {
     prefix: "/openapi",
     context: createORPCContext(context),
   });
-  if (matched) return context.newResponse(response.body, response);
+  if (matched) return withCookies(context, response);
   await next();
 });
 
