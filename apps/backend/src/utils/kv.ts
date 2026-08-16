@@ -41,6 +41,7 @@ export const kvKeys = {
 
   admin: {
     ordersVersion: () => "admin:orders:version",
+    bookingVersion: () => "admin:bookings:version",
     orders: (
       version: number | null,
       params?: {
@@ -58,7 +59,22 @@ export const kvKeys = {
       return `admin:orders:v${version}:${query.toString() || "all"}`;
     },
 
-    bookings: () => "admin:bookings:all",
+    bookings: (
+      version: number | null,
+      params?: {
+        date?: string;
+        from?: string;
+        to?: string;
+      }
+    ) => {
+      const query = new URLSearchParams();
+
+      if (params?.date) query.set("date", params.date);
+      if (params?.from) query.set("from", params.from);
+      if (params?.to) query.set("to", params.to);
+
+      return `admin:bookings:v${version}:${query.toString() || "all"}`;
+    },
   },
 
   orderPermission: () => "permission:new_order",
