@@ -22,7 +22,7 @@ export const orders = sqliteTable("orders", {
   paymentStatus: text("payment_status", { enum: paymentStatusValues })
     .default("pending")
     .notNull(),
-  createdAt: text("created_at"),
+  createdAt: text("created_at").notNull(),
   status: text("status", { enum: orderStatusValues })
     .default("pending")
     .notNull(),
