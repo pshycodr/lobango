@@ -7,17 +7,17 @@ import {
 
 export const OrderSchema = z.object({
   id: z.number(),
-  orderId: z.string(),
-  customerName: z.string(),
-  customerPhone: z.string(),
-  customerAddress: z.string(),
+  orderId: z.string().trim(),
+  customerName: z.string().trim(),
+  customerPhone: z.string().trim(),
+  customerAddress: z.string().trim(),
   customerEmail: z.email(),
-  longitude: z.string().nullable(),
-  latitude: z.string().nullable(),
-  totalAmount: z.string(),
+  longitude: z.string().trim().nullable(),
+  latitude: z.string().trim().nullable(),
+  totalAmount: z.string().trim(),
   paymentMethod: PaymentMethodsSchema,
   paymentStatus: PaymentStatusSchema,
-  createdAt: z.string().nullable(),
+  createdAt: z.string().trim(),
   status: OrderStatusSchema,
 });
 
@@ -25,9 +25,9 @@ export type Order = z.infer<typeof OrderSchema>;
 
 export const OrderItemSchema = z.object({
   id: z.number(),
-  name: z.string(),
-  price: z.string(),
-  quantity: z.string(),
+  name: z.string().trim(),
+  price: z.string().trim(),
+  quantity: z.string().trim(),
 });
 
 export type OrderItem = z.infer<typeof OrderItemSchema>;
