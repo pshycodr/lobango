@@ -14,8 +14,10 @@ export const bookings = sqliteTable("bookings", {
 
   numberOfPeople: int("number_of_people").notNull(),
   message: text("message").default("N/A"), // optional
-  status: text("status", { enum: bookingStatusValues }).default("pending"),
-  createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
+  status: text("status", { enum: bookingStatusValues })
+    .default("pending")
+    .notNull(),
+  createdAt: text("created_at").default("CURRENT_TIMESTAMP").notNull(),
 });
 
 export const BookingSelectSchema = createSelectSchema(bookings);

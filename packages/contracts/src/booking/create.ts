@@ -1,18 +1,21 @@
 import { z } from "zod";
+import { BookingSchema } from "./schemas";
 
-export interface NewBookingResponse {
-  success: boolean;
-  booking_id: string;
-}
-
-export const NewBookingSchema = z.object({
-  name: z.string().min(1),
-  phone: z.string().min(10),
-  email: z.email(),
-  person: z.string().min(1),
-  message: z.string().optional().default("N/A"),
-  date: z.string().min(1),
-  time: z.string().min(1),
+export const CreateBookingRequestSchema = BookingSchema.pick({
+  customerName: true,
+  customerPhone: true,
+  customerEmail: true,
+  numberOfPeople: true,
+  message: true,
+  date: true,
+  time: true,
 });
 
-export type NewBooking = z.infer<typeof NewBookingSchema>;
+export type CreateBookingRequest = z.infer<typeof CreateBookingRequestSchema>;
+
+export const CreateBookingResponseSchema = z.object({
+  success: z.literal(true),
+  bookingId: z.string(),
+});
+
+export type CreateBookingResponse = z.infer<typeof CreateBookingResponseSchema>;
