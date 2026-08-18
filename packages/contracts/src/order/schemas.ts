@@ -27,7 +27,7 @@ export const OrderItemSchema = z.object({
   id: z.number(),
   name: z.string().trim(),
   price: z.string().trim(),
-  quantity: z.string().trim(),
+  quantity: z.string().trim().min(1),
 });
 
 export type OrderItem = z.infer<typeof OrderItemSchema>;
