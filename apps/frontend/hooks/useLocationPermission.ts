@@ -59,7 +59,7 @@ export function useLocationPermission() {
                 isLoading: false,
                 error: "Failed to get location",
               }));
-            },
+            }
           );
         } else if (permission.state === "denied") {
           setState((prev) => ({
@@ -120,7 +120,7 @@ export function useLocationPermission() {
           isModalOpen: true,
           error: "Failed to get location",
         }));
-      },
+      }
     );
   }, []);
 

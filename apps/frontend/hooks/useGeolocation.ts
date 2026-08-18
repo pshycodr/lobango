@@ -21,7 +21,7 @@ export function useGeolocation() {
             timeout: 10000,
             maximumAge: 60000,
           });
-        },
+        }
       );
 
       return position.coords;

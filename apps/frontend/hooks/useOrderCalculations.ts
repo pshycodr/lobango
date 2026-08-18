@@ -1,6 +1,12 @@
-import { useMemo } from "react";
 import menuData from "@/data/menu.json";
-import { CartItem } from "@/types/cart";
+import type { CartItem } from "@/types/cart";
+import { useMemo } from "react";
+
+export interface OrderCalculationsReturn {
+  subtotal: number;
+  deliveryFee: number;
+  total: number;
+}
 
 function getMenuItemPrice(id: string): number {
   for (const category of menuData.menu) {
@@ -10,7 +16,9 @@ function getMenuItemPrice(id: string): number {
   return 0;
 }
 
-export function useOrderCalculations(cart: CartItem[]) {
+export function useOrderCalculations(
+  cart: CartItem[]
+): OrderCalculationsReturn {
   return useMemo(() => {
     const subtotal = cart.reduce((sum, item) => {
       const realPrice = getMenuItemPrice(item.id);

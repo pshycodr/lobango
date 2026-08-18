@@ -1,26 +1,51 @@
-import api from "@/lib/axios";
-import { CartItem } from "@/types/cart";
+import { client } from "@/lib/orpc";
+import type { CartItem } from "@/types/cart";
+import type { LoadingState, PaymentData } from "@/types/checkout";
 import type { Address } from "@lobango/contracts/address";
-import type { Order, OrderRequest, RazorPay } from "@lobango/contracts/order";
+import type { CreateOrder, RazorPay } from "@lobango/contracts/order";
+import { useCallback } from "react";
 
-interface LoadingState {
-  type: "page" | "payment" | "verification" | "none";
-  message: string;
-}
-
-interface PaymentData {
-  amount: number;
-  paymentId?: string;
-  orderId?: string;
-  customerName?: string;
-}
-
-interface UseRazorpayProps {
+export interface UseRazorpayProps {
   cart: CartItem[];
   total: number;
   setLoadingState: (state: LoadingState) => void;
   clearCart: () => void;
   onPaymentSuccess: (data: PaymentData) => void;
+}
+
+export interface UseRazorpayReturn {
+  loadRazorpayScript: () => Promise<void>;
+  initiatePayment: (selectedAddress: Address) => Promise<void>;
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: string;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: RazorPay) => Promise<void>;
+  modal: {
+    ondismiss: () => void;
+  };
+  prefill: {
+    name: string;
+    contact: string;
+  };
+  theme: {
+    color: string;
+  };
+}
+
+interface RazorpayInstance {
+  open: () => void;
+}
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: RazorpayOptions) => RazorpayInstance;
+  }
 }
 
 export function useRazorpay({
@@ -29,10 +54,10 @@ export function useRazorpay({
   setLoadingState,
   clearCart,
   onPaymentSuccess,
-}: UseRazorpayProps) {
-  const loadRazorpayScript = (): Promise<void> => {
+}: UseRazorpayProps): UseRazorpayReturn {
+  const loadRazorpayScript = useCallback((): Promise<void> => {
     return new Promise((resolve, reject) => {
-      if (window && (window as any).Razorpay) {
+      if (typeof window !== "undefined" && window.Razorpay) {
         resolve();
         return;
       }
@@ -45,133 +70,131 @@ export function useRazorpay({
         reject(new Error("Failed to load Razorpay script"));
       document.body.appendChild(script);
     });
-  };
+  }, []);
 
-  const initiatePayment = async (selectedAddress: Address) => {
-    try {
-      setLoadingState({
-        type: "payment",
-        message: "Creating payment order...",
-      });
+  const handlePaymentSuccess = useCallback(
+    async (
+      response: RazorPay,
+      orderData: CreateOrder,
+      selectedAddress: Address
+    ) => {
+      try {
+        setLoadingState({
+          type: "verification",
+          message: "Verifying payment...",
+        });
 
-      const orderData: Order = {
-        customerName: selectedAddress.name,
-        customerPhone: selectedAddress.phone,
-        customerEmail: selectedAddress.email,
-        customerAddress: selectedAddress.address,
-        longitude: selectedAddress.longitude,
-        latitude: selectedAddress.latitude,
-        paymentMethod: "razorpay",
-        items: cart.map((item) => ({
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-        })),
-      };
+        const razorpayPayload: RazorPay = {
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+        };
 
-      console.log("here is order data: ", orderData);
+        const verifyRes = await client.order.createOrder({
+          order: orderData,
+          razorpay: razorpayPayload,
+        });
 
-      const res = await api.post("/api/v1/payment/create-order", {
-        amount: Math.ceil(total),
-        currency: "INR",
-      });
-      const {
-        razorpayOrderId,
-        amount,
-        currency,
-        orderId: localOrderId,
-        key_id,
-      } = res.data;
+        setLoadingState({
+          type: "verification",
+          message: "Finalizing order...",
+        });
 
-      setLoadingState({
-        type: "payment",
-        message: "Opening payment gateway...",
-      });
+        clearCart();
+        if (typeof window !== "undefined") {
+          localStorage.setItem("orderId", verifyRes.orderId);
+        }
 
-      const options = {
-        key: key_id,
-        amount: amount.toString(),
-        currency,
-        name: "Lobango",
-        description: `Order ID: ${localOrderId}`,
-        order_id: razorpayOrderId,
-        handler: async function (response: RazorPay) {
-          await handlePaymentSuccess(
-            response,
-            orderData,
-            selectedAddress,
-            localOrderId,
-          );
-        },
-        modal: {
-          ondismiss: function () {
-            setLoadingState({ type: "none", message: "" });
+        setLoadingState({ type: "none", message: "" });
+
+        onPaymentSuccess({
+          amount: total,
+          paymentId: response.razorpay_payment_id,
+          orderId: verifyRes.orderId,
+          customerName: selectedAddress.name,
+        });
+      } catch (error) {
+        console.error("Payment verification failed:", error);
+        setLoadingState({ type: "none", message: "" });
+        throw new Error(
+          "Payment verification failed. Please contact support if amount was debited."
+        );
+      }
+    },
+    [clearCart, onPaymentSuccess, setLoadingState, total]
+  );
+
+  const initiatePayment = useCallback(
+    async (selectedAddress: Address) => {
+      try {
+        setLoadingState({
+          type: "payment",
+          message: "Creating payment order...",
+        });
+
+        const orderData: CreateOrder = {
+          customerName: selectedAddress.name,
+          customerPhone: selectedAddress.phone,
+          customerEmail: selectedAddress.email,
+          customerAddress: selectedAddress.address,
+          longitude: selectedAddress.longitude,
+          latitude: selectedAddress.latitude,
+          paymentMethod: "razorpay",
+          items: cart.map((item) => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+        };
+
+        const paymentOrder = await client.payment.createPayment({
+          amount: String(Math.round(total * 100)),
+          currency: "INR",
+        });
+
+        setLoadingState({
+          type: "payment",
+          message: "Opening payment gateway...",
+        });
+
+        const options: RazorpayOptions = {
+          key: paymentOrder.key_id,
+          amount: paymentOrder.amount,
+          currency: paymentOrder.currency,
+          name: "Lobango",
+          description: `Order for ${selectedAddress.name}`,
+          order_id: paymentOrder.razorpayOrderId,
+          handler: async (response: RazorPay) => {
+            await handlePaymentSuccess(response, orderData, selectedAddress);
           },
-        },
-        prefill: {
-          name: selectedAddress.name,
-          contact: selectedAddress.phone,
-        },
-        theme: {
-          color: "#F37254",
-        },
-      };
+          modal: {
+            ondismiss: () => {
+              setLoadingState({ type: "none", message: "" });
+            },
+          },
+          prefill: {
+            name: selectedAddress.name,
+            contact: selectedAddress.phone,
+          },
+          theme: {
+            color: "#F37254",
+          },
+        };
 
-      const razorpay = new (window as any).Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error("Error initiating payment:", error);
-      setLoadingState({ type: "none", message: "" });
-      throw error;
-    }
-  };
-
-  const handlePaymentSuccess = async (
-    response: RazorPay,
-    orderData: Order,
-    selectedAddress: Address,
-    localOrderId: string,
-  ) => {
-    try {
-      setLoadingState({
-        type: "verification",
-        message: "Verifying payment...",
-      });
-
-      const razorpay: RazorPay = {
-        razorpay_payment_id: response.razorpay_payment_id,
-        razorpay_order_id: response.razorpay_order_id,
-        razorpay_signature: response.razorpay_signature,
-      };
-
-      const orderPaylaod: OrderRequest = {
-        order: orderData,
-        razorpay: razorpay,
-      };
-
-      const verifyRes = await api.post("/api/v1/client/order", orderPaylaod);
-
-      setLoadingState({ type: "verification", message: "Finalizing order..." });
-
-      clearCart();
-      localStorage.setItem("orderId", verifyRes.data.orderId);
-
-      setLoadingState({ type: "none", message: "" });
-
-      onPaymentSuccess({
-        amount: total,
-        paymentId: response.razorpay_payment_id,
-        orderId: localOrderId,
-        customerName: selectedAddress.name,
-      });
-    } catch (error) {
-      console.error("Payment verification failed:", error);
-      setLoadingState({ type: "none", message: "" });
-      throw new Error(
-        "Payment verification failed. Please contact support if amount was debited.",
-      );
-    }
-  };
+        if (typeof window !== "undefined" && window.Razorpay) {
+          const razorpay = new window.Razorpay(options);
+          razorpay.open();
+        } else {
+          throw new Error("Razorpay SDK is not loaded.");
+        }
+      } catch (error) {
+        console.error("Error initiating payment:", error);
+        setLoadingState({ type: "none", message: "" });
+        throw error;
+      }
+    },
+    [cart, handlePaymentSuccess, setLoadingState, total]
+  );
 
   return {
     loadRazorpayScript,

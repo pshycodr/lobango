@@ -1,37 +1,39 @@
-import { Address } from "@lobango/contracts/address";
-import { useEffect, useState } from "react";
+import type { LoadingState, PaymentData } from "@/types/checkout";
+import type { Address } from "@lobango/contracts/address";
+import { useCallback, useEffect, useState } from "react";
 
-interface PaymentData {
-  amount: number;
-  paymentId?: string;
-  orderId?: string;
-  customerName?: string;
+export interface UseCheckoutStateReturn {
+  loadingState: LoadingState;
+  setLoadingState: (state: LoadingState) => void;
+  isClient: boolean;
+  selectedAddress: Address | undefined;
+  setSelectedAddress: (address: Address | undefined) => void;
+  handleSelectAddress: (address: Address) => void;
+  isAddressModalOpen: boolean;
+  setIsAddressModalOpen: (open: boolean) => void;
+  showPaymentConfirmation: boolean;
+  setShowPaymentConfirmation: (show: boolean) => void;
+  paymentData: PaymentData | undefined;
+  setPaymentData: (data: PaymentData | undefined) => void;
 }
 
-interface LoadingState {
-  type: "page" | "payment" | "verification" | "none";
-  message: string;
-}
-
-export function useCheckoutState() {
+export function useCheckoutState(): UseCheckoutStateReturn {
   const [loadingState, setLoadingState] = useState<LoadingState>({
     type: "page",
     message: "Loading checkout...",
   });
   const [isClient, setIsClient] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(
-    undefined,
+    undefined
   );
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
   const [paymentData, setPaymentData] = useState<PaymentData | undefined>(
-    undefined,
+    undefined
   );
 
-  // Load saved address on client mount
   useEffect(() => {
     setIsClient(true);
-
     if (typeof window !== "undefined") {
       const savedAddress = localStorage.getItem("selected-address");
       if (savedAddress) {
@@ -44,12 +46,12 @@ export function useCheckoutState() {
     }
   }, []);
 
-  const handleSelectAddress = (address: Address) => {
+  const handleSelectAddress = useCallback((address: Address) => {
     setSelectedAddress(address);
     if (typeof window !== "undefined") {
       localStorage.setItem("selected-address", JSON.stringify(address));
     }
-  };
+  }, []);
 
   return {
     loadingState,

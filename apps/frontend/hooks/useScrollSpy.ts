@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const useScrollSpy = (sections: string[], offset: number = 100) => {
+export function useScrollSpy(
+  sections: string[],
+  offset: number = 100
+): string | null {
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,10 +30,9 @@ export const useScrollSpy = (sections: string[], offset: number = 100) => {
       }
     };
 
-    // Add a slight delay to ensure all elements are rendered
     const timer = setTimeout(() => {
       window.addEventListener("scroll", handleScroll);
-      handleScroll(); // Initial check
+      handleScroll();
     }, 100);
 
     return () => {
@@ -40,4 +42,4 @@ export const useScrollSpy = (sections: string[], offset: number = 100) => {
   }, [sections, activeSection, offset]);
 
   return activeSection;
-};
+}
