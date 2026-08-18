@@ -1,16 +1,8 @@
+import type { CartItem } from "@/types/cart";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  quantity: number;
-  image: string;
-};
-
-interface CartStore {
+export interface CartStore {
   cart: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
@@ -30,7 +22,7 @@ export const useCartStore = create<CartStore>()(
               cart: state.cart.map((i) =>
                 i.id === item.id
                   ? { ...i, quantity: i.quantity + item.quantity }
-                  : i,
+                  : i
               ),
             };
           }
@@ -46,6 +38,6 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "restaurant-cart",
-    },
-  ),
+    }
+  )
 );
