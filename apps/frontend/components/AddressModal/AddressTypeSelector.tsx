@@ -1,5 +1,4 @@
-import { ADDRESS_TYPES } from "@lobango/contracts/address";
-import React from "react";
+import { ADDRESS_TYPES } from "@/types/address";
 
 export interface AddressTypeSelectorProps {
   selectedType: string;

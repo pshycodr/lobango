@@ -1,8 +1,7 @@
 "use client";
 
-import { ADDRESS_TYPES, type Address } from "@lobango/contracts/address";
+import { ADDRESS_TYPES, type Address } from "@/types/address";
 import { Edit, MapPin, X } from "lucide-react";
-import React from "react";
 
 export interface AddressListProps {
   addresses: Address[];

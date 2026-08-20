@@ -1,5 +1,5 @@
+import type { Address } from "@/types/address";
 import type { LoadingState } from "@/types/checkout";
-import type { Address } from "@lobango/contracts/address";
 
 export interface CheckoutValidationProps {
   selectedAddress: Address | undefined;

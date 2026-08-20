@@ -1,4 +1,4 @@
-import type { Address } from "@lobango/contracts/address";
+import type { Address } from "@/types/address";
 import { ChevronRight, MapPin } from "lucide-react";
 
 export interface DeliveryAddressProps {

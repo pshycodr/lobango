@@ -1,7 +1,7 @@
 "use client";
 
 import { useGeolocation } from "@/hooks/useGeolocation";
-import type { Address } from "@lobango/contracts/address";
+import type { Address } from "@/types/address";
 import { useCallback, useState } from "react";
 import { AddressTypeSelector } from "./AddressTypeSelector";
 import { FormActions } from "./FormActions";

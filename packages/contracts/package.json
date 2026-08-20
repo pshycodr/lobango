@@ -5,7 +5,6 @@
     "check-types": "tsc --noEmit"
   },
   "exports": {
-    "./address": "./src/address.ts",
     "./bookings": "./src/booking/index.ts",
     "./menu": "./src/menu.ts",
     "./order": "./src/order/index.ts",

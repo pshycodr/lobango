@@ -1,5 +1,5 @@
+import type { Address } from "@/types/address";
 import type { LoadingState, PaymentData } from "@/types/checkout";
-import type { Address } from "@lobango/contracts/address";
 import { useCallback, useEffect, useState } from "react";
 
 export interface UseCheckoutStateReturn {

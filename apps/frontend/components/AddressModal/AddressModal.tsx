@@ -1,6 +1,6 @@
 "use client";
 
-import type { Address, AddressModalProps } from "@lobango/contracts/address";
+import type { Address, AddressModalProps } from "@/types/address";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AddressForm } from "./AddressForm";

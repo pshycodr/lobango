@@ -1,7 +1,7 @@
 import { client } from "@/lib/orpc";
+import type { Address } from "@/types/address";
 import type { CartItem } from "@/types/cart";
 import type { LoadingState, PaymentData } from "@/types/checkout";
-import type { Address } from "@lobango/contracts/address";
 import type { CreateOrder, RazorPay } from "@lobango/contracts/order";
 import { useCallback } from "react";
 
