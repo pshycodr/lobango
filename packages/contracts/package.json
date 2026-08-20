@@ -10,7 +10,8 @@
     "./order": "./src/order/index.ts",
     "./permissions": "./src/permissions/index.ts",
     "./admin": "./src/admin/index.ts",
-    "./enums": "./src/enums/index.ts"
+    "./enums": "./src/enums/index.ts",
+    "./payments/razorpay": "./src/payments/razorpay/index.ts"
   },
   "dependencies": {
     "zod": "^4.4.3",

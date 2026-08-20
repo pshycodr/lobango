@@ -1,22 +1,10 @@
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
+import {
+  CreateRazorPayOrderRequestSchema,
+  CreateRazorPayOrderResponseSchema,
+} from "@lobango/contracts/payments/razorpay";
 import Razorpay from "razorpay";
-import { z } from "zod";
-
-const CreateRazorPayOrderInput = z.object({
-  amount: z
-    .string()
-    .regex(/^\d+$/)
-    .describe("Order amount in paise as a numeric string"),
-  currency: z.literal("INR").default("INR"),
-});
-
-const CreateRazorPayOrderOutput = z.object({
-  currency: z.literal("INR"),
-  amount: z.string(),
-  key_id: z.string().describe("Razorpay public key ID used by the client"),
-  razorpayOrderId: z.string().describe("Unique Razorpay order ID"),
-});
 
 export const createRazorpayOrder = orpc
   .route({
@@ -26,8 +14,8 @@ export const createRazorpayOrder = orpc
     description: "Creates a Razorpay order for the specified amount.",
     tags: [API_TAGS.PAYMENTS],
   })
-  .input(CreateRazorPayOrderInput)
-  .output(CreateRazorPayOrderOutput)
+  .input(CreateRazorPayOrderRequestSchema)
+  .output(CreateRazorPayOrderResponseSchema)
   .errors({
     INTERNAL_SERVER_ERROR: {
       message: "failed to create razorpay order",

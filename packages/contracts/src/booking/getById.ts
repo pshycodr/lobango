@@ -7,4 +7,11 @@ export const GetBookingByIdRequestSchema = z.object({
 
 export type GetBookingByIdRequest = z.infer<typeof GetBookingByIdRequestSchema>;
 
-export type GetBookingByIdResponse = z.infer<typeof BookingSchema>;
+export const GetBookingByIdResponseSchema = z.object({
+  success: z.boolean(),
+  booking: BookingSchema,
+});
+
+export type GetBookingByIdResponse = z.infer<
+  typeof GetBookingByIdResponseSchema
+>;

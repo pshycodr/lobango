@@ -1,19 +1,11 @@
 import { getDB } from "@/db/db";
-import { BookingSelectSchema } from "@/db/schema";
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
-import { z } from "zod";
-
-const GetBookingInput = z.object({
-  bookingId: z.string().trim(),
-});
-
-const GetBookingOutput = z.object({
-  success: z.literal(true),
-  booking: BookingSelectSchema,
-});
-
-type GetBookingResult = z.infer<typeof GetBookingOutput>;
+import {
+  GetBookingByIdRequestSchema,
+  GetBookingByIdResponse,
+  GetBookingByIdResponseSchema,
+} from "@lobango/contracts/bookings";
 
 export const getBookingById = orpc
   .route({
@@ -23,15 +15,15 @@ export const getBookingById = orpc
     description: "Returns booking details given a valid booking ID.",
     tags: [API_TAGS.BOOKINGS],
   })
-  .input(GetBookingInput)
-  .output(GetBookingOutput)
+  .input(GetBookingByIdRequestSchema)
+  .output(GetBookingByIdResponseSchema)
   .errors({
     NOT_FOUND: { message: "Booking not found" },
   })
   .handler(async ({ input, context, errors }) => {
     const cacheKey = context.cache.getKey.bookingCache(input.bookingId);
 
-    const cached = await context.cache.get<GetBookingResult>(cacheKey);
+    const cached = await context.cache.get<GetBookingByIdResponse>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -46,7 +38,7 @@ export const getBookingById = orpc
       throw errors.NOT_FOUND();
     }
 
-    const result: GetBookingResult = {
+    const result: GetBookingByIdResponse = {
       success: true as const,
       booking,
     };
