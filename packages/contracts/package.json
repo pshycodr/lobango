@@ -8,7 +8,7 @@
     "./bookings": "./src/booking/index.ts",
     "./menu": "./src/menu.ts",
     "./order": "./src/order/index.ts",
-    "./permissions": "./src/permissions.ts",
+    "./permissions": "./src/permissions/index.ts",
     "./admin": "./src/admin/index.ts",
     "./enums": "./src/enums/index.ts"
   },
