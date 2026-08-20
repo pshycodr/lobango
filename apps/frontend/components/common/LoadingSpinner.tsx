@@ -1,4 +1,12 @@
-export default function LoadingSpinner() {
+export interface LoadingSpinnerProps {
+  message?: string;
+  subMessage?: string;
+}
+
+export function LoadingSpinner({
+  message = "Fetching your order",
+  subMessage = "Please wait while we get your order details",
+}: LoadingSpinnerProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16">
       <div className="relative mb-6">
@@ -13,7 +21,7 @@ export default function LoadingSpinner() {
       <div className="text-center">
         <div className="mb-2 flex items-center justify-center space-x-1">
           <span className="animate-pulse text-lg font-semibold text-(--gold-crayola)">
-            Fetching your order
+            {message}
           </span>
           <div className="flex space-x-1">
             <div className="h-1 w-1 animate-bounce rounded-full bg-(--gold-crayola)"></div>
@@ -27,9 +35,9 @@ export default function LoadingSpinner() {
             ></div>
           </div>
         </div>
-        <p className="text-sm text-(--quick-silver)">
-          Please wait while we get your order details
-        </p>
+        {subMessage && (
+          <p className="text-sm text-(--quick-silver)">{subMessage}</p>
+        )}
       </div>
 
       <div className="mt-4 h-1 w-48 overflow-hidden rounded-full bg-(--white-alpha-10)">
