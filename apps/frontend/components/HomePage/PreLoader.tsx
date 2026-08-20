@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Forum } from "next/font/google";
+import React, { useEffect, useState } from "react";
 
 const forum = Forum({
   subsets: ["latin"],
   weight: ["400"],
 });
 
-const Preloader = () => {
+export function Preloader() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -22,7 +22,9 @@ const Preloader = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-(--smoky-black-1) transition-all duration-1000 ease-in-out ${isLoaded ? "pointer-events-none opacity-0" : "opacity-100"} ${forum.className}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-(--smoky-black-1) transition-all duration-1000 ease-in-out ${
+        isLoaded ? "pointer-events-none opacity-0" : "opacity-100"
+      } ${forum.className}`}
     >
       <div className="text-center">
         {/* Main Logo Circle */}
@@ -61,6 +63,6 @@ const Preloader = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Preloader;

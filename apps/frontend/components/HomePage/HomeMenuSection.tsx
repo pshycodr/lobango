@@ -1,8 +1,9 @@
 "use client";
 
+import { Forum } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { Forum } from "next/font/google";
+import React from "react";
 
 const forum = Forum({
   subsets: ["latin"],
@@ -10,7 +11,7 @@ const forum = Forum({
   variable: "--font-forum",
 });
 
-const HomeMenuSection = () => {
+export function HomeMenuSection() {
   const menuItems = [
     {
       image: "/assets/images/tandorisnacks/tandoorichicken.jpg",
@@ -165,6 +166,6 @@ const HomeMenuSection = () => {
       </div>
     </section>
   );
-};
+}
 
 export default HomeMenuSection;

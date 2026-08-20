@@ -2,6 +2,7 @@
 
 import { Forum } from "next/font/google";
 import Image from "next/image";
+import React from "react";
 
 const forum = Forum({
   subsets: ["latin"],
@@ -9,7 +10,7 @@ const forum = Forum({
   variable: "--font-forum",
 });
 
-const AboutSection = () => {
+export function AboutSection() {
   return (
     <section
       className="relative overflow-hidden py-(--section-space) text-center lg:py-[170px_100px]"
@@ -47,10 +48,10 @@ const AboutSection = () => {
             </div>
 
             <a
-              href="tel:+916296832453"
+              href="tel:+911234567890"
               className="mx-auto mb-7 block items-center text-(--gold-crayola) transition-colors hover:underline lg:mx-0"
             >
-              +91 6296832453
+              +91 1234567890
             </a>
           </div>
 
@@ -87,10 +88,7 @@ const AboutSection = () => {
 
             <div className="absolute -top-16 right-0 h-[134px] w-[134px] overflow-hidden">
               <div className="relative h-full w-full">
-                {/* Spinning background */}
                 <div className="spin-slow absolute inset-0 bg-[url('/assets/images/badge-2-bg.png')] bg-contain bg-no-repeat" />
-
-                {/* Static foreground image */}
                 <Image
                   src="/assets/images/badge-2.png"
                   width={133}
@@ -103,8 +101,6 @@ const AboutSection = () => {
           </figure>
         </div>
 
-        {/* Shape */}
-
         <Image
           src="/assets/images/shape-1.png"
           width={120}
@@ -116,6 +112,6 @@ const AboutSection = () => {
       </div>
     </section>
   );
-};
+}
 
 export default AboutSection;
