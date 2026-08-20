@@ -1,29 +1,16 @@
+import type { Order } from "@lobango/contracts/order";
 import { Playfair_Display } from "next/font/google";
-import OrderStatusTracker from "./OrderStatusTracker";
+import React from "react";
+import { OrderStatusTracker } from "./OrderStatusTracker";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
-interface Order {
-  orderId: string;
-  name: string;
-  phone: string;
-  address: string;
-  total: number;
-  paymentMethod: string;
-  paymentStatus: string;
-  status: string;
-  createdAt: string;
-}
-
-interface OrderDetailsProps {
+export interface OrderDetailsProps {
   order: Order;
   onTryAnother: () => void;
 }
 
-export default function OrderDetails({
-  order,
-  onTryAnother,
-}: OrderDetailsProps) {
+export function OrderDetails({ order, onTryAnother }: OrderDetailsProps) {
   const getPaymentStatusColor = (status: string) => {
     return status.toLowerCase() === "paid" ? "text-green-400" : "text-red-400";
   };
@@ -78,8 +65,12 @@ export default function OrderDetails({
               <p className="mb-2 text-sm text-(--quick-silver)">
                 Customer Details
               </p>
-              <p className="mb-1 font-medium text-(--white)">{order.name}</p>
-              <p className="text-sm text-(--gold-crayola)">{order.phone}</p>
+              <p className="mb-1 font-medium text-(--white)">
+                {order.customerName}
+              </p>
+              <p className="text-sm text-(--gold-crayola)">
+                {order.customerPhone}
+              </p>
             </div>
             <div className="rounded-lg border border-(--white-alpha-10) bg-(--smoky-black-3) p-4">
               <p className="mb-2 text-sm text-(--quick-silver)">Order Date</p>
@@ -93,7 +84,9 @@ export default function OrderDetails({
             <p className="mb-2 text-sm text-(--quick-silver)">
               Delivery Address
             </p>
-            <p className="leading-relaxed text-(--white)">{order.address}</p>
+            <p className="leading-relaxed text-(--white)">
+              {order.customerAddress}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

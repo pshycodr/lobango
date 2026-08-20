@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
 import { Playfair_Display } from "next/font/google";
+import React, { useEffect, useState } from "react";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
-interface OrderStatusTrackerProps {
+export interface OrderStatusTrackerProps {
   currentStatus: string;
 }
 
-interface StatusStep {
+export interface StatusStep {
   id: string;
   label: string;
   description: string;
@@ -16,17 +16,16 @@ interface StatusStep {
   isRejected?: boolean;
 }
 
-export default function OrderStatusTracker({
-  currentStatus,
-}: OrderStatusTrackerProps) {
+export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
   const [animatedSteps, setAnimatedSteps] = useState<StatusStep[]>([]);
   const [lineProgress, setLineProgress] = useState(0);
 
   const getStatusSteps = (status: string): StatusStep[] => {
     const normalizedStatus = status.toLowerCase();
-    const isRejected = normalizedStatus === "rejected";
+    const isRejected =
+      normalizedStatus === "rejected" || normalizedStatus === "cancelled";
 
-    const steps = [
+    const steps: StatusStep[] = [
       {
         id: "pending",
         label: "Order Placed",
@@ -39,19 +38,26 @@ export default function OrderStatusTracker({
         id: "accepted",
         label: "Order Confirmed",
         description: "Restaurant is preparing your order",
-        isCompleted: ["accepted", "out for delivery", "delivered"].includes(
-          normalizedStatus
-        ),
-        isActive: normalizedStatus === "accepted",
-        isRejected: isRejected,
+        isCompleted: [
+          "accepted",
+          "preparing",
+          "out for delivery",
+          "out_for_delivery",
+          "delivered",
+        ].includes(normalizedStatus),
+        isActive:
+          normalizedStatus === "accepted" || normalizedStatus === "preparing",
+        isRejected,
       },
       {
         id: "out for delivery",
         label: "Out for Delivery",
         description: "Your order is on the way",
         isCompleted: ["delivered"].includes(normalizedStatus),
-        isActive: normalizedStatus === "out for delivery",
-        isRejected: isRejected,
+        isActive:
+          normalizedStatus === "out for delivery" ||
+          normalizedStatus === "out_for_delivery",
+        isRejected,
       },
       {
         id: "delivered",
@@ -59,7 +65,7 @@ export default function OrderStatusTracker({
         description: "Order successfully delivered",
         isCompleted: normalizedStatus === "delivered",
         isActive: normalizedStatus === "delivered",
-        isRejected: isRejected,
+        isRejected,
       },
     ];
 
@@ -85,28 +91,25 @@ export default function OrderStatusTracker({
     setAnimatedSteps([]);
     setLineProgress(0);
 
-    // First, animate the steps appearing
     const stepTimeouts = steps.map((step, index) => {
       return setTimeout(() => {
         setAnimatedSteps((prev) => [...prev, step]);
       }, index * 200);
     });
 
-    // Then animate the line progress after all steps are visible
     const lineTimeout = setTimeout(
       () => {
         const completedCount = steps.filter((s) => s.isCompleted).length;
         const totalSteps = steps.length;
 
         if (completedCount > 1) {
-          // Calculate progress: from 0% to the percentage of completed steps
           const targetProgress =
             ((completedCount - 1) / (totalSteps - 1)) * 100;
           setLineProgress(targetProgress);
         }
       },
       steps.length * 200 + 300
-    ); // Wait for all steps to appear + small delay
+    );
 
     return () => {
       stepTimeouts.forEach((timeout) => clearTimeout(timeout));
@@ -124,6 +127,7 @@ export default function OrderStatusTracker({
           borderColor: "border-amber-400/30",
         };
       case "accepted":
+      case "preparing":
         return {
           message: "Kitchen is preparing your order",
           color: "text-blue-400",
@@ -131,6 +135,7 @@ export default function OrderStatusTracker({
           borderColor: "border-blue-400/30",
         };
       case "out for delivery":
+      case "out_for_delivery":
         return {
           message: "Order is out for delivery",
           color: "text-(--gold-crayola)",
@@ -145,6 +150,7 @@ export default function OrderStatusTracker({
           borderColor: "border-green-400/30",
         };
       case "rejected":
+      case "cancelled":
         return {
           message: "Order could not be processed",
           color: "text-red-400",
@@ -217,7 +223,9 @@ export default function OrderStatusTracker({
   };
 
   const statusInfo = getStatusMessage(currentStatus);
-  const isRejected = currentStatus.toLowerCase() === "rejected";
+  const isRejected =
+    currentStatus.toLowerCase() === "rejected" ||
+    currentStatus.toLowerCase() === "cancelled";
 
   return (
     <div className="rounded-xl border border-(--white-alpha-10) bg-(--eerie-black-2) p-6 shadow-lg md:p-8">
@@ -238,15 +246,12 @@ export default function OrderStatusTracker({
       </div>
 
       <div className="relative mx-auto max-w-lg">
-        {/* Progress Line Container */}
         {!isRejected && animatedSteps.length > 1 && (
           <div
             className="absolute top-12 left-4 w-0.5 overflow-hidden"
             style={{ height: `${(animatedSteps.length - 1) * 80}px` }}
           >
-            {/* Background line */}
             <div className="absolute inset-0 w-full bg-(--white-alpha-20)"></div>
-            {/* Animated progress line */}
             <div
               className="absolute top-0 left-0 w-full bg-(--gold-crayola) shadow-sm transition-all duration-2000 ease-out"
               style={{
@@ -268,7 +273,6 @@ export default function OrderStatusTracker({
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              {/* Step Icon */}
               <div
                 className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-500 ${
                   step.isRejected
@@ -278,12 +282,11 @@ export default function OrderStatusTracker({
                       : step.isActive
                         ? "border-2 border-(--gold-crayola) bg-(--gold-crayola)/20 text-(--gold-crayola)"
                         : "border-2 border-(--white-alpha-20) bg-(--smoky-black-3) text-(--quick-silver)"
-                } `}
+                }`}
               >
                 {renderIcon(step)}
               </div>
 
-              {/* Step Content */}
               <div className="min-w-0 flex-1 pb-2">
                 <div className="mb-2 flex items-center justify-between">
                   <h3
@@ -380,7 +383,7 @@ export default function OrderStatusTracker({
             </p>
             <p className="mt-3 text-sm text-white">
               Need help? Call{" "}
-              <span className="font-semibold">+91 6296832453</span>
+              <span className="font-semibold">+91 1234567890</span>
             </p>
           </div>
         </div>

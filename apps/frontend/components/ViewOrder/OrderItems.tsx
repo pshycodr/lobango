@@ -1,19 +1,15 @@
+import type { OrderItem } from "@lobango/contracts/order";
 import { Playfair_Display } from "next/font/google";
+import React from "react";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
-interface OrderItem {
-  name: string;
-  price: number;
-  quantity: number;
-}
-
-interface OrderItemsProps {
+export interface OrderItemsProps {
   items: OrderItem[];
-  total: number;
+  total: string;
 }
 
-export default function OrderItems({ items, total }: OrderItemsProps) {
+export function OrderItems({ items, total }: OrderItemsProps) {
   const formatPrice = (price: number) => {
     return `₹${price}`;
   };
@@ -49,13 +45,13 @@ export default function OrderItems({ items, total }: OrderItemsProps) {
                 </div>
                 <div className="ml-11">
                   <p className="text-sm text-(--quick-silver)">
-                    {formatPrice(item.price)} × {item.quantity}
+                    {item.price} × {item.quantity}
                   </p>
                 </div>
               </div>
               <div className="text-right">
                 <p className="text-lg font-bold text-(--gold-crayola)">
-                  {formatPrice(item.price * item.quantity)}
+                  {formatPrice(Number(item.price) * Number(item.quantity))}
                 </p>
               </div>
             </div>
@@ -77,10 +73,8 @@ export default function OrderItems({ items, total }: OrderItemsProps) {
               </span>
             </div>
             <div className="text-right">
-              <span
-                className={`animate-pulse text-2xl font-bold text-(--gold-crayola)`}
-              >
-                {formatPrice(total)}
+              <span className="animate-pulse text-2xl font-bold text-(--gold-crayola)">
+                {formatPrice(Number(total))}
               </span>
             </div>
           </div>

@@ -1,14 +1,15 @@
 import { Playfair_Display } from "next/font/google";
+import React from "react";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
-interface ErrorMessageProps {
+export interface ErrorMessageProps {
   message: string;
   onRetry: () => void;
   onTryAnother: () => void;
 }
 
-export default function ErrorMessage({
+export function ErrorMessage({
   message,
   onRetry,
   onTryAnother,
