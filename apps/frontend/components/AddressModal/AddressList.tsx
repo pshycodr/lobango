@@ -1,9 +1,10 @@
 "use client";
 
-import { Address, ADDRESS_TYPES } from "@lobango/contracts/address";
+import { ADDRESS_TYPES, type Address } from "@lobango/contracts/address";
 import { Edit, MapPin, X } from "lucide-react";
+import React from "react";
 
-interface AddressListProps {
+export interface AddressListProps {
   addresses: Address[];
   currentAddress?: Address;
   onSelectAddress: (address: Address) => void;
@@ -35,7 +36,7 @@ export function AddressList({
       {/* Add New Address Button */}
       <button
         onClick={onAddNewAddress}
-        className="w-full p-4 border-2 border-dashed border-gray-600 rounded-xl text-yellow-500 hover:border-yellow-500 hover:bg-gray-800 transition-all duration-200 mb-4"
+        className="mb-4 w-full rounded-xl border-2 border-dashed border-gray-600 p-4 text-yellow-500 transition-all duration-200 hover:border-yellow-500 hover:bg-gray-800"
       >
         <div className="flex items-center justify-center gap-2">
           <MapPin size={18} />
@@ -48,7 +49,7 @@ export function AddressList({
         {addresses.map((address) => (
           <div
             key={address.id}
-            className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer group ${
+            className={`group cursor-pointer rounded-xl border p-4 transition-all duration-200 ${
               currentAddress?.id === address.id
                 ? "border-yellow-500 bg-gray-800"
                 : "border-gray-600 hover:border-yellow-500 hover:bg-gray-800"
@@ -56,15 +57,15 @@ export function AddressList({
             onClick={() => onSelectAddress(address)}
           >
             <div className="flex items-start justify-between">
-              <div className="flex items-start gap-3 flex-1">
-                <div className="text-yellow-500 mt-1">
+              <div className="flex flex-1 items-start gap-3">
+                <div className="mt-1 text-yellow-500">
                   {getAddressIcon(address.type)}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-white font-semibold mb-1">
+                  <h3 className="mb-1 font-semibold text-white">
                     {address.label}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-sm leading-relaxed text-gray-400">
                     {formatFullAddress(address)}
                   </p>
                 </div>
@@ -75,7 +76,7 @@ export function AddressList({
                     e.stopPropagation();
                     onEditAddress(address);
                   }}
-                  className="text-gray-400 hover:text-white p-1 rounded duration-200"
+                  className="rounded p-1 text-gray-400 duration-200 hover:text-white"
                 >
                   <Edit size={16} />
                 </button>
@@ -84,7 +85,7 @@ export function AddressList({
                     e.stopPropagation();
                     onDeleteAddress(address.id);
                   }}
-                  className="text-gray-400 hover:text-red-400 p-1 rounded duration-200"
+                  className="rounded p-1 text-gray-400 duration-200 hover:text-red-400"
                 >
                   <X size={16} />
                 </button>
@@ -95,8 +96,8 @@ export function AddressList({
       </div>
 
       {addresses.length === 0 && (
-        <div className="text-center py-8">
-          <MapPin size={48} className="text-gray-400 mx-auto mb-3" />
+        <div className="py-8 text-center">
+          <MapPin size={48} className="mx-auto mb-3 text-gray-400" />
           <p className="text-gray-400">No saved addresses yet</p>
         </div>
       )}

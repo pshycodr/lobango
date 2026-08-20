@@ -1,12 +1,12 @@
 import { Navigation } from "lucide-react";
 
-interface LocationButtonProps {
+export interface LocationButtonProps {
   isLoading: boolean;
   onClick: () => void;
   error?: string;
 }
 
-export default function LocationButton({
+export function LocationButton({
   isLoading,
   onClick,
   error,
@@ -17,7 +17,7 @@ export default function LocationButton({
         type="button"
         onClick={onClick}
         disabled={isLoading}
-        className="w-full p-4 border-2 border-blue-500 rounded-xl text-blue-400 hover:border-blue-400 hover:bg-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-xl border-2 border-blue-500 p-4 text-blue-400 transition-all duration-200 hover:border-blue-400 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <div className="flex items-center justify-center gap-2">
           <Navigation size={18} className={isLoading ? "animate-spin" : ""} />
@@ -28,7 +28,7 @@ export default function LocationButton({
       </button>
 
       {error && (
-        <p className="text-red-400 text-sm mt-2 text-center">{error}</p>
+        <p className="mt-2 text-center text-sm text-red-400">{error}</p>
       )}
     </div>
   );

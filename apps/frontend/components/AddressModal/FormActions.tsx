@@ -1,4 +1,6 @@
-interface FormActionsProps {
+import React from "react";
+
+export interface FormActionsProps {
   onCancel: () => void;
   onSubmit: () => void;
   submitLabel?: string;
@@ -16,14 +18,14 @@ export function FormActions({
       <button
         type="button"
         onClick={onCancel}
-        className="flex-1 p-3 rounded-lg border border-gray-600 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors duration-200"
+        className="flex-1 rounded-lg border border-gray-600 p-3 text-gray-400 transition-colors duration-200 hover:bg-gray-800 hover:text-white"
       >
         {cancelLabel}
       </button>
       <button
         type="button"
         onClick={onSubmit}
-        className="flex-1 p-3 rounded-lg bg-yellow-500 text-black font-semibold hover:brightness-110 transition-all duration-200"
+        className="flex-1 rounded-lg bg-yellow-500 p-3 font-semibold text-black transition-all duration-200 hover:brightness-110"
       >
         {submitLabel}
       </button>

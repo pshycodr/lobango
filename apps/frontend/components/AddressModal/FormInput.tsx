@@ -1,6 +1,6 @@
-import { ChangeEvent } from "react";
+import React, { type ChangeEvent } from "react";
 
-interface FormInputProps {
+export interface FormInputProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -25,7 +25,7 @@ export function FormInput({
 
   return (
     <div className={className}>
-      <label className="block text-white text-sm font-medium mb-2">
+      <label className="mb-2 block text-sm font-medium text-white">
         {label}
       </label>
       <input
@@ -33,11 +33,11 @@ export function FormInput({
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className={`w-full p-3 rounded-lg bg-gray-800 border ${
+        className={`w-full rounded-lg border bg-gray-800 p-3 ${
           error ? "border-red-500" : "border-gray-600"
-        } text-white placeholder-gray-400 focus:border-yellow-500 focus:outline-none transition-colors duration-200`}
+        } text-white placeholder-gray-400 transition-colors duration-200 focus:border-yellow-500 focus:outline-none`}
       />
-      {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
+      {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
     </div>
   );
 }

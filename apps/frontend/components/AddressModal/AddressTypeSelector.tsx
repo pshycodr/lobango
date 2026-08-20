@@ -1,6 +1,7 @@
 import { ADDRESS_TYPES } from "@lobango/contracts/address";
+import React from "react";
 
-interface AddressTypeSelectorProps {
+export interface AddressTypeSelectorProps {
   selectedType: string;
   onSelect: (type: string) => void;
 }
@@ -11,7 +12,7 @@ export function AddressTypeSelector({
 }: AddressTypeSelectorProps) {
   return (
     <div>
-      <label className="block text-white text-sm font-medium mb-2">
+      <label className="mb-2 block text-sm font-medium text-white">
         Address Type
       </label>
       <div className="grid grid-cols-3 gap-2">
@@ -20,7 +21,7 @@ export function AddressTypeSelector({
             key={type}
             type="button"
             onClick={() => onSelect(type)}
-            className={`p-3 rounded-lg border transition-all duration-200 ${
+            className={`rounded-lg border p-3 transition-all duration-200 ${
               selectedType === type
                 ? "border-yellow-500 bg-gray-800 text-yellow-500"
                 : "border-gray-600 text-gray-400 hover:border-yellow-500"
