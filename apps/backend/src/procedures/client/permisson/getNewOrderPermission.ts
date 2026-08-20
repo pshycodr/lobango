@@ -1,11 +1,7 @@
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
+import { GetOrderPermissionResponseSchema } from "@lobango/contracts/permissions/order";
 import { ORPCError } from "@orpc/server";
-import * as z from "zod";
-
-const GetNewOrderPermissionOutput = z.object({
-  new_orders: z.boolean(),
-});
 
 export const getNewOrderPermission = orpc
   .route({
@@ -16,7 +12,7 @@ export const getNewOrderPermission = orpc
     description:
       "This is used to flag the availability of the order service in frontend",
   })
-  .output(GetNewOrderPermissionOutput)
+  .output(GetOrderPermissionResponseSchema)
   .handler(async ({ context }) => {
     const cacheKey = context.cache.getKey.orderPermission();
     const value = await context.env.KV.get(cacheKey);
@@ -25,5 +21,5 @@ export const getNewOrderPermission = orpc
       throw new ORPCError("NOT_FOUND", { message: "Permission not found" });
     }
 
-    return { new_orders: value === "true" };
+    return { success: true as const, newOrder: value === "true" };
   });

@@ -63,7 +63,7 @@ export function useBooking(): UseBookingReturn {
       try {
         const response = await client.permission.get.newBooking();
         if (!cancelled) {
-          setIsBookingAllowed(response.new_bookings);
+          setIsBookingAllowed(response.newBooking);
         }
       } catch (error) {
         console.error("Failed to fetch booking permission:", error);

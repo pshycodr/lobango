@@ -23,8 +23,8 @@ export const usePermissionsStore = create<PermissionsState>((set) => ({
       ]);
 
       set({
-        newOrders: ordersRes.new_orders,
-        newBookings: bookingsRes.new_bookings,
+        newOrders: ordersRes.newOrder,
+        newBookings: bookingsRes.newBooking,
         loading: false,
       });
     } catch (error) {

@@ -8,10 +8,10 @@
     "./bookings": "./src/booking/index.ts",
     "./menu": "./src/menu.ts",
     "./order": "./src/order/index.ts",
-    "./permissions": "./src/permissions/index.ts",
     "./admin": "./src/admin/index.ts",
     "./enums": "./src/enums/index.ts",
-    "./payments/razorpay": "./src/payments/razorpay/index.ts"
+    "./permissions/*": "./src/permissions/*/index.ts",
+    "./payments/*": "./src/payments/*/index.ts"
   },
   "dependencies": {
     "zod": "^4.4.3",

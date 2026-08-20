@@ -1,11 +1,7 @@
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
+import { GetBookingPermissionResponseSchema } from "@lobango/contracts/permissions/booking";
 import { ORPCError } from "@orpc/server";
-import { z } from "zod";
-
-const GetNewBookingPermissionOutput = z.object({
-  new_bookings: z.boolean(),
-});
 
 export const getNewBookingPermission = orpc
   .route({
@@ -16,7 +12,7 @@ export const getNewBookingPermission = orpc
     description:
       "This is used to flag the availability of the booking service in frontend",
   })
-  .output(GetNewBookingPermissionOutput)
+  .output(GetBookingPermissionResponseSchema)
   .handler(async ({ context }) => {
     const cacheKey = context.cache.getKey.bookingPermission();
     const value = await context.env.KV.get(cacheKey);
@@ -25,5 +21,5 @@ export const getNewBookingPermission = orpc
       throw new ORPCError("NOT_FOUND", { message: "Permission not found" });
     }
 
-    return { new_bookings: value === "true" };
+    return { success: true as const, newBooking: value === "true" };
   });

@@ -1,15 +1,9 @@
 import { adminOrpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
-import { z } from "zod";
-
-const SetNewBookingPermissionInput = z.object({
-  new_bookings: z.boolean(),
-});
-
-const SetNewBookingPermissionOutput = z.object({
-  success: z.boolean(),
-  new_bookings: z.boolean(),
-});
+import {
+  SetBookingPermissionRequestSchema,
+  SetBookingPermissionResponseSchema,
+} from "@lobango/contracts/permissions/booking";
 
 export const setNewBookingPermission = adminOrpc
   .route({
@@ -20,8 +14,8 @@ export const setNewBookingPermission = adminOrpc
     description:
       "This is used to flag the availability of the booking service in frontend",
   })
-  .input(SetNewBookingPermissionInput)
-  .output(SetNewBookingPermissionOutput)
+  .input(SetBookingPermissionRequestSchema)
+  .output(SetBookingPermissionResponseSchema)
   .errors({
     NOT_FOUND: {
       message: "Permission not found",
@@ -29,6 +23,6 @@ export const setNewBookingPermission = adminOrpc
   })
   .handler(async ({ context, input }) => {
     const cacheKey = context.cache.getKey.bookingPermission();
-    await context.cache.set(cacheKey, input.new_bookings.toString());
-    return { success: true, new_bookings: input.new_bookings };
+    await context.cache.set(cacheKey, input.newBooking.toString());
+    return { success: true, newBooking: input.newBooking };
   });
