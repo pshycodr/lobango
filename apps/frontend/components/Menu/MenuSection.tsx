@@ -1,16 +1,16 @@
-import { Category, MenuItem } from "@lobango/contracts/menu";
+import type { Category, MenuItem } from "@lobango/contracts/menu";
 import { Playfair_Display } from "next/font/google";
+import React from "react";
 import { MenuItemCard } from "./MenuItemCard";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
-export const MenuSection = ({
-  category,
-  getDescription,
-}: {
+export interface MenuSectionProps {
   category: Category;
   getDescription: (item: MenuItem) => string;
-}) => {
+}
+
+export function MenuSection({ category, getDescription }: MenuSectionProps) {
   const sectionId = category.category.replace(/\s+/g, "-").toLowerCase();
 
   return (
@@ -38,4 +38,4 @@ export const MenuSection = ({
       </div>
     </section>
   );
-};
+}
