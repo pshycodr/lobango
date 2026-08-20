@@ -81,6 +81,17 @@ export function AddressModal({
     onClose();
   };
 
+  const handleSaveAddress = (address: Address | Omit<Address, "id">) => {
+    if (editingAddress && "id" in address) {
+      handleUpdateAddress(address);
+      return;
+    }
+
+    if (!editingAddress && !("id" in address)) {
+      handleAddAddress(address);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -119,7 +130,7 @@ export function AddressModal({
           ) : (
             <AddressForm
               initialData={editingAddress || undefined}
-              onSave={editingAddress ? handleUpdateAddress : handleAddAddress}
+              onSave={handleSaveAddress}
               onCancel={handleCancel}
               isEditing={!!editingAddress}
             />
