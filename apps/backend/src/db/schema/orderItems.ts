@@ -12,7 +12,7 @@ export const orderItems = sqliteTable("orderItems", {
     }),
   name: text("name").notNull(),
   price: text("price").notNull(),
-  quantity: text("quantity").default("1"),
+  quantity: text("quantity").default("1").notNull(),
 });
 
 export const orderItemSelectSchema = createSelectSchema(orderItems);

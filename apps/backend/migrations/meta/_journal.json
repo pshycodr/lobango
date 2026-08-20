@@ -22,6 +22,13 @@
       "when": 1786264711031,
       "tag": "0002_dazzling_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1787217283611,
+      "tag": "0003_flashy_psynapse",
+      "breakpoints": true
     }
   ]
 }
