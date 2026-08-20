@@ -10,7 +10,7 @@ import {
   CreateOrderResponseSchema,
 } from "@lobango/contracts/order";
 
-export const placeOrder = orpc
+export const createOrder = orpc
   .route({
     method: "POST",
     path: "/order",

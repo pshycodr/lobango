@@ -1,7 +1,7 @@
-import { addBooking } from "@/procedures/client/booking.ts/createBooking";
+import { createBooking } from "@/procedures/client/booking.ts/createBooking";
 import { getBookingById } from "@/procedures/client/booking.ts/getBookingById";
-import { getOrdersbById } from "@/procedures/client/orders/getOrdersById";
-import { placeOrder } from "@/procedures/client/orders/createOrder";
+import { createOrder } from "@/procedures/client/orders/createOrder";
+import { getOrderById } from "@/procedures/client/orders/getOrderById";
 import { getNewBookingPermission } from "@/procedures/client/permisson/getNewBookingPermission";
 import { getNewOrderPermission } from "@/procedures/client/permisson/getNewOrderPermission";
 import { createRazorpayOrder } from "@/procedures/payments/createRazorpayOrder";
@@ -15,11 +15,11 @@ export const clientRouter = {
     },
   },
   order: {
-    getOrdersbById,
-    placeOrder,
+    getOrderById,
+    createOrder,
   },
   booking: {
-    addBooking,
+    createBooking,
     getBookingById,
   },
   payment: {

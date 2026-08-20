@@ -9,7 +9,7 @@ import {
 } from "@lobango/contracts/bookings";
 import { eq } from "drizzle-orm";
 
-export const addBooking = orpc
+export const createBooking = orpc
   .route({
     method: "POST",
     path: "/booking",

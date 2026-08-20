@@ -1,34 +1,15 @@
 import { getDB } from "@/db/db";
-import {
-  orderItems,
-  orderItemSelectSchema,
-  orders,
-  OrdersSelectSchema,
-} from "@/db/schema";
+import { orderItems, orders } from "@/db/schema";
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
+import {
+  GetOrderByIdRequestSchema,
+  GetOrderByIdResponse,
+  GetOrderByIdResponseSchema,
+} from "@lobango/contracts/order";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
 
-const GetOrdersInput = z.object({
-  orderId: z.string().trim(),
-});
-
-const OrderItemResponseSchema = orderItemSelectSchema.pick({
-  name: true,
-  price: true,
-  quantity: true,
-});
-
-const GetOrdersOutput = z.object({
-  success: z.literal(true),
-  order: OrdersSelectSchema,
-  items: z.array(OrderItemResponseSchema),
-});
-
-type GetOrdersResult = z.infer<typeof GetOrdersOutput>;
-
-export const getOrdersbById = orpc
+export const getOrderById = orpc
   .route({
     method: "GET",
     path: "/orders/{orderId}",
@@ -37,15 +18,15 @@ export const getOrdersbById = orpc
       "Returns order details along with the items in that order, given a valid order ID.",
     tags: [API_TAGS.ORDERS],
   })
-  .input(GetOrdersInput)
-  .output(GetOrdersOutput)
+  .input(GetOrderByIdRequestSchema)
+  .output(GetOrderByIdResponseSchema)
   .errors({
     NOT_FOUND: { message: "Order not found" },
   })
   .handler(async ({ input, context, errors }) => {
     const cacheKey = context.cache.getKey.orderCache(input.orderId);
 
-    const cached = await context.cache.get<GetOrdersResult>(cacheKey);
+    const cached = await context.cache.get<GetOrderByIdResponse>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -74,12 +55,13 @@ export const getOrdersbById = orpc
         } => j.item !== null
       )
       .map((j) => ({
+        id: j.item.id,
         name: j.item.name,
         price: j.item.price,
         quantity: j.item.quantity,
       }));
 
-    const result: GetOrdersResult = {
+    const result: GetOrderByIdResponse = {
       success: true as const,
       order,
       items,
