@@ -38,6 +38,10 @@ export const updateOrderStatus = adminOrpc
       context.cache.getKey.admin.ordersVersion()
     );
 
+    await context.cache.invalidate(
+      context.cache.getKey.orderCache(input.orderId)
+    );
+
     return {
       success: true as const,
       updated: result.meta?.changes ?? 0,

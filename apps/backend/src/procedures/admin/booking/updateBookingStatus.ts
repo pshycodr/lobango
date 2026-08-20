@@ -66,6 +66,10 @@ export const updateBookingStatus = adminOrpc
         context.cache.getKey.admin.bookingVersion()
       );
 
+      await context.cache.invalidate(
+        context.cache.getKey.bookingCache(input.bookingId)
+      );
+
       return {
         success: true as const,
       };
