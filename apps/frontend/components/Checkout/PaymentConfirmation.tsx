@@ -1,40 +1,32 @@
-import { useState, useEffect } from "react";
-import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
+import type { PaymentData } from "@/types/checkout";
+import { ArrowRight, CheckCircle, Sparkles } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
-interface PaymentConfirmationProps {
-  paymentData?: {
-    amount: number;
-    paymentId?: string;
-    orderId?: string;
-    customerName?: string;
-  };
+export interface PaymentConfirmationProps {
+  paymentData?: PaymentData;
   onViewOrder?: () => void;
   onGoHome?: () => void;
 }
 
-const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
+export function PaymentConfirmation({
   paymentData,
   onViewOrder,
   onGoHome,
-}) => {
+}: PaymentConfirmationProps) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showButton, setShowButton] = useState(false);
 
-  // Default values if no payment data is provided
   const amount = paymentData?.amount || 0;
   const paymentId =
     paymentData?.paymentId ||
-    `PAY-${Math.random().toString(36).substr(2, 12).toUpperCase()}`;
+    `PAY-${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
   const orderId =
     paymentData?.orderId ||
-    `ORD-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    `ORD-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
   const customerName = paymentData?.customerName || "Valued Customer";
 
   useEffect(() => {
-    // Show success animation immediately
     const successTimer = setTimeout(() => setShowSuccess(true), 300);
-
-    // Show button after 2 seconds like Flipkart/Zomato
     const buttonTimer = setTimeout(() => setShowButton(true), 2000);
 
     return () => {
@@ -195,7 +187,7 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
             </div>
           </div>
 
-          {/* Action Buttons - Appear after 2 seconds */}
+          {/* Action Buttons */}
           <div
             className={`transform space-y-2 transition-all duration-700 md:space-y-3 ${
               showButton
@@ -211,7 +203,6 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 md:h-5 md:w-5" />
             </button>
 
-            {/* Secondary Button */}
             <button
               onClick={onGoHome}
               className="w-full rounded-xl border border-(--eerie-black-3) bg-(--eerie-black-2) px-4 py-2.5 text-sm font-medium text-(--quick-silver) transition-all duration-300 hover:bg-(--eerie-black-3) hover:text-(--white) active:scale-95 md:rounded-2xl md:px-6 md:py-3 md:text-base"
@@ -219,7 +210,6 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
               Continue Shopping
             </button>
 
-            {/* Subtle hint text */}
             <p className="text-2xs mt-2 text-(--quick-silver) opacity-75 md:mt-3 md:text-xs">
               Track your order in real-time
             </p>
@@ -232,7 +222,7 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 w-1.5 animate-bounce rounded-full bg-(--gold-crayola) opacity-60 md:h-2 md:w-2 ${
+                className={`h-1.5 w-1.5 rounded-full bg-(--gold-crayola) opacity-60 md:h-2 md:w-2 ${
                   showSuccess ? "animate-bounce" : ""
                 }`}
                 style={{ animationDelay: `${i * 0.2}s` }}
@@ -243,6 +233,4 @@ const PaymentConfirmation: React.FC<PaymentConfirmationProps> = ({
       </div>
     </div>
   );
-};
-
-export default PaymentConfirmation;
+}

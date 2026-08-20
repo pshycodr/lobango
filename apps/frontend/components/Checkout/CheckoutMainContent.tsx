@@ -1,10 +1,11 @@
-import OrderSummary from "@/components/Checkout/OrderSummary";
-import PlaceOrderButton from "@/components/Checkout/PlaceOrderButton";
-import { CartItem } from "@/types/cart";
-import { Address } from "@lobango/contracts/address";
+import { OrderSummary } from "@/components/Checkout/OrderSummary";
+import { PlaceOrderButton } from "@/components/Checkout/PlaceOrderButton";
+import type { CartItem } from "@/types/cart";
+import type { LoadingState } from "@/types/checkout";
+import type { Address } from "@lobango/contracts/address";
 import { CheckoutValidation } from "./CheckoutValidation";
 
-interface CheckoutMainContentProps {
+export interface CheckoutMainContentProps {
   cart: CartItem[];
   subtotal: number;
   deliveryFee: number;
@@ -13,13 +14,12 @@ interface CheckoutMainContentProps {
   onRemoveItem: (id: string) => void;
   onPlaceOrder: () => void;
   isPaymentLoading: boolean;
-  // Validation props
   selectedAddress: Address | undefined;
-  locationAllowsCheckout: boolean;
-  locationBlocksCheckout: boolean;
+  locationAllowsCheckout?: boolean;
+  locationBlocksCheckout?: boolean;
   newOrders: boolean | null;
-  isLocationLoading: boolean;
-  loadingState: { type: string };
+  isLocationLoading?: boolean;
+  loadingState: LoadingState;
 }
 
 export function CheckoutMainContent({
@@ -39,10 +39,8 @@ export function CheckoutMainContent({
   loadingState,
 }: CheckoutMainContentProps) {
   const isCheckoutAllowed =
-    selectedAddress &&
-    locationAllowsCheckout &&
+    Boolean(selectedAddress) &&
     newOrders !== false &&
-    !isLocationLoading &&
     loadingState.type === "none";
 
   return (
@@ -56,7 +54,7 @@ export function CheckoutMainContent({
         onRemoveItem={onRemoveItem}
       />
 
-      <div className="flex flex-col items-center w-full h-15">
+      <div className="flex h-15 w-full flex-col items-center">
         <PlaceOrderButton
           onPlaceOrder={onPlaceOrder}
           loading={isPaymentLoading}

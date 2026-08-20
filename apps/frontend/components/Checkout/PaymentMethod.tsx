@@ -1,21 +1,18 @@
 import { CreditCard } from "lucide-react";
 import { useState } from "react";
 
-interface PaymentMethodData {
+export interface PaymentMethodData {
   type: "online";
   details: string;
 }
 
-interface PaymentMethodProps {
+export interface PaymentMethodProps {
   paymentMethod?: PaymentMethodData;
   onChangePayment: (method: "online") => void;
 }
 
-export default function PaymentMethod({
-  paymentMethod,
-  onChangePayment,
-}: PaymentMethodProps) {
-  const [selectedMethod, setSelectedMethod] = useState<"online">("online");
+export function PaymentMethod({ onChangePayment }: PaymentMethodProps) {
+  const [, setSelectedMethod] = useState<"online">("online");
 
   const handleMethodChange = (method: "online") => {
     setSelectedMethod(method);
