@@ -1,23 +1,20 @@
-import React from "react";
+import type { CartItem } from "@/types/cart";
 import Image from "next/image";
-import { CartItem } from "@/types/cart";
+import React from "react";
 
-interface CartItemCardProps {
+export interface CartItemCardProps {
   item: CartItem;
   onUpdateQuantity: (id: string, quantity: number) => void;
 }
 
-export const CartItemCard: React.FC<CartItemCardProps> = ({
-  item,
-  onUpdateQuantity,
-}) => {
+export function CartItemCard({ item, onUpdateQuantity }: CartItemCardProps) {
   const handleQuantityChange = (change: number) => {
     const newQuantity = Math.max(0, item.quantity + change);
     onUpdateQuantity(item.id, newQuantity);
   };
 
   return (
-    <div className="group hover:border-opacity-20 rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-2) p-3 transition-all duration-200 hover:border-(--gold-crayola) hover:bg-(--eerie-black-3)">
+    <div className="group rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-2) p-3 transition-all duration-200 hover:border-(--gold-crayola) hover:bg-(--eerie-black-3)">
       <div className="flex items-center gap-3">
         {/* Image */}
         <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-(--eerie-black-4)">
@@ -69,4 +66,4 @@ export const CartItemCard: React.FC<CartItemCardProps> = ({
       </div>
     </div>
   );
-};
+}
