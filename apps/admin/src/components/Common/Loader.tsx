@@ -1,6 +1,12 @@
-export default function LoadingSpinner() {
+export interface LoadingSpinnerProps {
+  className?: string;
+}
+
+export function LoadingSpinner({ className = "" }: LoadingSpinnerProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-16">
+    <div
+      className={`flex flex-col items-center justify-center py-16 ${className}`}
+    >
       <div className="relative mb-6">
         <div className="h-20 w-20 animate-spin rounded-full border-4 border-(--white-alpha-20)"></div>
         <div className="absolute top-0 left-0 h-20 w-20 animate-spin rounded-full border-4 border-transparent border-t-(--gold-crayola)"></div>
@@ -12,7 +18,6 @@ export default function LoadingSpinner() {
 
       <div className="text-center">
         <div className="mb-2 flex items-center justify-center space-x-1">
-          {/* <span className="text-(--gold-crayola) text-lg font-semibold animate-pulse">Fetching your order</span> */}
           <div className="flex space-x-1">
             <div className="h-1 w-1 animate-bounce rounded-full bg-(--gold-crayola)"></div>
             <div
@@ -25,7 +30,6 @@ export default function LoadingSpinner() {
             ></div>
           </div>
         </div>
-        {/* <p className="text-(--quick-silver) text-sm">Please wait while we get your order details</p> */}
       </div>
 
       <div className="mt-4 h-1 w-48 overflow-hidden rounded-full bg-(--white-alpha-10)">
@@ -34,3 +38,5 @@ export default function LoadingSpinner() {
     </div>
   );
 }
+
+export default LoadingSpinner;

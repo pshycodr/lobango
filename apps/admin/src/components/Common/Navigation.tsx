@@ -1,11 +1,11 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Calendar, FileText, Settings } from "lucide-react";
 
-interface NavigationProps {
+export interface NavigationProps {
   activeRoute?: string;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ activeRoute }) => {
+export function Navigation({ activeRoute }: NavigationProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,7 +23,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeRoute }) => {
     if (activeRoute) {
       return activeRoute === itemKey;
     }
-    return location.pathname === route;
+    return location.pathname.toLowerCase() === route.toLowerCase();
   };
 
   return (
@@ -59,6 +59,6 @@ const Navigation: React.FC<NavigationProps> = ({ activeRoute }) => {
       </div>
     </nav>
   );
-};
+}
 
 export default Navigation;
