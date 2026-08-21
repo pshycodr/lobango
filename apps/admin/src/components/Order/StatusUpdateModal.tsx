@@ -1,19 +1,27 @@
+import type { OrderStatus } from "@lobango/contracts/enums";
 import { X } from "lucide-react";
 import { useState } from "react";
-import type { Order } from "../../types/orders";
-import StatusBadge from "./OrderStatusBadge";
+import OrderStatusBadge from "./OrderStatusBadge";
 
-const StatusUpdateModal: React.FC<{
-  currentStatus: Order["status"];
+export interface StatusUpdateModalProps {
+  currentStatus: OrderStatus | string;
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (newStatus: Order["status"]) => void;
-}> = ({ currentStatus, isOpen, onClose, onUpdate }) => {
-  const [selectedStatus, setSelectedStatus] =
-    useState<Order["status"]>(currentStatus);
+  onUpdate: (newStatus: OrderStatus) => void;
+}
+
+export function StatusUpdateModal({
+  currentStatus,
+  isOpen,
+  onClose,
+  onUpdate,
+}: StatusUpdateModalProps) {
+  const [selectedStatus, setSelectedStatus] = useState<OrderStatus>(
+    (currentStatus as OrderStatus) || "pending"
+  );
 
   const statuses: Array<{
-    key: Order["status"];
+    key: OrderStatus;
     label: string;
     description: string;
   }> = [
@@ -28,7 +36,7 @@ const StatusUpdateModal: React.FC<{
       description: "Order confirmed and being prepared",
     },
     {
-      key: "out for delivery",
+      key: "out_for_delivery",
       label: "Out for Delivery",
       description: "Order is on the way to customer",
     },
@@ -38,9 +46,14 @@ const StatusUpdateModal: React.FC<{
       description: "Order successfully delivered",
     },
     {
+      key: "canceld",
+      label: "Cancelled",
+      description: "Order cancelled",
+    },
+    {
       key: "rejected",
       label: "Rejected",
-      description: "Order cancelled or rejected",
+      description: "Order rejected",
     },
   ];
 
@@ -83,13 +96,13 @@ const StatusUpdateModal: React.FC<{
                   value={status.key}
                   checked={selectedStatus === status.key}
                   onChange={(e) =>
-                    setSelectedStatus(e.target.value as Order["status"])
+                    setSelectedStatus(e.target.value as OrderStatus)
                   }
                   className="mt-1 text-(--gold-crayola) focus:ring-(--gold-crayola)"
                 />
                 <div className="flex-1">
                   <div className="mb-1 flex items-center gap-2">
-                    <StatusBadge status={status.key} disabled={false} />
+                    <OrderStatusBadge status={status.key} disabled={false} />
                   </div>
                   <p className="text-sm text-(--quick-silver)">
                     {status.description}
@@ -117,6 +130,6 @@ const StatusUpdateModal: React.FC<{
       </div>
     </div>
   );
-};
+}
 
 export default StatusUpdateModal;

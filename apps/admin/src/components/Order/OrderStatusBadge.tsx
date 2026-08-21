@@ -1,21 +1,21 @@
+import type { OrderStatus } from "@lobango/contracts/enums";
 import { CheckCircle, Clock, Package, Truck, XCircle } from "lucide-react";
-import type { Order } from "../../types/orders";
 
-interface StatusBadgeProps {
-  status: Order["status"];
+export interface OrderStatusBadgeProps {
+  status: OrderStatus | string;
   size?: "sm" | "lg";
   onClick?: () => void;
   disabled?: boolean;
 }
 
-const StatusBadge: React.FC<StatusBadgeProps> = ({
+export function OrderStatusBadge({
   status,
   size = "sm",
   onClick,
   disabled = false,
-}) => {
-  const getStatusConfig = (status: Order["status"]) => {
-    switch (status) {
+}: OrderStatusBadgeProps) {
+  const getStatusConfig = (statusKey: string) => {
+    switch (statusKey) {
       case "pending":
         return {
           icon: <Clock size={size === "sm" ? 14 : 18} />,
@@ -32,6 +32,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
           textColor: "text-blue-400",
           borderColor: "border-blue-500/30",
         };
+      case "out_for_delivery":
       case "out for delivery":
         return {
           icon: <Truck size={size === "sm" ? 14 : 18} />,
@@ -48,6 +49,15 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
           textColor: "text-green-400",
           borderColor: "border-green-500/30",
         };
+      case "canceld":
+      case "cancelled":
+        return {
+          icon: <XCircle size={size === "sm" ? 14 : 18} />,
+          text: "Cancelled",
+          bgColor: "bg-red-500/20",
+          textColor: "text-red-400",
+          borderColor: "border-red-500/30",
+        };
       case "rejected":
         return {
           icon: <XCircle size={size === "sm" ? 14 : 18} />,
@@ -59,7 +69,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
       default:
         return {
           icon: <Clock size={size === "sm" ? 14 : 18} />,
-          text: "Unknown",
+          text: statusKey || "Unknown",
           bgColor: "bg-gray-500/20",
           textColor: "text-gray-400",
           borderColor: "border-gray-500/30",
@@ -73,14 +83,17 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
 
   return (
     <button
-      className={`inline-flex items-center gap-2 ${padding} rounded-full border ${config.bgColor} ${config.textColor} ${config.borderColor} ${textSize} font-medium`}
+      type="button"
+      className={`inline-flex items-center gap-2 ${padding} rounded-full border ${config.bgColor} ${config.textColor} ${config.borderColor} ${textSize} font-medium ${
+        onClick && !disabled ? "cursor-pointer hover:brightness-110" : ""
+      }`}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || !onClick}
     >
       {config.icon}
       {config.text}
     </button>
   );
-};
+}
 
-export default StatusBadge;
+export default OrderStatusBadge;

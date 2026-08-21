@@ -6,33 +6,32 @@ import {
   Navigation,
   Share2,
 } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
-interface MapLocationProps {
-  latitude: string;
-  longitude: string;
+export interface MapLocationProps {
+  latitude: string | null;
+  longitude: string | null;
   address?: string;
   customerName?: string;
 }
 
-const MapLocation: React.FC<MapLocationProps> = ({
+export function MapLocation({
   latitude,
   longitude,
   address,
   customerName,
-}) => {
+}: MapLocationProps) {
   const [copied, setCopied] = useState(false);
 
-  // Check if coordinates are available
-  const isLocationAvailable =
+  const isLocationAvailable = Boolean(
     latitude &&
     longitude &&
     latitude.toLowerCase() !== "none" &&
     latitude.toLowerCase() !== "n/a" &&
     longitude.toLowerCase() !== "none" &&
-    longitude.toLowerCase() !== "n/a";
+    longitude.toLowerCase() !== "n/a"
+  );
 
-  // Generate Google Maps URLs
   const getGoogleMapsEmbedUrl = (lat: string, lng: string): string => {
     return `https://maps.google.com/maps?q=${lat},${lng}&hl=en&z=16&output=embed`;
   };
@@ -45,12 +44,11 @@ const MapLocation: React.FC<MapLocationProps> = ({
     return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
   };
 
-  // Share location
   const shareLocation = async (): Promise<void> => {
+    if (!latitude || !longitude) return;
     const locationUrl = getGoogleMapsUrl(latitude, longitude);
     const shareText = `📍 Delivery Location${customerName ? ` for ${customerName}` : ""}${address ? `\n🏠 ${address}` : ""}\n📌 ${locationUrl}`;
 
-    // Try native share first, fallback to copy
     if (navigator.share) {
       try {
         await navigator.share({
@@ -59,12 +57,11 @@ const MapLocation: React.FC<MapLocationProps> = ({
           url: locationUrl,
         });
         return;
-      } catch (err) {
-        // User cancelled or share failed, continue to copy
+      } catch {
+        // Fallback to copy
       }
     }
 
-    // Fallback to copy
     try {
       await navigator.clipboard.writeText(shareText);
       setCopied(true);
@@ -74,8 +71,7 @@ const MapLocation: React.FC<MapLocationProps> = ({
     }
   };
 
-  // No location available state
-  if (!isLocationAvailable) {
+  if (!isLocationAvailable || !latitude || !longitude) {
     return (
       <div className="rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) p-6 text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-(--quick-silver)/10">
@@ -85,8 +81,8 @@ const MapLocation: React.FC<MapLocationProps> = ({
           Location Not Available
         </h3>
         <p className="text-sm text-(--quick-silver)">
-          Map location is not available for this order. Please contact the
-          customer directly for delivery details.
+          Map coordinates are not available for this order. Please use the
+          customer&apos;s delivery address.
         </p>
         {address && (
           <div className="mt-4 rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-3) p-3">
@@ -107,7 +103,6 @@ const MapLocation: React.FC<MapLocationProps> = ({
 
   return (
     <div className="overflow-hidden rounded-xl border border-(--eerie-black-4) bg-(--eerie-black-2) shadow-lg">
-      {/* Header */}
       <div className="flex items-center gap-3 border-b border-(--eerie-black-4) p-4">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--gold-crayola)/10">
           <MapPin size={20} className="text-(--gold-crayola)" />
@@ -117,13 +112,12 @@ const MapLocation: React.FC<MapLocationProps> = ({
             Delivery Location
           </h3>
           <p className="text-sm text-(--quick-silver)">
-            Customer's delivery address
+            Customer&apos;s delivery coordinates
           </p>
         </div>
       </div>
 
       <div className="p-4">
-        {/* Address Info */}
         {address && (
           <div className="mb-4 rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-3) p-3">
             <div className="flex items-start gap-3">
@@ -138,7 +132,6 @@ const MapLocation: React.FC<MapLocationProps> = ({
           </div>
         )}
 
-        {/* Coordinates */}
         <div className="mb-4 text-sm text-(--quick-silver)">
           <span className="font-medium text-(--white)">Coordinates: </span>
           <span className="rounded bg-(--eerie-black-3) px-2 py-1 font-mono text-xs text-(--gold-crayola)">
@@ -146,7 +139,6 @@ const MapLocation: React.FC<MapLocationProps> = ({
           </span>
         </div>
 
-        {/* Google Maps Iframe */}
         <div className="relative mb-4 w-full overflow-hidden rounded-xl shadow-lg">
           <div className="aspect-4/3">
             <iframe
@@ -163,7 +155,6 @@ const MapLocation: React.FC<MapLocationProps> = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="mb-4 grid grid-cols-2 gap-3">
           <a
             href={getDirectionsUrl(latitude, longitude)}
@@ -183,7 +174,6 @@ const MapLocation: React.FC<MapLocationProps> = ({
           </button>
         </div>
 
-        {/* Open in Maps Link */}
         <div className="text-center">
           <a
             href={getGoogleMapsUrl(latitude, longitude)}
@@ -198,6 +188,6 @@ const MapLocation: React.FC<MapLocationProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default MapLocation;
