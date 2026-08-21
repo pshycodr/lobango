@@ -210,7 +210,7 @@ Questions? Contact us at lobangorestaurent@gmail.com`;
                     <a href="mailto:lobangorestaurent@gmail.com" style="display: inline-block; background-color: #0c0c0c; color: #ffffff; padding: 16px 32px; text-decoration: none; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease; margin-right: 15px;">
                         CONTACT US
                     </a>
-                    <a href="tel:+916296832453" style="display: inline-block; background-color: transparent; color: #0c0c0c; border: 2px solid #0c0c0c; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                    <a href="tel:+911234567890" style="display: inline-block; background-color: transparent; color: #0c0c0c; border: 2px solid #0c0c0c; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease;">
                         CALL RESTAURANT
                     </a>
                 </div>
