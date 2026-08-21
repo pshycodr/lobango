@@ -1,23 +1,14 @@
-import type {
-  GetNewBookingPermissionResponse,
-  GetNewOrderPermissionResponse,
-  SetNewBookingPermissionRequest,
-  SetNewBookingPermissionResponse,
-  SetNewOrderPermissionRequest,
-  SetNewOrderPermissionResponse,
-} from "@lobango/contracts/permissions";
-import type { AxiosResponse } from "axios";
+import { admin } from "@/lib/orpc";
 import { create } from "zustand";
-import api from "../../lib/axios";
 
-type AdminPermissionState = {
+export interface AdminPermissionState {
   newOrders: boolean;
   newBookings: boolean;
   loading: boolean;
   fetchPermissions: () => Promise<void>;
   setNewOrderPermission: (allowed: boolean) => Promise<void>;
   setNewBookingPermission: (allowed: boolean) => Promise<void>;
-};
+}
 
 export const usePermissionsStore = create<AdminPermissionState>((set) => ({
   newOrders: false,
@@ -28,22 +19,17 @@ export const usePermissionsStore = create<AdminPermissionState>((set) => ({
     set({ loading: true });
     try {
       const [ordersRes, bookingsRes] = await Promise.all([
-        api.get<GetNewOrderPermissionResponse>("/api/v1/permission/new-order", {
-          withCredentials: true,
-        }),
-        api.get<GetNewBookingPermissionResponse>(
-          "/api/v1/permission/new-booking",
-          { withCredentials: true }
-        ),
+        admin.permission.get.newOrder(),
+        admin.permission.get.newBooking(),
       ]);
 
       set({
-        newOrders: ordersRes.data.new_orders,
-        newBookings: bookingsRes.data.new_bookings,
+        newOrders: ordersRes.newOrder,
+        newBookings: bookingsRes.newBooking,
         loading: false,
       });
     } catch (error) {
-      console.error("Failed to fetch permissions", error);
+      console.error("Failed to fetch permissions via oRPC", error);
       set({ loading: false });
     }
   },
@@ -51,20 +37,16 @@ export const usePermissionsStore = create<AdminPermissionState>((set) => ({
   setNewOrderPermission: async (allowed: boolean) => {
     set({ loading: true });
     try {
-      const { data } = await api.post<
-        SetNewOrderPermissionResponse,
-        AxiosResponse<SetNewOrderPermissionResponse>,
-        SetNewOrderPermissionRequest
-      >("/api/v1/admin/permission/update/new-orders", {
-        value: allowed,
+      const data = await admin.permission.set.newOrder({
+        newOrder: allowed,
       });
 
       set({
-        newOrders: data.new_orders,
+        newOrders: data.newOrder,
         loading: false,
       });
     } catch (error) {
-      console.error("Failed to update new order permission", error);
+      console.error("Failed to update new order permission via oRPC", error);
       set({ loading: false });
       throw error;
     }
@@ -73,20 +55,16 @@ export const usePermissionsStore = create<AdminPermissionState>((set) => ({
   setNewBookingPermission: async (allowed: boolean) => {
     set({ loading: true });
     try {
-      const { data } = await api.post<
-        SetNewBookingPermissionResponse,
-        AxiosResponse<SetNewBookingPermissionResponse>,
-        SetNewBookingPermissionRequest
-      >("/api/v1/admin/permission/update/new-bookings", {
-        value: allowed,
+      const data = await admin.permission.set.newBooking({
+        newBooking: allowed,
       });
 
       set({
-        newBookings: data.new_bookings,
+        newBookings: data.newBooking,
         loading: false,
       });
     } catch (error) {
-      console.error("Failed to update new booking permission", error);
+      console.error("Failed to update new booking permission via oRPC", error);
       set({ loading: false });
       throw error;
     }
