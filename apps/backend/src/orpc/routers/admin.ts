@@ -1,5 +1,6 @@
 import { adminLogin } from "@/procedures/admin/auth/adminLogin";
 import { adminLogout } from "@/procedures/admin/auth/adminLogout";
+import { verifyAdmin } from "@/procedures/admin/auth/verify";
 import { getAllBookings } from "@/procedures/admin/booking/getAllBookings";
 import { updateBookingStatus } from "@/procedures/admin/booking/updateBookingStatus";
 import { getAllOrders } from "@/procedures/admin/order/getAllOrders";
@@ -13,6 +14,7 @@ export const adminRouter = {
   auth: {
     login: adminLogin,
     logout: adminLogout,
+    verify: verifyAdmin,
   },
   permission: {
     set: {

@@ -53,8 +53,8 @@ export function useAdminAuth(): UseAdminAuthReturn {
 
   const verifyAuth = useCallback(async (): Promise<boolean> => {
     try {
-      await admin.permission.get.newOrder();
-      return true;
+      const res = await admin.auth.verify();
+      return res.success;
     } catch {
       return false;
     }
