@@ -1,4 +1,4 @@
-interface InputFieldProps {
+export interface InputFieldProps {
   label: string;
   type: string;
   placeholder: string;
@@ -7,14 +7,14 @@ interface InputFieldProps {
   onChange: (value: string) => void;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+export function InputField({
   label,
   type,
   placeholder,
   value,
   required = false,
   onChange,
-}) => {
+}: InputFieldProps) {
   return (
     <div className="mb-6">
       <label className="mb-3 block text-sm font-medium text-(--white)">
@@ -30,6 +30,6 @@ const InputField: React.FC<InputFieldProps> = ({
       />
     </div>
   );
-};
+}
 
 export default InputField;

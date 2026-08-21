@@ -1,60 +1,56 @@
+import { useAdminAuth } from "@/hooks/useAdminAuth";
+import type { AdminLoginReq } from "@lobango/contracts/admin";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import api from "../../lib/axios";
 import Loader from "../Common/Loader";
 import InputField from "./Input";
 import SignInButton from "./SignInButton";
 
-const SignInForm: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+export function SignInForm() {
+  const [formData, setFormData] = useState<AdminLoginReq>({
     username: "",
     password: "",
   });
+
+  const { isLoading, error, login, verifyAuth } = useAdminAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      const res = await api.get("/api/v1/admin/verify");
-      if (res.data.success) {
+    const checkAuthStatus = async () => {
+      const isAuthenticated = await verifyAuth();
+      if (isAuthenticated) {
         navigate({ to: "/" });
       }
     };
 
-    checkAdmin();
-  }, []);
+    checkAuthStatus();
+  }, [navigate, verifyAuth]);
 
   const handleSubmit = async () => {
-    if (!isFormValid) return;
+    if (!formData.username.trim() || !formData.password) return;
 
-    setLoading(true);
-    try {
-      console.log(formData);
-
-      const res = await api.post("/api/v1/admin/login", formData);
-      if (!res.data.success) {
-        alert("Signin failed");
-      } else {
-        navigate({ to: "/" });
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("Login failed. Try again.");
-    } finally {
-      setLoading(false);
+    const success = await login(formData);
+    if (success) {
+      navigate({ to: "/" });
     }
   };
 
-  const isFormValid = formData.username && formData.password;
+  const isFormValid = Boolean(formData.username.trim() && formData.password);
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      {loading ? (
-        <div className="flex justify-center items-center h-60">
+    <div className="mx-auto w-full max-w-md">
+      {isLoading ? (
+        <div className="flex h-60 items-center justify-center">
           <Loader />
         </div>
       ) : (
         <>
+          {error && (
+            <div className="mb-6 rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-center text-sm font-medium text-red-400">
+              {error}
+            </div>
+          )}
+
           <InputField
             label="Username"
             type="text"
@@ -76,12 +72,15 @@ const SignInForm: React.FC = () => {
           />
 
           <div className="mt-8">
-            <SignInButton onClick={handleSubmit} disabled={!isFormValid} />
+            <SignInButton
+              onClick={handleSubmit}
+              disabled={!isFormValid || isLoading}
+            />
           </div>
         </>
       )}
     </div>
   );
-};
+}
 
 export default SignInForm;
