@@ -1,6 +1,7 @@
-import { MapPin, Clock, Phone, Mail } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import React from "react";
 
-const Topbar = () => {
+export function Topbar() {
   return (
     <div className="fixed top-0 left-0 z-40 hidden w-full border-b border-(--white-alpha-20) bg-transparent py-2.5 text-white transition-transform duration-250 sm:block">
       <div className="container mx-auto px-4">
@@ -28,18 +29,18 @@ const Topbar = () => {
           </a>
 
           <a
-            href="mailto:debabratadan6@gmail.com"
+            href="mailto:hello@anishroy.dev"
             className="flex items-center gap-2 transition-colors hover:text-(--gold-crayola)"
           >
             <Mail className="h-4 w-4" strokeWidth={60} />
             <span className="text-(--fontSize-label-1)">
-              debabratadan6@gmail.com
+              hello@anishroy.dev
             </span>
           </a>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Topbar;

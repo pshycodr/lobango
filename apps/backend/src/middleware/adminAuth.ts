@@ -1,18 +1,35 @@
-import { HttpStatus } from "@/constants/httpStatusCodes";
-import { Context, Next } from "hono";
+import type { ORPCContext } from "@/orpc/context";
+import { ORPCError, os } from "@orpc/server";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 
-export const adminCheck = async (c: Context, next: Next) => {
-  const token = getCookie(c, "admin_token");
+export const adminAuthMiddleware = os
+  .$context<ORPCContext>()
+  .middleware(async ({ context, next }) => {
+    const token = getCookie(context.hono, context.env.ADMIN_AUTH_COOKIE_KEY);
 
-  if (!token) return c.text("Unauthorized", HttpStatus.Unauthorized);
+    if (!token) {
+      throw new ORPCError("UNAUTHORIZED", {
+        message: "Unauthorized",
+      });
+    }
 
-  try {
-    const payload = await verify(token, c.env.JWT_SECRET, "HS256");
-    c.set("admin", payload);
-    return next();
-  } catch {
-    return c.text("Invalid or expired token", HttpStatus.Unauthorized);
-  }
-};
+    try {
+      const payload = await verify(
+        token,
+        context.env.JWT_SECRET,
+        context.env.JWT_SINATURE_ALGO
+      );
+
+      return next({
+        context: {
+          ...context,
+          admin: payload,
+        },
+      });
+    } catch {
+      throw new ORPCError("UNAUTHORIZED", {
+        message: "Invalid or expired token",
+      });
+    }
+  });

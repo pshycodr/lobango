@@ -1,8 +1,8 @@
-import DeliveryAddress from "@/components/Checkout/DeliveryAddress";
-import PaymentMethod from "@/components/Checkout/PaymentMethod";
-import { Address } from "@lobango/contracts/address";
+import { DeliveryAddress } from "@/components/Checkout/DeliveryAddress";
+import { PaymentMethod } from "@/components/Checkout/PaymentMethod";
+import type { Address } from "@/types/address";
 
-interface CheckoutSidebarProps {
+export interface CheckoutSidebarProps {
   selectedAddress: Address | undefined;
   onChangeAddress: () => void;
   onChangePayment: () => void;
@@ -14,7 +14,7 @@ export function CheckoutSidebar({
   onChangePayment,
 }: CheckoutSidebarProps) {
   return (
-    <div className="lg:col-span-1 space-y-6">
+    <div className="space-y-6 lg:col-span-1">
       <DeliveryAddress
         address={selectedAddress}
         onChangeAddress={onChangeAddress}

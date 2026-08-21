@@ -1,6 +1,8 @@
 "use client";
-import Image from "next/image";
+
 import { Forum } from "next/font/google";
+import Image from "next/image";
+import React from "react";
 
 const forum = Forum({
   subsets: ["latin"],
@@ -8,7 +10,7 @@ const forum = Forum({
   variable: "--font-forum",
 });
 
-const TestimonialSection = () => {
+export function TestimonialSection() {
   return (
     <section
       className="relative bg-cover bg-center bg-no-repeat py-(--section-space) pb-[340px] text-center"
@@ -48,6 +50,6 @@ const TestimonialSection = () => {
       </div>
     </section>
   );
-};
+}
 
 export default TestimonialSection;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface LocationState {
   isWithinRange: boolean | null; // null = loading/unknown, true = within range, false = outside range
@@ -8,7 +8,7 @@ interface LocationState {
   isLoading: boolean;
 }
 
-interface UseLocationCheckOptions {
+export interface UseLocationCheckOptions {
   maxDistanceKm?: number;
   enableHighAccuracy?: boolean;
   timeout?: number;
@@ -22,7 +22,7 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
     enableHighAccuracy = true,
     timeout = 10000,
     maximumAge = 300000, // 5 minutes
-    autoCheck = true,
+    autoCheck = false,
   } = options;
 
   // Shop location coordinates
@@ -39,37 +39,35 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
     isLoading: false,
   });
 
-  // Calculate distance between two coordinates using Haversine formula
-  const calculateDistance = (
-    lat1: number,
-    lng1: number,
-    lat2: number,
-    lng2: number,
-  ): number => {
-    const R = 6371; // Earth's radius in kbudnilometers
-    const dLat = toRadians(lat2 - lat1);
-    const dLng = toRadians(lng2 - lng1);
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-
-    return Math.round(distance * 100) / 100; // Round to 2 decimal places
-  };
-
   const toRadians = (degrees: number): number => {
     return degrees * (Math.PI / 180);
   };
 
+  // Calculate distance between two coordinates using Haversine formula
+  const calculateDistance = useCallback(
+    (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+      const R = 6371; // Earth's radius in kilometers
+      const dLat = toRadians(lat2 - lat1);
+      const dLng = toRadians(lng2 - lng1);
+
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRadians(lat1)) *
+          Math.cos(toRadians(lat2)) *
+          Math.sin(dLng / 2) *
+          Math.sin(dLng / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c;
+
+      return Math.round(distance * 100) / 100; // Round to 2 decimal places
+    },
+    []
+  );
+
   // Get user's current location
-  const checkUserLocation = async (): Promise<void> => {
-    return new Promise((resolve, reject) => {
+  const checkUserLocation = useCallback(async (): Promise<void> => {
+    return new Promise((resolve) => {
       setLocationState((prev) => ({
         ...prev,
         isLoading: true,
@@ -82,13 +80,13 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
           ...prev,
           isLoading: false,
           error,
-          isWithinRange: false,
+          isWithinRange: null, // Keep null so manual address entry is unblocked
         }));
-        reject(new Error(error));
+        resolve();
         return;
       }
 
-      const options: PositionOptions = {
+      const positionOptions: PositionOptions = {
         enableHighAccuracy,
         timeout,
         maximumAge,
@@ -103,7 +101,7 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
             userLat,
             userLng,
             SHOP_LOCATION.lat,
-            SHOP_LOCATION.lng,
+            SHOP_LOCATION.lng
           );
 
           const isWithinRange = distance <= maxDistanceKm;
@@ -124,10 +122,10 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
           switch (error.code) {
             case error.PERMISSION_DENIED:
               errorMessage =
-                "Location access denied. Please enable location services and refresh the page.";
+                "Location access denied. You can enter address manually.";
               break;
             case error.POSITION_UNAVAILABLE:
-              errorMessage = "Location information is unavailable.";
+              errorMessage = "Location information unavailable.";
               break;
             case error.TIMEOUT:
               errorMessage = "Location request timed out.";
@@ -138,18 +136,26 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
             ...prev,
             isLoading: false,
             error: errorMessage,
-            isWithinRange: false,
+            isWithinRange: null, // Do not block checkout on permission error
           }));
 
-          reject(new Error(errorMessage));
+          resolve();
         },
-        options,
+        positionOptions
       );
     });
-  };
+  }, [
+    calculateDistance,
+    enableHighAccuracy,
+    maxDistanceKm,
+    maximumAge,
+    timeout,
+    SHOP_LOCATION.lat,
+    SHOP_LOCATION.lng,
+  ]);
 
   // Reset location check
-  const resetLocationCheck = () => {
+  const resetLocationCheck = useCallback(() => {
     setLocationState({
       isWithinRange: null,
       userLocation: null,
@@ -157,19 +163,19 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
       error: null,
       isLoading: false,
     });
-  };
+  }, []);
 
   // Force recheck location
-  const recheckLocation = async () => {
+  const recheckLocation = useCallback(async () => {
     await checkUserLocation();
-  };
+  }, [checkUserLocation]);
 
   // Auto-check location on mount if enabled
   useEffect(() => {
     if (autoCheck) {
       checkUserLocation().catch(console.error);
     }
-  }, [autoCheck]);
+  }, [autoCheck, checkUserLocation]);
 
   return {
     // Location state
@@ -184,8 +190,8 @@ export function useLocationCheck(options: UseLocationCheckOptions = {}) {
     recheckLocation,
     resetLocationCheck,
 
-    // Utils
-    canCheckout: locationState.isWithinRange === true,
+    // Utils - optional check: allow checkout unless confirmed outside delivery range
+    canCheckout: locationState.isWithinRange !== false,
     shouldBlockCheckout: locationState.isWithinRange === false,
     maxDistance: maxDistanceKm,
     shopLocation: SHOP_LOCATION,

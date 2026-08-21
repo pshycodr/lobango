@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface LocationPermissionState {
   hasPermission: boolean;
@@ -16,11 +16,6 @@ export function useLocationPermission() {
     error: null,
     coordinates: null,
   });
-
-  // Check initial permission status
-  useEffect(() => {
-    checkLocationPermission();
-  }, []);
 
   const checkLocationPermission = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
@@ -51,7 +46,7 @@ export function useLocationPermission() {
                 },
               }));
             },
-            (error) => {
+            () => {
               setState((prev) => ({
                 ...prev,
                 hasPermission: false,
@@ -59,7 +54,7 @@ export function useLocationPermission() {
                 isLoading: false,
                 error: "Failed to get location",
               }));
-            },
+            }
           );
         } else if (permission.state === "denied") {
           setState((prev) => ({
@@ -98,6 +93,11 @@ export function useLocationPermission() {
     }
   }, []);
 
+  // Check initial permission status
+  useEffect(() => {
+    checkLocationPermission();
+  }, [checkLocationPermission]);
+
   const handlePermissionGranted = useCallback(() => {
     // Get current position
     navigator.geolocation.getCurrentPosition(
@@ -113,14 +113,14 @@ export function useLocationPermission() {
           },
         }));
       },
-      (error) => {
+      () => {
         setState((prev) => ({
           ...prev,
           hasPermission: false,
           isModalOpen: true,
           error: "Failed to get location",
         }));
-      },
+      }
     );
   }, []);
 

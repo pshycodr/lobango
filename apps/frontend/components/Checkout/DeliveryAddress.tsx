@@ -1,21 +1,12 @@
-import { MapPin, ChevronRight } from "lucide-react";
+import type { Address } from "@/types/address";
+import { ChevronRight, MapPin } from "lucide-react";
 
-interface Address {
-  id: string;
-  label: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  type: "home" | "work" | "other";
-}
-
-interface DeliveryAddressProps {
+export interface DeliveryAddressProps {
   address?: Address;
   onChangeAddress?: () => void;
 }
 
-export default function DeliveryAddress({
+export function DeliveryAddress({
   address,
   onChangeAddress,
 }: DeliveryAddressProps) {
@@ -36,12 +27,10 @@ export default function DeliveryAddress({
           address ? "Change delivery address" : "Add delivery address"
         }
       >
-        {/* Icon with better touch target */}
         <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-(--gold-crayola) bg-(--smoky-black-1) text-(--gold-crayola) active:bg-(--smoky-black-2)">
           <MapPin size={18} />
         </div>
 
-        {/* Address content with better mobile spacing */}
         <div className="min-w-0 flex-1">
           {address ? (
             <>
@@ -64,7 +53,6 @@ export default function DeliveryAddress({
           )}
         </div>
 
-        {/* Chevron indicator */}
         <ChevronRight
           size={16}
           className="shrink-0 text-(--quick-silver) active:text-(--gold-crayola)"

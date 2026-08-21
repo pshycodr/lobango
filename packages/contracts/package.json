@@ -5,19 +5,20 @@
     "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./address": "./src/address.ts",
-    "./bookings": "./src/bookings.ts",
+    "./bookings": "./src/booking/index.ts",
     "./menu": "./src/menu.ts",
-    "./order": "./src/order.ts",
-    "./permissions": "./src/permissions.ts",
-    "./admin": "./src/admin/index.ts"
+    "./order": "./src/order/index.ts",
+    "./admin": "./src/admin/index.ts",
+    "./enums": "./src/enums/index.ts",
+    "./permissions/*": "./src/permissions/*/index.ts",
+    "./payments/*": "./src/payments/*/index.ts"
   },
   "dependencies": {
     "zod": "^4.4.3",
     "lucide-react": "^1.25.0"
   },
   "devDependencies": {
-    "@lobango/typescript-config": "workspace:*"
+    "@lobango/typescript-config": "workspace:*",
+    "@lobango/eslint-config": "workspace:*"
   }
 }

@@ -1,10 +1,10 @@
 import { ArrowLeft } from "lucide-react";
 
-interface CheckoutHeaderProps {
+export interface CheckoutHeaderProps {
   onBack?: () => void;
 }
 
-export default function CheckoutHeader({ onBack }: CheckoutHeaderProps) {
+export function CheckoutHeader({ onBack }: CheckoutHeaderProps) {
   return (
     <div className="flex items-center justify-center border-b border-(--eerie-black-2) bg-(--smoky-black-1) px-6 py-8">
       <button

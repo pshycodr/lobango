@@ -2,9 +2,19 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "lobango-backend",
   "main": "src/index.ts",
-  "compatibility_date": "2026-08-09",
+  "compatibility_date": "2026-07-21",
   "compatibility_flags": ["nodejs_compat"],
-  "vars": {},
+  "vars": {
+    "ORDER_CACHE_TTL": 1200, // seconds -> 20 mins
+    "BOOKING_CACHE_TTL": 1200, // seconds -> 20 mins
+    "ORDER_STATUS_CACHE_TTL": 1200, // seconds -> 20 mins
+    "ADMIN_ORDERS_CACHE_TTL": 60,
+    "ADMIN_BOOKING_CACHE_TTL": 60,
+
+    "ADMIN_AUTH_TOKEN_TTL": 604800, // seconds -> 7 days
+    "ADMIN_AUTH_COOKIE_KEY": "admin_auth",
+    "JWT_SINATURE_ALGO": "HS256"
+  },
   "secrets": {
     "required": [
       "BREVO_SMTP_API_KEY",

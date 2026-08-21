@@ -1,23 +1,23 @@
 import { usePermissionsStore } from "@/store/usePermissionsStore";
 import { useState } from "react";
 
-interface PlaceOrderButtonProps {
+export interface PlaceOrderButtonProps {
   onPlaceOrder: () => void;
   disabled?: boolean;
   loading?: boolean;
   total: number;
 }
 
-export default function PlaceOrderButton({
+export function PlaceOrderButton({
   onPlaceOrder,
   disabled = false,
   loading = false,
   total,
 }: PlaceOrderButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
-  const { newOrders } = usePermissionsStore();
+  const newOrders = usePermissionsStore((state) => state.newOrders);
 
-  const isButtonDisabled = disabled || loading || !newOrders;
+  const isButtonDisabled = disabled || loading || newOrders === false;
 
   const handleClick = () => {
     if (!isButtonDisabled) {

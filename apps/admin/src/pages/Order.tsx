@@ -1,9 +1,17 @@
+import LoadingSpinner from "@/components/Common/Loader";
+import InfoCard from "@/components/Order/InfoCard";
+import MapLocation from "@/components/Order/MapLocation";
+import OrderItemCard from "@/components/Order/OrderItemCard";
+import StatusBadge from "@/components/Order/OrderStatusBadge";
+import StatusUpdateModal from "@/components/Order/StatusUpdateModal";
+import { useAdminOrderDetails } from "@/hooks/useAdminOrderDetails";
+import { Route } from "@/routes/__root";
+import type { OrderStatus } from "@lobango/contracts/enums";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Clock,
   CreditCard,
-  Edit3,
   IndianRupee,
   MapPin,
   Package,
@@ -11,37 +19,21 @@ import {
   ShoppingBag,
   User,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import InfoCard from "../components/Order/InfoCard";
-import OrderItemCard from "../components/Order/OrderItemCard";
-import StatusBadge from "../components/Order/OrderStatusBadge";
-import StatusUpdateModal from "../components/Order/StatusUpdateModal";
-import api from "../lib/axios";
-import { Route } from "../routes/__root";
-import { useOrdersStore } from "../store/zustand/useOrdersStore";
-import type { Order } from "../types/orders";
-import MapLocation from "../components/Order/MapLocation";
+import { useState } from "react";
 
 interface OrderSearchParams {
   orderId?: string;
 }
 
-const AdminOrderDetails: React.FC = () => {
+export function AdminOrderDetails() {
   const searchParams = useSearch({ from: Route.id }) as OrderSearchParams;
   const orderId = searchParams.orderId;
 
-  const getOrderById = useOrdersStore((state) => state.getOrderById);
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { order, items, isLoading, isUpdating, updateStatus } =
+    useAdminOrderDetails({ orderId });
+
   const [showStatusModal, setShowStatusModal] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (orderId) {
-      const fetched = getOrderById(orderId);
-      setOrder(fetched || null);
-    }
-  }, [orderId, getOrderById]);
 
   const formatDateTime = (
     dateString: string
@@ -67,49 +59,15 @@ const AdminOrderDetails: React.FC = () => {
     }
   };
 
-  const handleStatusUpdate = async (newStatus: Order["status"]) => {
-    if (!order || !orderId) return;
-    setLoading(true);
-
-    try {
-      const payload = { status: newStatus, orderId };
-
-      const res = await api.post("/api/v1/admin/order/update-status", payload);
-      const data = res.data;
-
-      if (!data.success) {
-        throw new Error(data.message || "Failed to update status");
-      }
-
-      // Update local state
-      setOrder((prev) => (prev ? { ...prev, status: newStatus } : null));
-
-      // Update Zustand store
-      const ordersStore = useOrdersStore.getState();
-      ordersStore.setOrders(
-        ordersStore.orders.map((o) =>
-          o.orderId === orderId ? { ...o, status: newStatus } : o
-        )
-      );
-
-      setShowStatusModal(false);
-    } catch (error) {
-      console.error("Failed to update status:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Try again.";
-      alert(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+  const handleStatusUpdate = async (newStatus: OrderStatus) => {
+    await updateStatus(newStatus);
+    setShowStatusModal(false);
   };
 
   const handleBack = () => {
     navigate({ to: "/" });
   };
 
-  // Loading state
   if (!orderId) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
@@ -120,7 +78,14 @@ const AdminOrderDetails: React.FC = () => {
     );
   }
 
-  // Order not found
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   if (!order) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
@@ -141,12 +106,17 @@ const AdminOrderDetails: React.FC = () => {
     );
   }
 
-  const subtotal =
-    order.items?.reduce((sum, item) => sum + item.price * item.quantity, 0) ||
-    0;
-  // const taxes = subtotal * 0.08;
-  // const deliveryFee = 5.0;
+  const subtotal = items.reduce((sum, item) => {
+    const price =
+      typeof item.price === "number" ? item.price : parseFloat(item.price) || 0;
+    const quantity =
+      typeof item.quantity === "number"
+        ? item.quantity
+        : parseInt(String(item.quantity), 10) || 1;
+    return sum + price * quantity;
+  }, 0);
 
+  const total = parseFloat(order.totalAmount) || subtotal;
   const { date, time } = formatDateTime(order.createdAt);
 
   return (
@@ -190,7 +160,7 @@ const AdminOrderDetails: React.FC = () => {
               status={order.status}
               size="lg"
               onClick={() => setShowStatusModal(true)}
-              disabled={loading}
+              disabled={isUpdating}
             />
           </div>
         </div>
@@ -203,13 +173,16 @@ const AdminOrderDetails: React.FC = () => {
             content={
               <div className="space-y-3">
                 <div className="text-lg font-medium text-(--white)">
-                  {order.name || "N/A"}
+                  {order.customerName || "N/A"}
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone size={14} className="text-(--gold-crayola)" />
-                  <span className="text-(--quick-silver)">
-                    {order.phone || "N/A"}
-                  </span>
+                  <a
+                    href={`tel:+${order.customerPhone}`}
+                    className="text-(--quick-silver) hover:underline"
+                  >
+                    {order.customerPhone || "N/A"}
+                  </a>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPin
@@ -217,7 +190,7 @@ const AdminOrderDetails: React.FC = () => {
                     className="mt-0.5 shrink-0 text-(--gold-crayola)"
                   />
                   <span className="flex-1 leading-relaxed text-(--quick-silver)">
-                    {order.address || "No address provided"}
+                    {order.customerAddress || "No address provided"}
                   </span>
                 </div>
               </div>
@@ -250,7 +223,7 @@ const AdminOrderDetails: React.FC = () => {
                 <div className="flex items-center justify-between border-t border-(--eerie-black-4) pt-2">
                   <span className="text-(--quick-silver)">Total:</span>
                   <span className="text-lg font-semibold text-(--gold-crayola)">
-                    ₹{order.total?.toFixed(2) || "0.00"}
+                    ₹{total.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -263,21 +236,8 @@ const AdminOrderDetails: React.FC = () => {
           <MapLocation
             latitude={order.latitude}
             longitude={order.longitude}
-            address={order.address}
-            customerName={order.name}
-          />
-        )}
-
-        {/* Special Instructions */}
-        {order.notes && (
-          <InfoCard
-            icon={<Edit3 size={20} />}
-            title="Special Instructions"
-            content={
-              <div className="rounded-lg border border-(--eerie-black-4) bg-(--eerie-black-3) p-4 text-(--white)">
-                {order.notes}
-              </div>
-            }
+            address={order.customerAddress}
+            customerName={order.customerName}
           />
         )}
 
@@ -292,17 +252,16 @@ const AdminOrderDetails: React.FC = () => {
                 Order Items
               </h2>
               <p className="text-sm text-(--quick-silver)">
-                {order.items?.length || 0} item
-                {(order.items?.length || 0) !== 1 ? "s" : ""}
+                {items.length} item{items.length !== 1 ? "s" : ""}
               </p>
             </div>
           </div>
 
           <div className="p-6">
-            {order.items && order.items.length > 0 ? (
+            {items.length > 0 ? (
               <div className="space-y-4">
-                {order.items.map((item, index) => (
-                  <OrderItemCard key={item.item_id || index} item={item} />
+                {items.map((item) => (
+                  <OrderItemCard key={item.id} item={item} />
                 ))}
               </div>
             ) : (
@@ -331,19 +290,11 @@ const AdminOrderDetails: React.FC = () => {
                 <span>Subtotal</span>
                 <span>₹{subtotal.toFixed(2)}</span>
               </div>
-              {/* <div className="flex justify-between items-center text-(--quick-silver)">
-                <span>Taxes (8%)</span>
-                <span>₹{taxes.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between items-center text-(--quick-silver)">
-                <span>Delivery Fee</span>
-                <span>₹{deliveryFee.toFixed(2)}</span>
-              </div> */}
               <div className="border-t border-(--eerie-black-4) pt-4">
                 <div className="flex items-center justify-between text-xl font-bold">
                   <span className="text-(--white)">Total</span>
                   <span className="text-(--gold-crayola)">
-                    ₹{order.total?.toFixed(2) || "0.00"}
+                    ₹{total.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -363,6 +314,6 @@ const AdminOrderDetails: React.FC = () => {
       )}
     </div>
   );
-};
+}
 
 export default AdminOrderDetails;

@@ -1,8 +1,8 @@
 "use client";
 
+import { Forum } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { Forum } from "next/font/google";
 
 const forum = Forum({
   subsets: ["latin"],
@@ -10,7 +10,7 @@ const forum = Forum({
   variable: "--font-forum",
 });
 
-const ServiceSection = () => {
+export function ServiceSection() {
   const services = [
     {
       image: "/assets/images/service-1.jpg",
@@ -34,7 +34,7 @@ const ServiceSection = () => {
 
   return (
     <section
-      className="relative z-10 overflow-hidden bg-(--smoky-black-2) p-5 pt-10 text-center sm:p-[70px]"
+      className="relative z-10 overflow-hidden bg-(--smoky-black-2) p-5 pt-10 text-center sm:p-17.5"
       aria-label="service"
     >
       <div className="container mx-auto px-4">
@@ -127,6 +127,6 @@ const ServiceSection = () => {
       </div>
     </section>
   );
-};
+}
 
 export default ServiceSection;

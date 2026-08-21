@@ -1,26 +1,24 @@
-import { X, Check } from "lucide-react";
-import { useState, useEffect } from "react";
-import type { Booking, StatusOption } from "../../types/bookings";
+import type { StatusOption } from "@/types/bookings";
+import type { Booking } from "@lobango/contracts/bookings";
+import type { BookingStatus } from "@lobango/contracts/enums";
+import { Check, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
-interface StatusChangeModalProps {
+export interface StatusChangeModalProps {
   isOpen: boolean;
   onClose: () => void;
   booking: Booking | null;
-  onStatusChange: (
-    bookingId: string,
-    newStatus: "pending" | "accepted" | "rejected"
-  ) => void;
+  onStatusChange: (bookingId: string, newStatus: BookingStatus) => void;
 }
 
-const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
+export function StatusChangeModal({
   isOpen,
   onClose,
   booking,
   onStatusChange,
-}) => {
-  const [selectedStatus, setSelectedStatus] = useState<
-    "pending" | "accepted" | "rejected"
-  >("pending");
+}: StatusChangeModalProps) {
+  const [selectedStatus, setSelectedStatus] =
+    useState<BookingStatus>("pending");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -35,9 +33,7 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
 
     setIsLoading(true);
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      onStatusChange(booking.booking_id, selectedStatus);
+      await onStatusChange(booking.bookingId, selectedStatus);
       onClose();
     } catch (error) {
       console.error("Error updating status:", error);
@@ -49,6 +45,8 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
   const statusOptions: StatusOption[] = [
     { label: "Pending", value: "pending" },
     { label: "Accepted", value: "accepted" },
+    { label: "Completed", value: "completed" },
+    { label: "Cancelled", value: "cancelled" },
     { label: "Rejected", value: "rejected" },
   ];
 
@@ -74,10 +72,10 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
         {/* Booking Info */}
         <div className="mb-6 rounded-lg bg-(--eerie-black-2) p-4">
           <div className="mb-2 font-medium text-(--white)">
-            #{booking.booking_id}
+            #{booking.bookingId}
           </div>
           <div className="mb-1 text-sm text-(--quick-silver)">
-            {booking.customer_name}
+            {booking.customerName}
           </div>
           <div className="text-sm text-(--quick-silver)">
             {new Date(booking.date).toLocaleDateString()} at {booking.time}
@@ -102,9 +100,7 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
                     value={option.value}
                     checked={selectedStatus === option.value}
                     onChange={(e) =>
-                      setSelectedStatus(
-                        e.target.value as "pending" | "accepted" | "rejected"
-                      )
+                      setSelectedStatus(e.target.value as BookingStatus)
                     }
                     className="sr-only"
                     disabled={isLoading}
@@ -141,7 +137,6 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
             <button
               type="submit"
               disabled={isLoading || selectedStatus === booking.status}
-              onSubmit={handleSubmit}
               className="flex-1 rounded-lg bg-(--gold-crayola) px-4 py-2 font-medium text-(--smoky-black-1) transition-colors hover:bg-(--gold-crayola)/90 disabled:opacity-50"
             >
               {isLoading ? "Updating..." : "Update Status"}
@@ -151,6 +146,6 @@ const StatusChangeModal: React.FC<StatusChangeModalProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default StatusChangeModal;

@@ -1,32 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Mail } from "lucide-react";
+import React, { useState } from "react";
 
-const FooterSection = () => {
+export function FooterSection() {
   const [email, setEmail] = useState("");
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Subscribed with email:", email);
     setEmail("");
   };
 
   const footerLinks1 = [
     { label: "Home", href: "/" },
     { label: "Menus", href: "/menu" },
-    // { label: 'About Us', href: '/about' },
-    // { label: 'Our Chefs', href: '/chefs' },
-    // { label: 'Contact', href: '/contact' },
   ];
 
   const footerLinks2 = [
     { label: "Facebook", href: "https://www.facebook.com/share/1Bg5DX8X8R/" },
-    // { label: 'Instagram', href: 'https://instagram.com' },
-    // { label: 'Twitter', href: 'https://twitter.com' },
-    // { label: 'Youtube', href: 'https://youtube.com' },
     { label: "Google Map", href: "https://maps.app.goo.gl/a5KSt8Dzzffy7Kd66" },
   ];
 
@@ -36,7 +29,7 @@ const FooterSection = () => {
       style={{ backgroundImage: "url('/assets/images/footer-bg.jpg')" }}
     >
       <div className="container mx-auto px-4">
-        <div className="mb-[70px] grid gap-10 lg:grid-cols-[0.45fr_1fr_0.45fr] lg:items-center">
+        <div className="mb-17.5 grid gap-10 lg:grid-cols-[0.45fr_1fr_0.45fr] lg:items-center">
           {/* Footer Brand */}
           <div className="relative bg-(--smoky-black-1) bg-[url('/assets/images/footer-form-bg.png')] bg-top bg-repeat px-10 py-12 lg:order-1 lg:px-15 lg:py-25">
             <div className="absolute top-0 left-0 h-full w-4 bg-[url('/assets/images/footer-form-pattern.svg')]"></div>
@@ -57,17 +50,17 @@ const FooterSection = () => {
             </address>
 
             <a
-              href="mailto: lobangorestaurant@gmail.com"
+              href="mailto:lobangorestaurant@gmail.com"
               className="my-1.5 block leading-(--lineHeight-3) text-(--quick-silver) transition-colors hover:text-(--gold-crayola)"
             >
               lobangorestaurant@gmail.com
             </a>
 
             <a
-              href="tel:+916296832453"
+              href="tel:+911234567890"
               className="my-1.5 block leading-(--lineHeight-3) text-(--quick-silver) transition-colors hover:text-(--gold-crayola)"
             >
-              Booking Request : +91 6296832453
+              Booking Request : +91 1234567890
             </a>
 
             <p className="mb-10 leading-(--lineHeight-3) text-(--quick-silver)">
@@ -170,6 +163,6 @@ const FooterSection = () => {
       </div>
     </footer>
   );
-};
+}
 
 export default FooterSection;

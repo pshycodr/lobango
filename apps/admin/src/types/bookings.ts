@@ -1,20 +1,8 @@
-export interface Booking {
-  id: number;
-  booking_id: string;
-  customer_name: string;
-  customer_phone: string;
-  customer_email: string;
-  date: string;
-  time: string;
-  number_of_people: number;
-  occasion?: string;
-  status: "pending" | "accepted" | "rejected";
-  created_at: string;
-}
+import type { BookingStatus } from "@lobango/contracts/enums";
 
 export interface StatusOption {
   label: string;
-  value: "pending" | "accepted" | "rejected";
+  value: BookingStatus;
 }
 
 export interface FilterOption {

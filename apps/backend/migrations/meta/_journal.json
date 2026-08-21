@@ -8,6 +8,27 @@
       "when": 1785916210580,
       "tag": "0000_fat_infant_terrible",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1786257331026,
+      "tag": "0001_small_vermin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786264711031,
+      "tag": "0002_dazzling_mad_thinker",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1787217283611,
+      "tag": "0003_flashy_psynapse",
+      "breakpoints": true
     }
   ]
 }

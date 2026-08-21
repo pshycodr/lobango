@@ -1,28 +1,13 @@
+import type { GetAllOrder } from "@lobango/contracts/order";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { OrderItem } from "../../types/orders";
 
-type Order = {
-  orderId: string;
-  name: string;
-  phone: string;
-  address: string;
-  longitude: string;
-  latitude: string;
-  total: number;
-  paymentMethod: string;
-  paymentStatus: string;
-  status: string;
-  createdAt: string;
-  items: OrderItem[];
-};
-
-type OrdersState = {
-  orders: Order[];
-  setOrders: (orders: Order[]) => void;
+export interface OrdersState {
+  orders: GetAllOrder[];
+  setOrders: (orders: GetAllOrder[]) => void;
   clearOrders: () => void;
-  getOrderById: (id: string) => Order | undefined;
-};
+  getOrderById: (id: string) => GetAllOrder | undefined;
+}
 
 export const useOrdersStore = create(
   persist<OrdersState>(
@@ -34,6 +19,6 @@ export const useOrdersStore = create(
     }),
     {
       name: "orders-storage",
-    },
-  ),
+    }
+  )
 );

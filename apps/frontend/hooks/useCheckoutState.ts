@@ -1,55 +1,64 @@
-import { Address } from "@lobango/contracts/address";
-import { useEffect, useState } from "react";
+import type { Address } from "@/types/address";
+import type { LoadingState, PaymentData } from "@/types/checkout";
+import { useCallback, useState, useSyncExternalStore } from "react";
 
-interface PaymentData {
-  amount: number;
-  paymentId?: string;
-  orderId?: string;
-  customerName?: string;
+export interface UseCheckoutStateReturn {
+  loadingState: LoadingState;
+  setLoadingState: (state: LoadingState) => void;
+  isClient: boolean;
+  selectedAddress: Address | undefined;
+  setSelectedAddress: (address: Address | undefined) => void;
+  handleSelectAddress: (address: Address) => void;
+  isAddressModalOpen: boolean;
+  setIsAddressModalOpen: (open: boolean) => void;
+  showPaymentConfirmation: boolean;
+  setShowPaymentConfirmation: (show: boolean) => void;
+  paymentData: PaymentData | undefined;
+  setPaymentData: (data: PaymentData | undefined) => void;
 }
 
-interface LoadingState {
-  type: "page" | "payment" | "verification" | "none";
-  message: string;
-}
+const emptySubscribe = () => () => {};
 
-export function useCheckoutState() {
+export function useCheckoutState(): UseCheckoutStateReturn {
   const [loadingState, setLoadingState] = useState<LoadingState>({
     type: "page",
     message: "Loading checkout...",
   });
-  const [isClient, setIsClient] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(
-    undefined,
+
+  const isClient = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
   );
+
+  const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(
+    () => {
+      if (typeof window === "undefined") return undefined;
+      try {
+        const savedAddress = localStorage.getItem("selected-address");
+        return savedAddress ? (JSON.parse(savedAddress) as Address) : undefined;
+      } catch {
+        return undefined;
+      }
+    }
+  );
+
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
   const [paymentData, setPaymentData] = useState<PaymentData | undefined>(
-    undefined,
+    undefined
   );
 
-  // Load saved address on client mount
-  useEffect(() => {
-    setIsClient(true);
-
+  const handleSelectAddress = useCallback((address: Address) => {
+    setSelectedAddress(address);
     if (typeof window !== "undefined") {
-      const savedAddress = localStorage.getItem("selected-address");
-      if (savedAddress) {
-        try {
-          setSelectedAddress(JSON.parse(savedAddress));
-        } catch (error) {
-          console.error("Failed to parse saved address:", error);
-        }
+      try {
+        localStorage.setItem("selected-address", JSON.stringify(address));
+      } catch {
+        // ignore
       }
     }
   }, []);
-
-  const handleSelectAddress = (address: Address) => {
-    setSelectedAddress(address);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("selected-address", JSON.stringify(address));
-    }
-  };
 
   return {
     loadingState,

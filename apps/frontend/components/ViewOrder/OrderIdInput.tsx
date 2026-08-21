@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { Playfair_Display } from "next/font/google";
+import React, { useState } from "react";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
-interface OrderIdInputProps {
+export interface OrderIdInputProps {
   onSubmit: (orderId: string) => void;
 }
 
-export default function OrderIdInput({ onSubmit }: OrderIdInputProps) {
+export function OrderIdInput({ onSubmit }: OrderIdInputProps) {
   const [inputValue, setInputValue] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 

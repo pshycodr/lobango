@@ -1,118 +1,57 @@
+import BookingCard from "@/components/Bookings/BookingCard";
+import FilterDropdown from "@/components/Bookings/FilterDropdown";
+import StatusChangeModal from "@/components/Bookings/StatusModal";
+import LoadingSpinner from "@/components/Common/Loader";
+import { useAdminBookings } from "@/hooks/useAdminBookings";
+import type { FilterOption } from "@/types/bookings";
+import type { Booking } from "@lobango/contracts/bookings";
+import type { BookingStatus } from "@lobango/contracts/enums";
 import { Filter, Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import BookingCard from "../components/Bookings/BookingCard";
-import FilterDropdown from "../components/Bookings/FilterDropdown";
-import StatusChangeModal from "../components/Bookings/StatusModal";
-import type { Booking, FilterOption, StatusCounts } from "../types/bookings";
-import api from "../lib/axios";
-import LoadingSpinner from "../components/Common/Loader";
+import React, { useState } from "react";
 
-const BookingsAdminPage: React.FC = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [filteredBookings, setFilteredBookings] = useState<Booking[]>([]);
-  const [statusFilter, setStatusFilter] = useState<string>("");
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isStatusModalOpen, setIsStatusModalOpen] = useState<boolean>(false);
+export function BookingsAdminPage() {
+  const {
+    bookings,
+    filteredBookings,
+    statusFilter,
+    searchTerm,
+    isLoading,
+    statusCounts,
+    setStatusFilter,
+    setSearchTerm,
+    handleStatusChange,
+  } = useAdminBookings();
+
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
-  useEffect(() => {
-    const fetchBookings = async (): Promise<void> => {
-      try {
-        setLoading(true);
-        const response = await api.get("/api/v1/admin/bookings");
-        const data = await response.data;
-        console.log();
-
-        setBookings(data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchBookings();
-  }, []);
-
-  useEffect(() => {
-    let filtered = bookings;
-
-    if (statusFilter) {
-      filtered = filtered.filter((booking) => booking.status === statusFilter);
-    }
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (booking) =>
-          booking.customer_name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          booking.booking_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.customer_email
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredBookings(filtered);
-  }, [bookings, statusFilter, searchTerm]);
-
   const handleCardClick = (booking: Booking): void => {
-    console.log("Clicked booking:", booking);
-    // Navigate to booking details page or open modal
-  };
-
-  const handleStatusClick = (booking: Booking, e: React.MouseEvent): void => {
-    e.stopPropagation(); // Prevent card click
     setSelectedBooking(booking);
     setIsStatusModalOpen(true);
   };
 
-  const handleStatusChange = async (
+  const handleStatusClick = (booking: Booking, e: React.MouseEvent): void => {
+    e.stopPropagation();
+    setSelectedBooking(booking);
+    setIsStatusModalOpen(true);
+  };
+
+  const handleUpdateBookingStatus = async (
     bookingId: string,
-    newStatus: "pending" | "accepted" | "rejected"
+    newStatus: BookingStatus
   ) => {
-    try {
-      console.log(bookingId);
-      const res = await api.post("/api/v1/admin/booking/update-status", {
-        booking_id: bookingId,
-        status: newStatus,
-      });
-
-      if (!res.data.success) throw new Error();
-
-      setBookings((prevBookings) =>
-        prevBookings.map((booking) =>
-          booking.booking_id === bookingId
-            ? { ...booking, status: newStatus }
-            : booking
-        )
-      );
-    } catch (error) {
-      console.log(error);
-      alert("faild to update status. Try again later");
-    }
+    await handleStatusChange(bookingId, newStatus);
   };
-
-  const getStatusCounts = (): StatusCounts => {
-    return {
-      total: bookings.length,
-      pending: bookings.filter((b) => b.status === "pending").length,
-      accepted: bookings.filter((b) => b.status === "accepted").length,
-      rejected: bookings.filter((b) => b.status === "rejected").length,
-    };
-  };
-
-  const statusCounts = getStatusCounts();
 
   const statusOptions: FilterOption[] = [
     { label: "Pending", value: "pending" },
     { label: "Accepted", value: "accepted" },
+    { label: "Completed", value: "completed" },
+    { label: "Cancelled", value: "cancelled" },
     { label: "Rejected", value: "rejected" },
   ];
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-(--smoky-black-1)">
         <LoadingSpinner />
@@ -232,10 +171,10 @@ const BookingsAdminPage: React.FC = () => {
         isOpen={isStatusModalOpen}
         onClose={() => setIsStatusModalOpen(false)}
         booking={selectedBooking}
-        onStatusChange={handleStatusChange}
+        onStatusChange={handleUpdateBookingStatus}
       />
     </div>
   );
-};
+}
 
 export default BookingsAdminPage;

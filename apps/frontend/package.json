@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ionic/react": "^8.8.14",
+    "@orpc/client": "^1.14.14",
+    "@orpc/server": "^1.14.14",
     "axios": "^1.18.1",
     "clsx": "^2.1.1",
     "ionicons": "^8.0.13",
@@ -23,6 +25,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.6",
+    "@lobango/backend": "workspace:",
+    "@lobango/contracts": "workspace:",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
@@ -32,7 +36,6 @@
     "eslint-config-next": "16.2.10",
     "postcss": "^8.5.19",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.2",
-    "@lobango/contracts": "workspace:"
+    "typescript": "^5.9.2"
   }
 }

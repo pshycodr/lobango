@@ -1,10 +1,11 @@
 import { usePermissionsStore } from "@/store/usePermissionsStore";
 import { Playfair_Display } from "next/font/google";
+import React from "react";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
-export const MenuHero = () => {
-  const { newOrders } = usePermissionsStore();
+export function MenuHero() {
+  const newOrders = usePermissionsStore((state) => state.newOrders);
 
   return (
     <div className="mb-16 px-4 text-center">
@@ -22,15 +23,13 @@ export const MenuHero = () => {
         <div className="h-1 w-1 rounded-full bg-(--gold-crayola) opacity-60"></div>
         <div className="h-px w-12 bg-(--gold-crayola) opacity-40"></div>
       </div>
-      {newOrders === false ? (
+      {newOrders === false && (
         <div className="flex w-full items-center justify-center">
           <p className="mt-5 flex items-center justify-center gap-3 rounded-md border-2 border-red-500 p-4 text-center text-xl font-semibold tracking-tighter text-red-500">
             Online orders are currently closed.
           </p>
         </div>
-      ) : (
-        ""
       )}
     </div>
   );
-};
+}

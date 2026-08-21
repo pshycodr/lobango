@@ -1,17 +1,9 @@
+import type { CartItem } from "@/types/cart";
+import { Minus, Plus, X } from "lucide-react";
 import Image from "next/image";
-import { Plus, Minus, X } from "lucide-react";
 
-interface OrderItem {
-  id: string;
-  name: string;
-  description: string;
-  quantity: number;
-  price: number;
-  image: string;
-}
-
-interface OrderSummaryProps {
-  items: OrderItem[];
+export interface OrderSummaryProps {
+  items: CartItem[];
   subtotal: number;
   deliveryFee: number;
   total: number;
@@ -19,7 +11,7 @@ interface OrderSummaryProps {
   onRemoveItem: (id: string) => void;
 }
 
-export default function OrderSummary({
+export function OrderSummary({
   items,
   subtotal,
   deliveryFee,
@@ -68,10 +60,8 @@ export default function OrderSummary({
               />
             </div>
 
-            {/* Item details - Fixed width container */}
+            {/* Item details */}
             <div className="min-w-0 flex-1 pr-4">
-              {" "}
-              {/* Added pr-4 for padding right */}
               <div className="flex items-start justify-between gap-2">
                 <h4 className="line-clamp-1 flex-1 text-sm font-semibold wrap-break-word text-(--white)">
                   {item.name}

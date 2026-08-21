@@ -1,24 +1,26 @@
 "use client";
 
+import { useOrderCalculations } from "@/hooks/useOrderCalculations";
+import { useCartStore } from "@/store/useCartStore";
+import { usePermissionsStore } from "@/store/usePermissionsStore";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { CartItemCard } from "./CartItemCard";
 import { CartSummary } from "./CartSummary";
-import { useCartStore } from "@/store/useCartStore"; // adjust path if needed
-import { useRouter } from "next/navigation";
-import { usePermissionsStore } from "@/store/usePermissionsStore";
-import { useOrderCalculations } from "@/hooks/useOrderCalculations";
 
-export const ShoppingCart: React.FC = () => {
+export function ShoppingCart() {
   const cartItems = useCartStore((state) => state.cart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
-  const { cart } = useCartStore();
+  const newOrders = usePermissionsStore((state) => state.newOrders);
+  const fetchPermissions = usePermissionsStore(
+    (state) => state.fetchPermissions
+  );
   const router = useRouter();
-  const { newOrders, fetchPermissions } = usePermissionsStore();
 
   useEffect(() => {
     fetchPermissions();
-  }, []);
+  }, [fetchPermissions]);
 
   const handleUpdateQuantity = (id: string, quantity: number) => {
     if (quantity === 0) {
@@ -28,15 +30,11 @@ export const ShoppingCart: React.FC = () => {
     }
   };
 
-  const { subtotal, deliveryFee, total } = useOrderCalculations(cart);
-
-  const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const { subtotal, deliveryFee, total } = useOrderCalculations(cartItems);
+  const itemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const handleCheckout = () => {
-    console.log("Proceeding to checkout with items:", cartItems);
-
     router.push("/checkout");
-    return null;
   };
 
   return (
@@ -56,14 +54,12 @@ export const ShoppingCart: React.FC = () => {
         </div>
       </div>
 
-      {newOrders === false ? (
+      {newOrders === false && (
         <div className="flex w-full items-center justify-center">
           <p className="mt-5 flex items-center justify-center gap-3 rounded-md border-2 border-red-500 p-4 text-center text-xl font-semibold tracking-tighter text-red-500">
             Online orders are currently closed.
           </p>
         </div>
-      ) : (
-        ""
       )}
 
       {/* Main Content */}
@@ -112,4 +108,6 @@ export const ShoppingCart: React.FC = () => {
       </div>
     </div>
   );
-};
+}
+
+export const CartView = ShoppingCart;

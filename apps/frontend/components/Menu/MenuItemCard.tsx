@@ -1,23 +1,23 @@
 import { useCartStore } from "@/store/useCartStore";
 import { usePermissionsStore } from "@/store/usePermissionsStore";
-import { MenuItem } from "@lobango/contracts/menu";
+import type { MenuItem } from "@lobango/contracts/menu";
 import Image from "next/image";
-import { useMemo } from "react";
+import React from "react";
 
-export const MenuItemCard = ({
-  item,
-  getDescription,
-}: {
+export interface MenuItemCardProps {
   item: MenuItem;
   getDescription: (item: MenuItem) => string;
-}) => {
-  const { cart, addItem, updateQuantity, removeItem } = useCartStore();
-  const { newOrders } = usePermissionsStore();
-  const cartItem = useMemo(
-    () => cart.find((i) => i.id === item.id),
-    [cart, item.id]
+}
+
+export function MenuItemCard({ item, getDescription }: MenuItemCardProps) {
+  const quantity = useCartStore(
+    (state) => state.cart.find((i) => i.id === item.id)?.quantity || 0
   );
-  const quantity = cartItem?.quantity || 0;
+  const addItem = useCartStore((state) => state.addItem);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeItem = useCartStore((state) => state.removeItem);
+
+  const newOrders = usePermissionsStore((state) => state.newOrders);
 
   const handleAdd = () => {
     addItem({
@@ -78,12 +78,12 @@ export const MenuItemCard = ({
           alt={item.name}
           fill
           className="rounded-lg object-cover"
-          sizes="112px" // 28 * 4 = 112px
+          sizes="112px"
         />
 
         {newOrders &&
           (quantity > 0 ? (
-            <div className="gap- bg-opacity-10 border-opacity-60 absolute right-0.5 -bottom-4 flex min-w-[90px] scale-90 items-center justify-between rounded-lg border border-(--gold-crayola) bg-(--gold-crayola) px-3 py-2 text-sm font-medium text-(--smoky-black-1) shadow-sm backdrop-blur-sm transition-all duration-200">
+            <div className="bg-opacity-10 border-opacity-60 absolute right-0.5 -bottom-4 flex min-w-[90px] scale-90 items-center justify-between rounded-lg border border-(--gold-crayola) bg-(--gold-crayola) px-3 py-2 text-sm font-medium text-(--smoky-black-1) shadow-sm backdrop-blur-sm transition-all duration-200">
               <button
                 className="hover:bg-opacity-20 flex h-7 w-7 items-center justify-center rounded-full transition-all duration-200 hover:bg-(--gold-crayola)"
                 onClick={handleDecrease}
@@ -113,4 +113,4 @@ export const MenuItemCard = ({
       </div>
     </div>
   );
-};
+}

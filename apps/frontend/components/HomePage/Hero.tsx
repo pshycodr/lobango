@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Forum } from "next/font/google";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
 const forum = Forum({
   subsets: ["latin"],
@@ -12,63 +12,52 @@ const forum = Forum({
   variable: "--font-forum",
 });
 
-const HeroSection = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [autoSlideInterval, setAutoSlideInterval] =
-    useState<NodeJS.Timeout | null>(null);
-  const [isOrderId, setIsOrderid] = useState<boolean>(false);
+const SLIDES = [
+  {
+    image: "/assets/images/hero-slider-1.jpg",
+    subtitle: "Tradational & Hygine",
+    title: "For the love of delicious food",
+    text: "Come with family & feel and enjoy of mouthwatering food",
+  },
+  {
+    image: "/assets/images/hero-slider-2.jpg",
+    subtitle: "delightful experience",
+    title: "Flavors Inspired by the Seasons",
+    text: "Come with family & feel the joy of mouthwatering food",
+  },
+  {
+    image: "/assets/images/hero-slider-3.jpg",
+    subtitle: "amazing & delicious",
+    title: "Where every flavor tells a story",
+    text: "Come with family & feel the joy of mouthwatering food",
+  },
+];
 
-  const slides = [
-    {
-      image: "/assets/images/hero-slider-1.jpg",
-      subtitle: "Tradational & Hygine",
-      title: "For the love of delicious food",
-      text: "Come with family & feel and enjoy of mouthwatering food",
-    },
-    {
-      image: "/assets/images/hero-slider-2.jpg",
-      subtitle: "delightful experience",
-      title: "Flavors Inspired by the Seasons",
-      text: "Come with family & feel the joy of mouthwatering food",
-    },
-    {
-      image: "/assets/images/hero-slider-3.jpg",
-      subtitle: "amazing & delicious",
-      title: "Where every flavor tells a story",
-      text: "Come with family & feel the joy of mouthwatering food",
-    },
-  ];
+export function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isOrderId] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return Boolean(localStorage.getItem("orderId"));
+  });
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev >= slides.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev >= SLIDES.length - 1 ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev <= 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const startAutoSlide = () => {
-    if (autoSlideInterval) clearInterval(autoSlideInterval);
-    const interval = setInterval(nextSlide, 7000);
-    setAutoSlideInterval(interval);
-  };
-
-  const stopAutoSlide = () => {
-    if (autoSlideInterval) {
-      clearInterval(autoSlideInterval);
-      setAutoSlideInterval(null);
-    }
+    setCurrentSlide((prev) => (prev <= 0 ? SLIDES.length - 1 : prev - 1));
   };
 
   useEffect(() => {
-    startAutoSlide();
-    return () => stopAutoSlide();
-  }, []);
+    if (isPaused) return;
 
-  useEffect(() => {
-    const orderId = localStorage.getItem("orderId");
-    setIsOrderid(Boolean(orderId));
-  }, []);
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev >= SLIDES.length - 1 ? 0 : prev + 1));
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
     <section
@@ -77,10 +66,14 @@ const HeroSection = () => {
     >
       {/* Slider Items */}
       <ul className="h-full w-full">
-        {slides.map((slide, index) => (
+        {SLIDES.map((slide, index) => (
           <li
             key={index}
-            className={`absolute top-1/2 left-1/2 z-10 grid h-full w-full -translate-x-1/2 -translate-y-1/2 place-content-center pt-25 transition-all duration-1000 ${index === currentSlide ? "visible opacity-100" : "invisible opacity-0"}`}
+            className={`absolute top-1/2 left-1/2 z-10 grid h-full w-full -translate-x-1/2 -translate-y-1/2 place-content-center pt-25 transition-all duration-1000 ${
+              index === currentSlide
+                ? "visible opacity-100"
+                : "invisible opacity-0"
+            }`}
           >
             {/* Background Image */}
             <div className="pointer-events-none absolute inset-0 -z-10 select-none">
@@ -132,15 +125,13 @@ const HeroSection = () => {
                 >
                   Order Now
                 </Link>
-                {isOrderId ? (
+                {isOrderId && (
                   <Link
                     href="/order-tracking"
                     className="mt-5 inline-block rounded-lg border-2 border-(--gold-crayola) bg-(--smoky-black-1) px-11 py-3 font-bold tracking-[3px] text-(--gold-crayola) uppercase"
                   >
                     View Order
                   </Link>
-                ) : (
-                  ""
                 )}
               </div>
             </div>
@@ -152,8 +143,8 @@ const HeroSection = () => {
       <button
         className="absolute top-1/2 left-8 z-10 hidden h-11 w-11 -translate-y-1/2 rotate-45 place-items-center border border-(--gold-crayola) text-2xl text-(--gold-crayola) transition-all duration-250 hover:bg-(--gold-crayola) hover:text-black md:grid"
         onClick={prevSlide}
-        onMouseEnter={stopAutoSlide}
-        onMouseLeave={startAutoSlide}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         aria-label="slide to previous"
       >
         <ChevronLeft className="-rotate-45" />
@@ -162,20 +153,12 @@ const HeroSection = () => {
       <button
         className="absolute top-1/2 right-8 z-10 hidden h-11 w-11 -translate-y-1/2 rotate-45 place-items-center border border-(--gold-crayola) text-2xl text-(--gold-crayola) transition-all duration-250 hover:bg-(--gold-crayola) hover:text-black md:grid"
         onClick={nextSlide}
-        onMouseEnter={stopAutoSlide}
-        onMouseLeave={startAutoSlide}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         aria-label="slide to next"
       >
         <ChevronRight className="-rotate-45" />
       </button>
-
-      {/* Book A Table Button */}
-      {/* <Link href="#reserv" className="absolute bottom-4 right-4 z-20 bg-(--gold-crayola) w-28 h-28 p-3 scale-60 sm:scale-75 lg:bottom-12 lg:right-12 lg:scale-100 flex flex-col items-center justify-center text-center rounded-full  after:absolute after:inset-0 after:border after:border-(--gold-crayola) after:rounded-full after:animate-spin" style={{ animationDuration: '15s' }}>
-        <Image src="/assets/images/hero-icon.png" width={48} height={48} alt="booking icon" className="mb-1.5" />
-        <span className="text-black font-bold uppercase tracking-(--letterSpacing-1) leading-(--lineHeight-3) text-xs">
-          Book A Table
-        </span>
-      </Link> */}
 
       <style jsx>{`
         @keyframes smoothScale {
@@ -217,6 +200,7 @@ const HeroSection = () => {
       `}</style>
     </section>
   );
-};
+}
 
+export const Hero = HeroSection;
 export default HeroSection;

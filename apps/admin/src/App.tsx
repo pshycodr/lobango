@@ -22,7 +22,7 @@ function App() {
           } else {
             CapacitorApp.exitApp();
           }
-        },
+        }
       );
     })();
 
@@ -35,7 +35,7 @@ function App() {
     e.preventDefault();
     e.clipboardData?.setData(
       "text/plain",
-      window.getSelection()?.toString() || "",
+      window.getSelection()?.toString() || ""
     );
   });
 

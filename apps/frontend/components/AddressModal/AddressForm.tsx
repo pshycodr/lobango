@@ -1,14 +1,14 @@
 "use client";
 
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { Address } from "@lobango/contracts/address";
+import type { Address } from "@/types/address";
 import { useCallback, useState } from "react";
 import { AddressTypeSelector } from "./AddressTypeSelector";
 import { FormActions } from "./FormActions";
 import { FormInput } from "./FormInput";
-import LocationButton from "./LocationButton";
+import { LocationButton } from "./LocationButton";
 
-interface AddressFormProps {
+export interface AddressFormProps {
   initialData?: Partial<Address>;
   onSave: (address: Omit<Address, "id"> | Address) => void;
   onCancel: () => void;
@@ -36,10 +36,6 @@ export function AddressForm({
   });
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [coordinates, setCoordinates] = useState({
-    longitude: "N/A",
-    latitude: "N/A",
-  });
   const {
     getCurrentLocation,
     isLoading: isLoadingLocation,
@@ -67,32 +63,26 @@ export function AddressForm({
       if (formErrors[field])
         setFormErrors((prev) => ({ ...prev, [field]: "" }));
     },
-    [formErrors],
+    [formErrors]
   );
 
   const handleUseCurrentLocation = useCallback(async () => {
     try {
       const { latitude, longitude } = await getCurrentLocation();
-      setCoordinates({
-        latitude: longitude.toString(),
-        longitude: latitude.toString(),
-      });
-      console.log(latitude, longitude);
 
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
       );
       if (!response.ok) throw new Error("Failed to fetch address");
 
       const data = await response.json();
-      console.log(data);
 
       setFormData((prev) => ({
         ...prev,
-        address: data.display_name || "",
-        city: data.address.village || data.address.city || "",
-        state: data.address.state || "",
-        zipCode: data.address.postcode || "",
+        address: data.display_name || prev.address,
+        city: data.address?.village || data.address?.city || prev.city,
+        state: data.address?.state || prev.state,
+        zipCode: data.address?.postcode || prev.zipCode,
         longitude: longitude.toString(),
         latitude: latitude.toString(),
         label: prev.label || "Current Location",
@@ -102,10 +92,9 @@ export function AddressForm({
     }
   }, [getCurrentLocation]);
 
-  const handleSubmit = useCallback(async () => {
-    const { latitude, longitude } = await getCurrentLocation();
-
+  const handleSubmit = useCallback(() => {
     if (!validateForm()) return;
+
     const addressData = {
       label:
         formData.label ||
@@ -118,8 +107,8 @@ export function AddressForm({
       state: formData.state,
       zipCode: formData.zipCode,
       type: formData.type,
-      longitude: longitude.toString(),
-      latitude: latitude.toString(),
+      longitude: formData.longitude || "none",
+      latitude: formData.latitude || "none",
     };
 
     if (isEditing && initialData?.id) {
@@ -130,11 +119,11 @@ export function AddressForm({
   }, [formData, onSave, validateForm, isEditing, initialData]);
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
+    <div className="space-y-6 p-4 md:p-6">
       {/* Section: Contact Info */}
       <section>
-        <div className="border-b border-gray-700 pb-1 mb-4">
-          <h2 className="text-sm text-gray-400 uppercase tracking-wider font-semibold">
+        <div className="mb-4 border-b border-gray-700 pb-1">
+          <h2 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Contact Info
           </h2>
         </div>
@@ -167,8 +156,8 @@ export function AddressForm({
 
       {/* Section: Address Type + Label */}
       <section>
-        <div className="border-b border-gray-700 pb-1 mb-4">
-          <h2 className="text-sm text-gray-400 uppercase tracking-wider font-semibold">
+        <div className="mb-4 border-b border-gray-700 pb-1">
+          <h2 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Address Type
           </h2>
         </div>
@@ -195,8 +184,8 @@ export function AddressForm({
 
       {/* Section: Address Fields */}
       <section>
-        <div className="border-b border-gray-700 pb-1 mb-4">
-          <h2 className="text-sm text-gray-400 uppercase tracking-wider font-semibold">
+        <div className="mb-4 border-b border-gray-700 pb-1">
+          <h2 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">
             Address
           </h2>
         </div>
@@ -209,7 +198,7 @@ export function AddressForm({
           error={formErrors.address}
         />
 
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 mt-4">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           <FormInput
             label="City *"
             value={formData.city}
@@ -242,7 +231,7 @@ export function AddressForm({
               <div className="w-full border-t border-gray-600" />
             </div>
             <div className="relative flex justify-center">
-              <span className="px-2 bg-gray-900 text-xs uppercase tracking-widest text-gray-500">
+              <span className="bg-gray-900 px-2 text-xs tracking-widest text-gray-500 uppercase">
                 OR
               </span>
             </div>

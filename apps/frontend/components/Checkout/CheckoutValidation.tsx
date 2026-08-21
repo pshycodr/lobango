@@ -1,29 +1,25 @@
-import { Address } from "@lobango/contracts/address";
+import type { Address } from "@/types/address";
+import type { LoadingState } from "@/types/checkout";
 
-interface CheckoutValidationProps {
+export interface CheckoutValidationProps {
   selectedAddress: Address | undefined;
-  locationAllowsCheckout: boolean;
-  locationBlocksCheckout: boolean;
+  locationAllowsCheckout?: boolean;
+  locationBlocksCheckout?: boolean;
   newOrders: boolean | null;
-  isLocationLoading: boolean;
-  loadingState: { type: string };
+  isLocationLoading?: boolean;
+  loadingState: LoadingState;
   className?: string;
 }
 
 export function CheckoutValidation({
   selectedAddress,
-  locationAllowsCheckout,
-  locationBlocksCheckout,
   newOrders,
-  isLocationLoading,
   loadingState,
   className = "",
 }: CheckoutValidationProps) {
   const isCheckoutAllowed =
-    selectedAddress &&
-    locationAllowsCheckout &&
+    Boolean(selectedAddress) &&
     newOrders !== false &&
-    !isLocationLoading &&
     loadingState.type === "none";
 
   if (isCheckoutAllowed) return null;
@@ -35,16 +31,10 @@ export function CheckoutValidation({
           Please select a delivery address
         </p>
       )}
-      {locationBlocksCheckout && (
-        <p className="text-sm text-red-400">Outside delivery area</p>
-      )}
       {newOrders === false && (
         <p className="text-sm text-red-400">
           Online orders are currently closed
         </p>
-      )}
-      {isLocationLoading && (
-        <p className="text-sm text-blue-400">Checking location...</p>
       )}
     </div>
   );

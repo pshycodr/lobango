@@ -1,5 +1,6 @@
 "use client";
-import { Address, AddressModalProps } from "@lobango/contracts/address";
+
+import type { Address, AddressModalProps } from "@/types/address";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AddressForm } from "./AddressForm";
@@ -7,35 +8,32 @@ import { AddressList } from "./AddressList";
 
 const ADDRESS_STORAGE_KEY = "user_addresses";
 
-export default function AddressModal({
+export function AddressModal({
   isOpen,
   onClose,
   onSelectAddress,
   currentAddress,
 }: AddressModalProps) {
-  const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const storedAddresses = localStorage.getItem(ADDRESS_STORAGE_KEY);
+      return storedAddresses ? (JSON.parse(storedAddresses) as Address[]) : [];
+    } catch {
+      return [];
+    }
+  });
+
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    const storedAddresses = localStorage.getItem(ADDRESS_STORAGE_KEY);
-    if (storedAddresses) {
-      try {
-        setSavedAddresses(JSON.parse(storedAddresses));
-      } catch (e) {
-        localStorage.removeItem(ADDRESS_STORAGE_KEY);
-      }
-    }
-    return () => setIsMounted(false);
-  }, []);
-
-  useEffect(() => {
-    if (isMounted && savedAddresses.length >= 0) {
+    try {
       localStorage.setItem(ADDRESS_STORAGE_KEY, JSON.stringify(savedAddresses));
+    } catch {
+      // ignore storage error
     }
-  }, [savedAddresses, isMounted]);
+  }, [savedAddresses]);
 
   const handleAddAddress = (addressData: Omit<Address, "id">) => {
     const newAddress: Address = {
@@ -56,11 +54,10 @@ export default function AddressModal({
 
   const handleUpdateAddress = (updatedAddress: Address) => {
     const updatedAddresses = savedAddresses.map((addr) =>
-      addr.id === updatedAddress.id ? updatedAddress : addr,
+      addr.id === updatedAddress.id ? updatedAddress : addr
     );
     setSavedAddresses(updatedAddresses);
 
-    // Update current address if it's the one being edited
     if (currentAddress?.id === updatedAddress.id) {
       onSelectAddress(updatedAddress);
     }
@@ -73,11 +70,6 @@ export default function AddressModal({
   const handleDeleteAddress = (id: string) => {
     const updatedAddresses = savedAddresses.filter((addr) => addr.id !== id);
     setSavedAddresses(updatedAddresses);
-
-    if (currentAddress?.id === id) {
-      // @ts-ignore
-      onSelectAddress(null);
-    }
   };
 
   const handleCancel = () => {
@@ -86,14 +78,25 @@ export default function AddressModal({
     onClose();
   };
 
+  const handleSaveAddress = (address: Address | Omit<Address, "id">) => {
+    if (editingAddress && "id" in address) {
+      handleUpdateAddress(address);
+      return;
+    }
+
+    if (!editingAddress && !("id" in address)) {
+      handleAddAddress(address);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 bg-opacity-80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-hidden rounded-2xl bg-gray-900">
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-          <h2 className="text-white text-xl font-bold">
+        <div className="flex items-center justify-between border-b border-gray-700 p-6">
+          <h2 className="text-xl font-bold text-white">
             {showAddForm
               ? editingAddress
                 ? "Edit Address"
@@ -102,7 +105,7 @@ export default function AddressModal({
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+            className="rounded-lg p-2 text-gray-400 transition-colors duration-200 hover:bg-gray-800 hover:text-white"
           >
             <X size={20} />
           </button>
@@ -124,8 +127,7 @@ export default function AddressModal({
           ) : (
             <AddressForm
               initialData={editingAddress || undefined}
-              // @ts-ignore
-              onSave={editingAddress ? handleUpdateAddress : handleAddAddress}
+              onSave={handleSaveAddress}
               onCancel={handleCancel}
               isEditing={!!editingAddress}
             />

@@ -1,17 +1,17 @@
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useState } from "react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useState } from "react";
 
-interface CalendarPickerProps {
+export interface CalendarPickerProps {
   selectedDate: string | null;
   onDateSelect: (date: string | null) => void;
   onClose: () => void;
 }
 
-const CalendarPicker: React.FC<CalendarPickerProps> = ({
+export function CalendarPicker({
   selectedDate,
   onDateSelect,
   onClose,
-}) => {
+}: CalendarPickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const monthNames = [
@@ -65,7 +65,6 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
   };
 
   const formatDateForComparison = (date: Date) => {
-    // Use local date to avoid timezone issues
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
@@ -96,7 +95,6 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 backdrop-blur-sm sm:p-4">
       <div className="mx-auto my-auto max-h-screen w-full max-w-xs overflow-y-auto rounded-2xl border border-(--eerie-black-4) bg-(--eerie-black-2) shadow-2xl sm:max-w-sm md:max-w-md">
-        {/* Scrollable content container */}
         <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="mb-4 flex items-center justify-between sm:mb-6">
@@ -200,6 +198,6 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default CalendarPicker;

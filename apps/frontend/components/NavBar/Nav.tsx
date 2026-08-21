@@ -1,11 +1,11 @@
 "use client";
 
-import { X } from "lucide-react";
-import Image from "next/image";
 import { smoothScrollTo } from "@/lib/utils";
 import type { NavItem } from "@/types/home";
+import { X } from "lucide-react";
+import Image from "next/image";
 
-interface NavbarProps {
+export interface NavbarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
@@ -18,7 +18,7 @@ const navItems: NavItem[] = [
   { label: "Contact", href: "#" },
 ];
 
-export default function Navbar({ isOpen, onToggle }: NavbarProps) {
+export function Navbar({ isOpen, onToggle }: NavbarProps) {
   const handleNavClick = (href: string) => {
     if (href.startsWith("#") && href !== "#") {
       smoothScrollTo(href);
@@ -28,19 +28,19 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
 
   return (
     <nav
-      className={`navbar fixed bg-smoky-black-1 top-0 -left-90 bottom-0 max-w-90 w-full px-7 pb-12 overflow-y-auto z-2 transition-all duration-500 ${
-        isOpen ? "visible transform translate-x-90" : "invisible"
-      } md:static md:bg-transparent md:max-w-none md:px-0 md:pb-0 md:overflow-visible md:transform-none md:translate-x-0 md:visible`}
+      className={`navbar bg-smoky-black-1 fixed top-0 bottom-0 -left-90 z-2 w-full max-w-90 overflow-y-auto px-7 pb-12 transition-all duration-500 ${
+        isOpen ? "visible translate-x-90 transform" : "invisible"
+      } md:visible md:static md:max-w-none md:translate-x-0 md:transform md:overflow-visible md:bg-transparent md:px-0 md:pb-0`}
     >
       <button
-        className="close-btn text-white border border-current p-1 rounded-full ml-auto mt-7 mb-5 hover:text-gold-crayola md:hidden"
+        className="close-btn hover:text-gold-crayola mt-7 mb-5 ml-auto rounded-full border border-current p-1 text-white md:hidden"
         onClick={onToggle}
         aria-label="close menu"
       >
-        <X className="w-4 h-4" strokeWidth={2} />
+        <X className="h-4 w-4" strokeWidth={2} />
       </button>
 
-      <a href="#" className="logo max-w-max mx-auto mb-15 md:hidden">
+      <a href="#" className="logo mx-auto mb-15 block max-w-max md:hidden">
         <Image
           src="/assets/images/logo.svg"
           width={160}
@@ -49,20 +49,20 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
         />
       </a>
 
-      <ul className="navbar-list border-b border-white-alpha-20 mb-25 md:flex md:gap-7 md:border-none md:mb-0">
+      <ul className="navbar-list border-white-alpha-20 mb-25 border-b md:mb-0 md:flex md:gap-7 md:border-none">
         {navItems.map((item) => (
           <li
             key={item.label}
-            className="navbar-item border-t border-white-alpha-20 md:border-none"
+            className="navbar-item border-white-alpha-20 border-t md:border-none"
           >
             <button
               onClick={() => handleNavClick(item.href)}
-              className={`navbar-link relative text-label-2 uppercase py-2 max-w-none w-full text-left hover-underline md:font-bold md:tracking-wide ${
+              className={`navbar-link text-label-2 hover-underline relative w-full max-w-none py-2 text-left uppercase md:font-bold md:tracking-wide ${
                 item.active ? "active" : ""
               }`}
             >
               <div
-                className={`separator absolute top-1/2 left-0 transform -translate-y-1/2 rotate-45 opacity-0 transition-opacity duration-250 ${
+                className={`separator absolute top-1/2 left-0 -translate-y-1/2 rotate-45 transform opacity-0 transition-opacity duration-250 ${
                   item.active ? "opacity-100" : ""
                 } md:hidden`}
               ></div>
@@ -70,7 +70,7 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
               <span
                 className={`span transition-all duration-250 ${
                   item.active
-                    ? "text-gold-crayola transform translate-x-5 md:transform-none"
+                    ? "text-gold-crayola translate-x-5 transform md:transform-none"
                     : ""
                 }`}
               >
@@ -91,10 +91,10 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
         <p className="text-body-4 mt-2">Open: 8.00 am - 2.30pm</p>
 
         <a
-          href="mailto:debabratadan6@gmail.com"
-          className="text-body-4 hover-underline inline-block mt-2"
+          href="mailto:hello@anishroy.dev"
+          className="text-body-4 hover-underline mt-2 inline-block"
         >
-          debabratadan6@gmail.com
+          hello@anishroy.dev
         </a>
 
         <div className="separator mx-auto my-7"></div>
@@ -103,7 +103,7 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
 
         <a
           href="tel:+919547061233"
-          className="text-body-1 contact-number text-gold-crayola max-w-max mx-auto hover-underline block mt-2"
+          className="text-body-1 contact-number hover-underline text-gold-crayola mx-auto mt-2 block max-w-max"
         >
           +919547061233
         </a>

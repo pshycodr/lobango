@@ -1,6 +1,7 @@
 import Image from "next/image";
+import React from "react";
 
-const FeaturesSection = () => {
+export function FeaturesSection() {
   const features = [
     {
       icon: "/assets/images/features-icon-1.png",
@@ -63,7 +64,6 @@ const FeaturesSection = () => {
         </ul>
 
         {/* Decorative Shapes */}
-
         <Image
           src="/assets/images/shape-3.png"
           width={120}
@@ -75,6 +75,6 @@ const FeaturesSection = () => {
       </div>
     </section>
   );
-};
+}
 
 export default FeaturesSection;

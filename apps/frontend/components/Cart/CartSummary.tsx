@@ -1,7 +1,7 @@
 import { usePermissionsStore } from "@/store/usePermissionsStore";
 import React from "react";
 
-interface CartSummaryProps {
+export interface CartSummaryProps {
   subtotal: number;
   total: number;
   deliveryFee: number;
@@ -9,14 +9,14 @@ interface CartSummaryProps {
   onCheckout: () => void;
 }
 
-export const CartSummary: React.FC<CartSummaryProps> = ({
+export function CartSummary({
   subtotal,
   total,
   deliveryFee,
   itemCount,
   onCheckout,
-}) => {
-  const { newOrders } = usePermissionsStore();
+}: CartSummaryProps) {
+  const newOrders = usePermissionsStore((state) => state.newOrders);
 
   return (
     <div className="sticky top-4 rounded-lg border border-(--white-alpha-10) bg-(--eerie-black-2) p-4">
@@ -56,7 +56,9 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       <button
         onClick={onCheckout}
         disabled={!newOrders}
-        className={`font-inter w-full rounded-lg bg-(--gold-crayola) py-2.5 text-sm font-semibold text-(--smoky-black-1) transition-all duration-200 hover:bg-[hsl(38,61%,68%)] active:scale-98 ${!newOrders ? "cursor-not-allowed opacity-50" : ""} `}
+        className={`font-inter w-full rounded-lg bg-(--gold-crayola) py-2.5 text-sm font-semibold text-(--smoky-black-1) transition-all duration-200 hover:bg-[hsl(38,61%,68%)] active:scale-98 ${
+          !newOrders ? "cursor-not-allowed opacity-50" : ""
+        }`}
       >
         Proceed to Checkout
       </button>
@@ -66,4 +68,4 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       </p>
     </div>
   );
-};
+}
