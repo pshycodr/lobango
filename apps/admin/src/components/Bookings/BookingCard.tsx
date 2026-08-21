@@ -1,53 +1,70 @@
+import type { Booking } from "@lobango/contracts/bookings";
 import { Phone, Users } from "lucide-react";
-import type { Booking } from "../../types/bookings";
+import React from "react";
 import StatusBadge from "./StatusBadge";
 
-interface BookingCardProps {
+export interface BookingCardProps {
   booking: Booking;
   onClick: (booking: Booking) => void;
   onStatusClick: (booking: Booking, e: React.MouseEvent) => void;
 }
 
-const BookingCard: React.FC<BookingCardProps> = ({
+export function BookingCard({
   booking,
   onClick,
   onStatusClick,
-}) => {
+}: BookingCardProps) {
   const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return dateString;
+    }
   };
 
   const formatTime = (timeString: string): string => {
-    const [hours, minutes] = timeString.split(":");
-    const date = new Date();
-    date.setHours(parseInt(hours), parseInt(minutes));
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
+    try {
+      const [hours, minutes] = timeString.split(":");
+      const date = new Date();
+      date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+      return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } catch {
+      return timeString;
+    }
   };
 
   const formatCreatedAt = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return dateString;
+    }
   };
 
   const formatCreatedAtTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } catch {
+      return dateString;
+    }
   };
 
   return (
@@ -59,10 +76,10 @@ const BookingCard: React.FC<BookingCardProps> = ({
       <div className="mb-4 flex items-start justify-between">
         <div>
           <h3 className="text-lg leading-tight font-semibold text-(--white)">
-            {booking.customer_name}
+            {booking.customerName}
           </h3>
           <p className="mt-1 text-xs text-(--quick-silver)">
-            #{booking.booking_id}
+            #{booking.bookingId}
           </p>
         </div>
         <StatusBadge
@@ -76,7 +93,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
 
       {/* Booking Details */}
       <div className="mb-4 space-y-3">
-        {/* Date & Time (highlighted) */}
+        {/* Date & Time */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-(--quick-silver)">Date & Time</span>
           <span className="text-base font-bold text-(--gold-crayola)">
@@ -90,11 +107,11 @@ const BookingCard: React.FC<BookingCardProps> = ({
           <div className="flex items-center gap-1 text-sm text-(--white)">
             <Phone size={12} className="opacity-80" />
             <a
-              href={`tel:+${booking.customer_phone}`}
+              href={`tel:+${booking.customerPhone}`}
               className="hover:text-(--gold-crayola) hover:underline"
               onClick={(e) => e.stopPropagation()}
             >
-              {booking.customer_phone}
+              {booking.customerPhone}
             </a>
           </div>
         </div>
@@ -103,7 +120,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
         <div className="flex items-center justify-between">
           <span className="text-sm text-(--quick-silver)">Email</span>
           <span className="max-w-[140px] truncate text-sm text-(--white) md:max-w-[200px]">
-            {booking.customer_email}
+            {booking.customerEmail}
           </span>
         </div>
 
@@ -112,16 +129,16 @@ const BookingCard: React.FC<BookingCardProps> = ({
           <span className="text-sm text-(--quick-silver)">Guests</span>
           <div className="text-md flex items-center gap-1 font-semibold text-(--gold-crayola)">
             <Users size={12} />
-            <span>{booking.number_of_people} guests</span>
+            <span>{booking.numberOfPeople} guests</span>
           </div>
         </div>
 
-        {/* Occasion/Message */}
-        {booking.occasion && (
+        {/* Message */}
+        {booking.message && (
           <div className="flex items-start justify-between">
             <span className="text-sm text-(--quick-silver)">Message</span>
-            <span className="line-clamp-2 max-w-[70%] text-sm text-(--white) capitalize">
-              {booking.occasion}
+            <span className="line-clamp-2 max-w-[70%] text-sm text-(--white)">
+              {booking.message}
             </span>
           </div>
         )}
@@ -130,12 +147,12 @@ const BookingCard: React.FC<BookingCardProps> = ({
       {/* Footer */}
       <div className="flex items-center justify-between border-t border-(--eerie-black-4) pt-3">
         <div className="text-xs text-(--quick-silver)">
-          {formatCreatedAt(booking.created_at)} •{" "}
-          {formatCreatedAtTime(booking.created_at)}
+          {formatCreatedAt(booking.createdAt)} •{" "}
+          {formatCreatedAtTime(booking.createdAt)}
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default BookingCard;

@@ -1,8 +1,8 @@
+import type { FilterOption } from "@/types/bookings";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
-import type { FilterOption } from "../../types/bookings";
+import React, { useState } from "react";
 
-interface FilterDropdownProps {
+export interface FilterDropdownProps {
   label: string;
   options: FilterOption[];
   value: string;
@@ -10,13 +10,13 @@ interface FilterDropdownProps {
   icon: React.ComponentType<{ size?: number; className?: string }>;
 }
 
-const FilterDropdown: React.FC<FilterDropdownProps> = ({
+export function FilterDropdown({
   label,
   options,
   value,
   onChange,
   icon: Icon,
-}) => {
+}: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -62,6 +62,6 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       )}
     </div>
   );
-};
+}
 
 export default FilterDropdown;
