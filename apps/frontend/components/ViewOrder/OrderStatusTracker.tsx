@@ -1,5 +1,5 @@
 import { Playfair_Display } from "next/font/google";
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
@@ -17,9 +17,6 @@ export interface StatusStep {
 }
 
 export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
-  const [animatedSteps, setAnimatedSteps] = useState<StatusStep[]>([]);
-  const [lineProgress, setLineProgress] = useState(0);
-
   const getStatusSteps = (status: string): StatusStep[] => {
     const normalizedStatus = status.toLowerCase();
     const isRejected =
@@ -86,36 +83,18 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
     return steps;
   };
 
-  useEffect(() => {
-    const steps = getStatusSteps(currentStatus);
-    setAnimatedSteps([]);
-    setLineProgress(0);
+  const steps = useMemo(() => getStatusSteps(currentStatus), [currentStatus]);
 
-    const stepTimeouts = steps.map((step, index) => {
-      return setTimeout(() => {
-        setAnimatedSteps((prev) => [...prev, step]);
-      }, index * 200);
-    });
+  const isRejected =
+    currentStatus.toLowerCase() === "rejected" ||
+    currentStatus.toLowerCase() === "cancelled";
 
-    const lineTimeout = setTimeout(
-      () => {
-        const completedCount = steps.filter((s) => s.isCompleted).length;
-        const totalSteps = steps.length;
-
-        if (completedCount > 1) {
-          const targetProgress =
-            ((completedCount - 1) / (totalSteps - 1)) * 100;
-          setLineProgress(targetProgress);
-        }
-      },
-      steps.length * 200 + 300
-    );
-
-    return () => {
-      stepTimeouts.forEach((timeout) => clearTimeout(timeout));
-      clearTimeout(lineTimeout);
-    };
-  }, [currentStatus]);
+  const lineProgress = useMemo(() => {
+    const completedCount = steps.filter((s) => s.isCompleted).length;
+    const totalSteps = steps.length;
+    if (completedCount <= 1 || totalSteps <= 1) return 0;
+    return ((completedCount - 1) / (totalSteps - 1)) * 100;
+  }, [steps]);
 
   const getStatusMessage = (status: string) => {
     switch (status.toLowerCase()) {
@@ -223,9 +202,6 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
   };
 
   const statusInfo = getStatusMessage(currentStatus);
-  const isRejected =
-    currentStatus.toLowerCase() === "rejected" ||
-    currentStatus.toLowerCase() === "cancelled";
 
   return (
     <div className="rounded-xl border border-(--white-alpha-10) bg-(--eerie-black-2) p-6 shadow-lg md:p-8">
@@ -246,14 +222,14 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
       </div>
 
       <div className="relative mx-auto max-w-lg">
-        {!isRejected && animatedSteps.length > 1 && (
+        {!isRejected && steps.length > 1 && (
           <div
             className="absolute top-12 left-4 w-0.5 overflow-hidden"
-            style={{ height: `${(animatedSteps.length - 1) * 80}px` }}
+            style={{ height: `${(steps.length - 1) * 80}px` }}
           >
             <div className="absolute inset-0 w-full bg-(--white-alpha-20)"></div>
             <div
-              className="absolute top-0 left-0 w-full bg-(--gold-crayola) shadow-sm transition-all duration-2000 ease-out"
+              className="absolute top-0 left-0 w-full bg-(--gold-crayola) shadow-sm transition-all duration-1000 ease-out"
               style={{
                 height: `${lineProgress}%`,
                 boxShadow: "0 0 4px rgba(255, 193, 7, 0.4)",
@@ -263,14 +239,10 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
         )}
 
         <div className="space-y-8">
-          {animatedSteps.map((step, index) => (
+          {steps.map((step, index) => (
             <div
               key={step.id}
-              className={`relative flex transform items-start space-x-4 transition-all duration-500 ease-out ${
-                index < animatedSteps.length
-                  ? "translate-x-0 opacity-100"
-                  : "translate-x-8 opacity-0"
-              }`}
+              className="relative flex transform items-start space-x-4 transition-all duration-500 ease-out"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div

@@ -12,63 +12,52 @@ const forum = Forum({
   variable: "--font-forum",
 });
 
+const SLIDES = [
+  {
+    image: "/assets/images/hero-slider-1.jpg",
+    subtitle: "Tradational & Hygine",
+    title: "For the love of delicious food",
+    text: "Come with family & feel and enjoy of mouthwatering food",
+  },
+  {
+    image: "/assets/images/hero-slider-2.jpg",
+    subtitle: "delightful experience",
+    title: "Flavors Inspired by the Seasons",
+    text: "Come with family & feel the joy of mouthwatering food",
+  },
+  {
+    image: "/assets/images/hero-slider-3.jpg",
+    subtitle: "amazing & delicious",
+    title: "Where every flavor tells a story",
+    text: "Come with family & feel the joy of mouthwatering food",
+  },
+];
+
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [autoSlideInterval, setAutoSlideInterval] =
-    useState<NodeJS.Timeout | null>(null);
-  const [isOrderId, setIsOrderid] = useState<boolean>(false);
-
-  const slides = [
-    {
-      image: "/assets/images/hero-slider-1.jpg",
-      subtitle: "Tradational & Hygine",
-      title: "For the love of delicious food",
-      text: "Come with family & feel and enjoy of mouthwatering food",
-    },
-    {
-      image: "/assets/images/hero-slider-2.jpg",
-      subtitle: "delightful experience",
-      title: "Flavors Inspired by the Seasons",
-      text: "Come with family & feel the joy of mouthwatering food",
-    },
-    {
-      image: "/assets/images/hero-slider-3.jpg",
-      subtitle: "amazing & delicious",
-      title: "Where every flavor tells a story",
-      text: "Come with family & feel the joy of mouthwatering food",
-    },
-  ];
+  const [isPaused, setIsPaused] = useState(false);
+  const [isOrderId] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return Boolean(localStorage.getItem("orderId"));
+  });
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev >= slides.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev >= SLIDES.length - 1 ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev <= 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const startAutoSlide = () => {
-    if (autoSlideInterval) clearInterval(autoSlideInterval);
-    const interval = setInterval(nextSlide, 7000);
-    setAutoSlideInterval(interval);
-  };
-
-  const stopAutoSlide = () => {
-    if (autoSlideInterval) {
-      clearInterval(autoSlideInterval);
-      setAutoSlideInterval(null);
-    }
+    setCurrentSlide((prev) => (prev <= 0 ? SLIDES.length - 1 : prev - 1));
   };
 
   useEffect(() => {
-    startAutoSlide();
-    return () => stopAutoSlide();
-  }, []);
+    if (isPaused) return;
 
-  useEffect(() => {
-    const orderId = localStorage.getItem("orderId");
-    setIsOrderid(Boolean(orderId));
-  }, []);
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev >= SLIDES.length - 1 ? 0 : prev + 1));
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
     <section
@@ -77,7 +66,7 @@ export function HeroSection() {
     >
       {/* Slider Items */}
       <ul className="h-full w-full">
-        {slides.map((slide, index) => (
+        {SLIDES.map((slide, index) => (
           <li
             key={index}
             className={`absolute top-1/2 left-1/2 z-10 grid h-full w-full -translate-x-1/2 -translate-y-1/2 place-content-center pt-25 transition-all duration-1000 ${
@@ -154,8 +143,8 @@ export function HeroSection() {
       <button
         className="absolute top-1/2 left-8 z-10 hidden h-11 w-11 -translate-y-1/2 rotate-45 place-items-center border border-(--gold-crayola) text-2xl text-(--gold-crayola) transition-all duration-250 hover:bg-(--gold-crayola) hover:text-black md:grid"
         onClick={prevSlide}
-        onMouseEnter={stopAutoSlide}
-        onMouseLeave={startAutoSlide}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         aria-label="slide to previous"
       >
         <ChevronLeft className="-rotate-45" />
@@ -164,8 +153,8 @@ export function HeroSection() {
       <button
         className="absolute top-1/2 right-8 z-10 hidden h-11 w-11 -translate-y-1/2 rotate-45 place-items-center border border-(--gold-crayola) text-2xl text-(--gold-crayola) transition-all duration-250 hover:bg-(--gold-crayola) hover:text-black md:grid"
         onClick={nextSlide}
-        onMouseEnter={stopAutoSlide}
-        onMouseLeave={startAutoSlide}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         aria-label="slide to next"
       >
         <ChevronRight className="-rotate-45" />

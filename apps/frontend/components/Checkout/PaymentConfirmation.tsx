@@ -8,6 +8,22 @@ export interface PaymentConfirmationProps {
   onGoHome?: () => void;
 }
 
+const PARTICLES = Array.from({ length: 15 }, (_, i) => ({
+  id: i,
+  left: `${(i * 17 + 5) % 100}%`,
+  top: `${(i * 23 + 7) % 100}%`,
+  animationDelay: `${(i * 0.4).toFixed(1)}s`,
+  animationDuration: `${3 + ((i * 3) % 20) / 10}s`,
+}));
+
+const CONFETTI = Array.from({ length: 30 }, (_, i) => ({
+  id: i,
+  left: `${(i * 13 + 3) % 100}%`,
+  animationDelay: `${((i * 7) % 10) / 10}s`,
+  animationDuration: `${2 + ((i * 5) % 10) / 10}s`,
+  isGold: i % 2 === 0,
+}));
+
 export function PaymentConfirmation({
   paymentData,
   onViewOrder,
@@ -17,12 +33,8 @@ export function PaymentConfirmation({
   const [showButton, setShowButton] = useState(false);
 
   const amount = paymentData?.amount || 0;
-  const paymentId =
-    paymentData?.paymentId ||
-    `PAY-${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
-  const orderId =
-    paymentData?.orderId ||
-    `ORD-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+  const paymentId = paymentData?.paymentId || "PAY-CONFIRMED";
+  const orderId = paymentData?.orderId || "ORD-CONFIRMED";
   const customerName = paymentData?.customerName || "Valued Customer";
 
   useEffect(() => {
@@ -39,15 +51,15 @@ export function PaymentConfirmation({
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-(--smoky-black-1) p-4 md:p-6">
       {/* Animated Background Particles */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
+        {PARTICLES.map((particle) => (
           <div
-            key={i}
+            key={particle.id}
             className="animate-float absolute opacity-20"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${i * 0.4}s`,
-              animationDuration: `${3 + Math.random() * 2}s`,
+              left: particle.left,
+              top: particle.top,
+              animationDelay: particle.animationDelay,
+              animationDuration: particle.animationDuration,
             }}
           >
             <div className="h-1 w-1 rounded-full bg-(--gold-crayola)"></div>
@@ -67,23 +79,22 @@ export function PaymentConfirmation({
       {/* Confetti Animation */}
       {showSuccess && (
         <div className="pointer-events-none fixed inset-0 z-20">
-          {[...Array(30)].map((_, i) => (
+          {CONFETTI.map((item) => (
             <div
-              key={i}
+              key={item.id}
               className="animate-confetti absolute"
               style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 1}s`,
-                animationDuration: `${2 + Math.random() * 1}s`,
+                left: item.left,
+                animationDelay: item.animationDelay,
+                animationDuration: item.animationDuration,
               }}
             >
               <div
                 className="h-2 w-2 rounded-full"
                 style={{
-                  backgroundColor:
-                    Math.random() > 0.5
-                      ? "var(--gold-crayola)"
-                      : "var(--white)",
+                  backgroundColor: item.isGold
+                    ? "var(--gold-crayola)"
+                    : "var(--white)",
                 }}
               ></div>
             </div>

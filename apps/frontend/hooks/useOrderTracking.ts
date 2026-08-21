@@ -18,11 +18,24 @@ export interface UseOrderTrackingReturn {
 export function useOrderTracking(
   initialOrderId?: string | null
 ): UseOrderTrackingReturn {
-  const [orderId, setOrderId] = useState<string>("");
+  const getResolvedInitialId = useCallback(() => {
+    if (initialOrderId) return initialOrderId.trim();
+    if (typeof window !== "undefined") {
+      const storedOrderId = localStorage.getItem("orderId");
+      if (storedOrderId) return storedOrderId.trim();
+    }
+    return "";
+  }, [initialOrderId]);
+
+  const [orderId, setOrderId] = useState<string>(getResolvedInitialId);
   const [orderData, setOrderData] = useState<GetOrderByIdResponse | null>(null);
-  const [status, setStatus] = useState<OrderTrackingStatus>("idle");
+  const [status, setStatus] = useState<OrderTrackingStatus>(() =>
+    getResolvedInitialId() ? "loading" : "idle"
+  );
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [showInput, setShowInput] = useState<boolean>(false);
+  const [showInput, setShowInput] = useState<boolean>(
+    () => !getResolvedInitialId()
+  );
 
   const fetchOrder = useCallback(async (id: string) => {
     const cleanId = id.trim();
@@ -72,24 +85,58 @@ export function useOrderTracking(
   }, []);
 
   useEffect(() => {
-    if (initialOrderId) {
-      const clean = initialOrderId.trim();
-      setOrderId(clean);
-      fetchOrder(clean);
-      return;
+    let ignore = false;
+    const targetId =
+      initialOrderId?.trim() ||
+      (typeof window !== "undefined"
+        ? localStorage.getItem("orderId")?.trim()
+        : null);
+
+    if (targetId) {
+      client.order
+        .getOrderById({ orderId: targetId })
+        .then((response) => {
+          if (ignore) return;
+          if (response && response.success) {
+            setOrderData(response);
+            setShowInput(false);
+            setStatus("success");
+            try {
+              localStorage.setItem("orderId", targetId);
+            } catch {
+              // ignore storage error
+            }
+          } else {
+            setErrorMessage("Order not found. Please check your order ID.");
+            setShowInput(true);
+            setStatus("error");
+          }
+        })
+        .catch((err) => {
+          if (ignore) return;
+          console.error("Error fetching order:", err);
+          const isNotFound =
+            typeof err === "object" &&
+            err !== null &&
+            "status" in err &&
+            (err as { status: number }).status === 404;
+
+          if (isNotFound) {
+            setErrorMessage("Order not found. Please verify your order ID.");
+          } else {
+            setErrorMessage(
+              "Failed to fetch order details. Please check your connection and try again."
+            );
+          }
+          setShowInput(true);
+          setStatus("error");
+        });
     }
 
-    if (typeof window !== "undefined") {
-      const storedOrderId = localStorage.getItem("orderId");
-      if (storedOrderId) {
-        const clean = storedOrderId.trim();
-        setOrderId(clean);
-        fetchOrder(clean);
-      } else {
-        setShowInput(true);
-      }
-    }
-  }, [initialOrderId, fetchOrder]);
+    return () => {
+      ignore = true;
+    };
+  }, [initialOrderId]);
 
   const handleOrderIdSubmit = useCallback(
     (id: string) => {

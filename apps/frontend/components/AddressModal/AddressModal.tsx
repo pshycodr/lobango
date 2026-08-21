@@ -14,29 +14,26 @@ export function AddressModal({
   onSelectAddress,
   currentAddress,
 }: AddressModalProps) {
-  const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const storedAddresses = localStorage.getItem(ADDRESS_STORAGE_KEY);
+      return storedAddresses ? (JSON.parse(storedAddresses) as Address[]) : [];
+    } catch {
+      return [];
+    }
+  });
+
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    const storedAddresses = localStorage.getItem(ADDRESS_STORAGE_KEY);
-    if (storedAddresses) {
-      try {
-        setSavedAddresses(JSON.parse(storedAddresses));
-      } catch {
-        localStorage.removeItem(ADDRESS_STORAGE_KEY);
-      }
-    }
-    return () => setIsMounted(false);
-  }, []);
-
-  useEffect(() => {
-    if (isMounted && savedAddresses.length >= 0) {
+    try {
       localStorage.setItem(ADDRESS_STORAGE_KEY, JSON.stringify(savedAddresses));
+    } catch {
+      // ignore storage error
     }
-  }, [savedAddresses, isMounted]);
+  }, [savedAddresses]);
 
   const handleAddAddress = (addressData: Omit<Address, "id">) => {
     const newAddress: Address = {
