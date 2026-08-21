@@ -1,7 +1,8 @@
 import { Download, Loader2 } from "lucide-react";
+import React from "react";
 import ToggleSwitch from "./ToggleSwitch";
 
-interface SettingItemProps {
+export interface SettingItemProps {
   title: string;
   description: string;
   type: "toggle" | "action";
@@ -10,10 +11,10 @@ interface SettingItemProps {
   onAction?: () => void;
   icon?: React.ReactNode;
   showBorder?: boolean;
-  loading?: boolean; // ← added
+  loading?: boolean;
 }
 
-const SettingItem: React.FC<SettingItemProps> = ({
+export function SettingItem({
   title,
   description,
   type,
@@ -22,11 +23,17 @@ const SettingItem: React.FC<SettingItemProps> = ({
   onAction,
   icon,
   showBorder = true,
-  loading = false, // ← default false
-}) => {
+  loading = false,
+}: SettingItemProps) {
   return (
     <div
-      className={`flex items-center justify-between px-1 py-4 ${showBorder ? "border-b border-(--eerie-black-4)" : ""} ${type === "action" && !loading ? "hover:bg-opacity-30 -mx-1 cursor-pointer rounded-lg transition-colors duration-200 hover:bg-(--eerie-black-4)" : ""} `}
+      className={`flex items-center justify-between px-1 py-4 ${
+        showBorder ? "border-b border-(--eerie-black-4)" : ""
+      } ${
+        type === "action" && !loading
+          ? "hover:bg-opacity-30 -mx-1 cursor-pointer rounded-lg transition-colors duration-200 hover:bg-(--eerie-black-4)"
+          : ""
+      } `}
       onClick={type === "action" && !loading ? onAction : undefined}
     >
       <div className="flex items-center gap-3">
@@ -56,6 +63,6 @@ const SettingItem: React.FC<SettingItemProps> = ({
       )}
     </div>
   );
-};
+}
 
 export default SettingItem;

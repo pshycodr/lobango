@@ -1,17 +1,16 @@
 import { X } from "lucide-react";
-import React from "react";
 
-interface SearchResultsInfoProps {
+export interface SearchResultsInfoProps {
   searchQuery: string;
   resultCount: number;
   onClearSearch: () => void;
 }
 
-const SearchResultsInfo: React.FC<SearchResultsInfoProps> = ({
+export function SearchResultsInfo({
   searchQuery,
   resultCount,
   onClearSearch,
-}) => {
+}: SearchResultsInfoProps) {
   if (!searchQuery.trim()) return null;
 
   return (
@@ -21,7 +20,7 @@ const SearchResultsInfo: React.FC<SearchResultsInfoProps> = ({
           Showing {resultCount} result{resultCount !== 1 ? "s" : ""} for
         </span>
         <span className="text-sm font-medium text-(--gold-crayola)">
-          "{searchQuery}"
+          {`"${searchQuery}"`}
         </span>
       </div>
       <button
@@ -33,6 +32,6 @@ const SearchResultsInfo: React.FC<SearchResultsInfoProps> = ({
       </button>
     </div>
   );
-};
+}
 
 export default SearchResultsInfo;

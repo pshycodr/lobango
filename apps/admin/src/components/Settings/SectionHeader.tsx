@@ -1,9 +1,11 @@
-interface SectionHeaderProps {
+import React from "react";
+
+export interface SectionHeaderProps {
   title: string;
   icon?: React.ReactNode;
 }
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ title, icon }) => {
+export function SectionHeader({ title, icon }: SectionHeaderProps) {
   return (
     <div className="mb-4 flex items-center gap-3">
       {icon && <div className="text-(--gold-crayola)">{icon}</div>}
@@ -12,6 +14,6 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, icon }) => {
       </h2>
     </div>
   );
-};
+}
 
 export default SectionHeader;

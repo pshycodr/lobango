@@ -1,150 +1,48 @@
+import LoadingSpinner from "@/components/Common/Loader";
+import CalendarPicker from "@/components/Orders/CalendarPicker";
+import FilterButton from "@/components/Orders/FilterButton";
+import OrderCard from "@/components/Orders/OrderCard";
+import OrdersHeader from "@/components/Orders/OrdersHeader";
+import SearchResultsInfo from "@/components/Orders/SearchResultsInfo";
+import { useAdminOrders } from "@/hooks/useAdminOrders";
+import type { OrderStatus } from "@lobango/contracts/enums";
+import type { GetAllOrder } from "@lobango/contracts/order";
 import { useNavigate } from "@tanstack/react-router";
 import { Calendar, Filter, Package } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
-import LoadingSpinner from "../components/Common/Loader";
-import CalendarPicker from "../components/Orders/CalendarPicker";
-import FilterButton from "../components/Orders/FilterButton";
-import OrderCard from "../components/Orders/OrderCard";
-import Header from "../components/Orders/OrdersHeader";
-import SearchResultsInfo from "../components/Orders/SearchResultsInfo";
-import api from "../lib/axios";
-import { useOrdersStore } from "../store/zustand/useOrdersStore";
-import type { Order } from "../types/orders";
+import { useState } from "react";
 
-type OrderResponse = {
-  success: boolean;
-  count: number;
-  orders: Order[];
-};
+export function AdminOrdersView() {
+  const {
+    orders,
+    filteredOrders,
+    activeFilter,
+    searchQuery,
+    selectedDate,
+    showAllOrders,
+    isLoading,
+    setActiveFilter,
+    handleSearchChange,
+    clearSearch,
+    handleDateSelect,
+    handleShowAllOrders,
+    getOrderCountByStatus,
+    getTodayDate,
+  } = useAdminOrders();
 
-const AdminOrdersView: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState<"all" | Order["status"]>(
-    "all"
-  );
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [showAllOrders, setShowAllOrders] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [showCalendar, setShowCalendar] = useState(false);
-
-  const setOrders = useOrdersStore((state) => state.setOrders);
-  const orders = useOrdersStore((state) => state.orders);
   const navigate = useNavigate();
 
-  // Get today's date in YYYY-MM-DD format (timezone safe)
-  const getTodayDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  // Initialize with today's date
-  useEffect(() => {
-    if (!selectedDate && !showAllOrders) {
-      setSelectedDate(getTodayDate());
-    }
-  }, []);
-
-  // Fetch orders based on current state
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
-    const fetchOrders = async (isBackground = false) => {
-      try {
-        if (!isBackground) {
-          setLoading(true);
-        }
-
-        let url = "/api/v1/admin/orders";
-        if (!showAllOrders && selectedDate) {
-          url += `?date=${selectedDate}`;
-        }
-
-        const res = await api.get<OrderResponse>(url);
-        const { orders: fetchedOrders } = res.data;
-        setOrders(fetchedOrders);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        // TODO: Add error toast here
-      } finally {
-        if (!isBackground) {
-          setLoading(false);
-        }
-      }
-    };
-
-    if (selectedDate || showAllOrders) {
-      fetchOrders(false);
-      // 1-minute polling interval
-      intervalId = setInterval(() => fetchOrders(true), 60 * 1000);
-    }
-
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [setOrders, selectedDate, showAllOrders]);
-
-  // Search and filter orders
-  const filteredOrders = useMemo(() => {
-    let filtered = orders;
-
-    // Apply status filter
-    if (activeFilter !== "all") {
-      filtered = filtered.filter((order) => order.status === activeFilter);
-    }
-
-    // Apply search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim();
-      filtered = filtered.filter((order) => {
-        return (
-          order.orderId.toLowerCase().includes(query) ||
-          order.name.toLowerCase().includes(query) ||
-          order.phone.includes(query) ||
-          order.address.toLowerCase().includes(query) ||
-          order.paymentMethod.toLowerCase().includes(query) ||
-          order.status.toLowerCase().includes(query) ||
-          order.items.some((item) => item.name.toLowerCase().includes(query))
-        );
-      });
-    }
-
-    return filtered;
-  }, [orders, activeFilter, searchQuery]);
-
-  const getOrderCountByStatus = (status: Order["status"] | "all"): number => {
-    const baseOrders = searchQuery.trim()
-      ? orders.filter((order) => {
-          const query = searchQuery.toLowerCase().trim();
-          return (
-            order.orderId.toLowerCase().includes(query) ||
-            order.name.toLowerCase().includes(query) ||
-            order.phone.includes(query) ||
-            order.address.toLowerCase().includes(query) ||
-            order.paymentMethod.toLowerCase().includes(query) ||
-            order.status.toLowerCase().includes(query) ||
-            order.items.some((item) => item.name.toLowerCase().includes(query))
-          );
-        })
-      : orders;
-
-    if (status === "all") return baseOrders.length;
-    return baseOrders.filter((order) => order.status === status).length;
-  };
-
-  const filters: Array<{ key: "all" | Order["status"]; label: string }> = [
+  const filters: Array<{ key: "all" | OrderStatus; label: string }> = [
     { key: "all", label: "All Orders" },
     { key: "pending", label: "Pending" },
     { key: "accepted", label: "Accepted" },
-    { key: "out for delivery", label: "Out for Delivery" },
+    { key: "out_for_delivery", label: "Out for Delivery" },
     { key: "delivered", label: "Delivered" },
+    { key: "canceld", label: "Cancelled" },
     { key: "rejected", label: "Rejected" },
   ];
 
-  const handleOrderClick = (order: Order) => {
-    console.log("Order clicked:", order.orderId);
+  const handleOrderClick = (order: GetAllOrder) => {
     navigate({
       to: "/order",
       search: {
@@ -153,41 +51,22 @@ const AdminOrdersView: React.FC = () => {
     });
   };
 
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  const clearSearch = () => {
-    setSearchQuery("");
-  };
-
-  const handleDateSelect = (date: string | null) => {
-    setSelectedDate(date || getTodayDate());
-    setShowAllOrders(false);
-    setActiveFilter("all");
-  };
-
-  const handleShowAllOrders = () => {
-    setShowAllOrders(true);
-    setSelectedDate(null);
-    setActiveFilter("all");
-  };
-
   const formatDisplayDate = (dateStr: string) => {
-    const date = new Date(dateStr + "T00:00:00"); // Add time to avoid timezone issues
+    try {
+      const date = new Date(dateStr + "T00:00:00");
+      const isToday = dateStr === getTodayDate();
+      if (isToday) return "Today";
 
-    // Compare dates properly
-    const isToday = dateStr === getTodayDate();
-
-    if (isToday) return "Today";
-
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return dateStr;
+    }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center bg-(--smoky-black-1)">
         <LoadingSpinner />
@@ -198,7 +77,7 @@ const AdminOrdersView: React.FC = () => {
   return (
     <div className="min-h-screen bg-(--smoky-black-1) p-4">
       <div className="mx-auto max-w-7xl">
-        <Header
+        <OrdersHeader
           totalOrders={orders.length}
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
@@ -211,7 +90,7 @@ const AdminOrdersView: React.FC = () => {
           onClearSearch={clearSearch}
         />
 
-        {/* Date Filter - 3 Options Only */}
+        {/* Date Filter */}
         <div className="mb-6">
           <div className="mb-4 flex items-center gap-2">
             <Calendar size={18} className="text-(--quick-silver)" />
@@ -224,10 +103,7 @@ const AdminOrdersView: React.FC = () => {
             {/* Today */}
             <button
               onClick={() => {
-                const today = getTodayDate();
-                setSelectedDate(today);
-                setShowAllOrders(false);
-                setActiveFilter("all");
+                handleDateSelect(getTodayDate());
               }}
               className={`rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                 !showAllOrders && selectedDate === getTodayDate()
@@ -353,13 +229,16 @@ const AdminOrdersView: React.FC = () => {
         {showCalendar && (
           <CalendarPicker
             selectedDate={selectedDate}
-            onDateSelect={handleDateSelect}
+            onDateSelect={(date) => {
+              handleDateSelect(date);
+              setShowCalendar(false);
+            }}
             onClose={() => setShowCalendar(false)}
           />
         )}
       </div>
     </div>
   );
-};
+}
 
 export default AdminOrdersView;

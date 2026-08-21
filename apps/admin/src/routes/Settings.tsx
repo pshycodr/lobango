@@ -1,7 +1,7 @@
+import { useAdminAuth } from "@/hooks/useAdminAuth";
+import AdminSettingsPage from "@/pages/Settings";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import AdminSettingsPage from "../pages/Settings";
 import { useEffect } from "react";
-import api from "../lib/axios";
 
 export const Route = createFileRoute("/Settings")({
   component: RouteComponent,
@@ -9,22 +9,20 @@ export const Route = createFileRoute("/Settings")({
 
 function RouteComponent() {
   const navigate = useNavigate();
+  const { verifyAuth } = useAdminAuth();
 
   useEffect(() => {
     const checkAdmin = async () => {
-      try {
-        const res = await api.get("/api/v1/admin/verify");
-
-        if (!res.data.success) {
-          navigate({ to: "/signin" });
-        }
-      } catch (error) {
+      const isAuthenticated = await verifyAuth();
+      if (!isAuthenticated) {
         navigate({ to: "/signin" });
       }
     };
 
     checkAdmin();
-  }, []);
+  }, [navigate, verifyAuth]);
 
   return <AdminSettingsPage />;
 }
+
+export default RouteComponent;

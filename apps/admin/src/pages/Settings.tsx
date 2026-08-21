@@ -1,17 +1,19 @@
-"use client";
-
+import SectionHeader from "@/components/Settings/SectionHeader";
+import SettingsCard from "@/components/Settings/SettingsCard";
+import SettingItem from "@/components/Settings/SettingsItems";
+import { admin } from "@/lib/orpc";
+import { usePermissionsStore } from "@/store/zustand/usePermissionsStore";
 import { Check, CreditCard, Download } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
-import SectionHeader from "../components/Settings/SectionHeader";
-import SettingsCard from "../components/Settings/SettingsCard";
-import SettingItem from "../components/Settings/SettingsItems";
-import api from "../lib/axios";
-import { usePermissionsStore } from "../store/zustand/usePermissionsStore";
+
+interface CapacitorGlobal {
+  isNativePlatform: () => boolean;
+}
 
 declare global {
   interface Window {
-    Capacitor?: any;
+    Capacitor?: CapacitorGlobal;
   }
 }
 
@@ -25,23 +27,19 @@ interface CustomerWithSource extends CustomerData {
   source: "Orders" | "Bookings" | "Orders/Bookings";
 }
 
-interface DownloadResponse {
-  success: boolean;
-  customers: CustomerWithSource[];
-  orders: CustomerData[];
-  bookings: CustomerData[];
-  error?: string;
-}
-
-const AdminSettingsPage: React.FC = () => {
-  const {
-    fetchPermissions,
-    newBookings,
-    newOrders,
-    setNewBookingPermission,
-    setNewOrderPermission,
-    loading: permsLoading,
-  } = usePermissionsStore();
+export function AdminSettingsPage() {
+  const newBookings = usePermissionsStore((state) => state.newBookings);
+  const newOrders = usePermissionsStore((state) => state.newOrders);
+  const fetchPermissions = usePermissionsStore(
+    (state) => state.fetchPermissions
+  );
+  const setNewBookingPermission = usePermissionsStore(
+    (state) => state.setNewBookingPermission
+  );
+  const setNewOrderPermission = usePermissionsStore(
+    (state) => state.setNewOrderPermission
+  );
+  const permsLoading = usePermissionsStore((state) => state.loading);
 
   const [dataRetention, setDataRetention] = useState({
     orders: false,
@@ -61,8 +59,8 @@ const AdminSettingsPage: React.FC = () => {
 
   useEffect(() => {
     setDataRetention({
-      orders: !!newOrders,
-      bookings: !!newBookings,
+      orders: Boolean(newOrders),
+      bookings: Boolean(newBookings),
     });
   }, [newOrders, newBookings]);
 
@@ -73,8 +71,8 @@ const AdminSettingsPage: React.FC = () => {
         setUpdating((s) => ({ ...s, orders: true }));
         try {
           await setNewOrderPermission(checked);
-        } catch (e) {
-          setDataRetention((prev) => ({ ...prev, orders: !!newOrders }));
+        } catch {
+          setDataRetention((prev) => ({ ...prev, orders: Boolean(newOrders) }));
         } finally {
           setUpdating((s) => ({ ...s, orders: false }));
         }
@@ -82,8 +80,11 @@ const AdminSettingsPage: React.FC = () => {
         setUpdating((s) => ({ ...s, bookings: true }));
         try {
           await setNewBookingPermission(checked);
-        } catch (e) {
-          setDataRetention((prev) => ({ ...prev, bookings: !!newBookings }));
+        } catch {
+          setDataRetention((prev) => ({
+            ...prev,
+            bookings: Boolean(newBookings),
+          }));
         } finally {
           setUpdating((s) => ({ ...s, bookings: false }));
         }
@@ -124,7 +125,7 @@ const AdminSettingsPage: React.FC = () => {
             directory: Directory.Documents,
           });
 
-          alert(`File saved successfully to Downloads/${filename}`);
+          alert(`File saved successfully to Documents/${filename}`);
         } catch (capacitorError) {
           console.error("Capacitor filesystem error:", capacitorError);
           throw capacitorError;
@@ -170,8 +171,8 @@ const AdminSettingsPage: React.FC = () => {
         link.download = filename;
         link.click();
         window.URL.revokeObjectURL(url);
-      } catch (fallbackError) {
-        alert("Download failed. Please try again or contact support.");
+      } catch {
+        alert("Download failed. Please try again.");
       }
     }
   };
@@ -179,38 +180,49 @@ const AdminSettingsPage: React.FC = () => {
   const handleDataDownload = async () => {
     setDownloading(true);
     try {
-      const response = await api.get<DownloadResponse>(
-        "/api/v1/admin/download-data"
-      );
+      const [ordersRes, bookingsRes] = await Promise.all([
+        admin.order.getAllOrders({}),
+        admin.booking.getAllBookings({}),
+      ]);
 
-      if (!response.data.success) {
-        throw new Error(response.data.error || "Failed to fetch data");
-      }
+      const ordersData: CustomerData[] = ordersRes.orders.map((o) => ({
+        name: o.customerName,
+        email: "N/A",
+        phone: o.customerPhone,
+      }));
 
-      const {
-        customers,
-        orders: ordersData,
-        bookings: bookingsData,
-      } = response.data;
+      const bookingsData: CustomerData[] = bookingsRes.data.map((b) => ({
+        name: b.customerName,
+        email: b.customerEmail,
+        phone: b.customerPhone,
+      }));
 
       const customerMap = new Map<string, CustomerWithSource>();
 
-      customers.forEach((customer) => {
-        if (customer.phone) {
-          const phone = customer.phone;
-          const existingCustomer = customerMap.get(phone);
+      ordersData.forEach((cust) => {
+        if (cust.phone) {
+          customerMap.set(cust.phone, {
+            ...cust,
+            source: "Orders",
+          });
+        }
+      });
 
-          if (existingCustomer) {
-            if (existingCustomer.source !== customer.source) {
-              customerMap.set(phone, {
-                name: existingCustomer.name || customer.name,
-                email: existingCustomer.email || customer.email,
-                phone: phone,
-                source: "Orders/Bookings",
-              });
-            }
+      bookingsData.forEach((cust) => {
+        if (cust.phone) {
+          const existing = customerMap.get(cust.phone);
+          if (existing) {
+            customerMap.set(cust.phone, {
+              name: existing.name || cust.name,
+              email: cust.email !== "N/A" ? cust.email : existing.email,
+              phone: cust.phone,
+              source: "Orders/Bookings",
+            });
           } else {
-            customerMap.set(phone, customer);
+            customerMap.set(cust.phone, {
+              ...cust,
+              source: "Bookings",
+            });
           }
         }
       });
@@ -262,7 +274,7 @@ const AdminSettingsPage: React.FC = () => {
       const isMobile =
         /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent
-        ) || window.Capacitor?.isNativePlatform();
+        ) || Boolean(window.Capacitor?.isNativePlatform());
 
       if (isMobile) {
         await downloadForMobile(workbook, filename);
@@ -271,7 +283,7 @@ const AdminSettingsPage: React.FC = () => {
       }
     } catch (error) {
       console.error("Download error:", error);
-      alert("Failed to download data. Please try again.");
+      alert("Failed to export data. Please try again.");
     } finally {
       setDownloading(false);
     }
@@ -281,7 +293,7 @@ const AdminSettingsPage: React.FC = () => {
     <div className="min-h-screen bg-(--smoky-black-1) text-(--white)">
       <header className="bg-opacity-95 sticky top-0 z-40 border-b border-(--eerie-black-4) bg-(--smoky-black-1) backdrop-blur-md">
         <div className="mx-auto flex max-w-4xl items-center justify-between p-4 pb-3">
-          <h1 className="flex-1 pr-10 text-center text-lg leading-tight font-bold tracking-[-0.015em] md:text-xl">
+          <h1 className="flex-1 text-center text-lg leading-tight font-bold tracking-[-0.015em] md:text-xl">
             Settings
           </h1>
         </div>
@@ -319,7 +331,7 @@ const AdminSettingsPage: React.FC = () => {
             <SettingsCard className="mb-6">
               <SettingItem
                 title="Orders"
-                description="Automatically accept new orders"
+                description="Accept new customer orders"
                 type="toggle"
                 checked={dataRetention.orders}
                 onToggle={handleDataRetentionChange("orders")}
@@ -328,7 +340,7 @@ const AdminSettingsPage: React.FC = () => {
               />
               <SettingItem
                 title="Bookings"
-                description="Automatically accept new table bookings"
+                description="Accept new table bookings"
                 type="toggle"
                 checked={dataRetention.bookings}
                 onToggle={handleDataRetentionChange("bookings")}
@@ -337,11 +349,12 @@ const AdminSettingsPage: React.FC = () => {
               />
             </SettingsCard>
           </section>
+
           <section>
-            <SectionHeader title="Data Download" />
+            <SectionHeader title="Data Export" />
             <SettingsCard>
               <SettingItem
-                title="Download Customer Data"
+                title="Export Customer Data"
                 description="Export customer data from orders and bookings (.xlsx)"
                 type="action"
                 onAction={handleDataDownload}
@@ -361,11 +374,10 @@ const AdminSettingsPage: React.FC = () => {
                   <Check className="text-(--smoky-black-1)" size={24} />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-(--white)">
-                  Settings Saved Successfully
+                  Settings Synced
                 </h3>
                 <p className="text-sm text-(--quick-silver)">
-                  All your preferences have been automatically saved and
-                  applied.
+                  All changes are automatically synced via oRPC to the server.
                 </p>
               </div>
             </SettingsCard>
@@ -374,6 +386,6 @@ const AdminSettingsPage: React.FC = () => {
       </main>
     </div>
   );
-};
+}
 
 export default AdminSettingsPage;

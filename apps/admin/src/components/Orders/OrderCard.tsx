@@ -1,10 +1,12 @@
-import type { Order } from "../../types/orders";
-import StatusBadge from "../Order/OrderStatusBadge";
+import StatusBadge from "@/components/Order/OrderStatusBadge";
+import type { GetAllOrder } from "@lobango/contracts/order";
 
-const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
-  order,
-  onClick,
-}) => {
+export interface OrderCardProps {
+  order: GetAllOrder;
+  onClick: () => void;
+}
+
+export function OrderCard({ order, onClick }: OrderCardProps) {
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString("en-US", {
@@ -22,6 +24,8 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
     });
   };
 
+  const total = parseFloat(order.totalAmount) || 0;
+
   return (
     <div
       onClick={onClick}
@@ -30,7 +34,9 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
       {/* Header */}
       <div className="mb-3 flex items-start justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-(--white)">{order.name}</h3>
+          <h3 className="text-lg font-semibold text-(--white)">
+            {order.customerName}
+          </h3>
           <p className="text-sm text-(--quick-silver)">#{order.orderId}</p>
         </div>
         <StatusBadge status={order.status} />
@@ -41,7 +47,7 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
         <div className="flex items-center justify-between">
           <span className="text-sm text-(--quick-silver)">Total Amount</span>
           <span className="text-lg font-semibold text-(--gold-crayola)">
-            ₹{order.total.toFixed(2)}
+            ₹{total.toFixed(2)}
           </span>
         </div>
 
@@ -64,10 +70,8 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-sm text-(--quick-silver)">Items</span>
-          <span className="text-sm text-(--white)">
-            {order.items.length} item{order.items.length > 1 ? "s" : ""}
-          </span>
+          <span className="text-sm text-(--quick-silver)">Customer Phone</span>
+          <span className="text-sm text-(--white)">{order.customerPhone}</span>
         </div>
       </div>
 
@@ -82,6 +86,6 @@ const OrderCard: React.FC<{ order: Order; onClick: () => void }> = ({
       </div>
     </div>
   );
-};
+}
 
 export default OrderCard;
