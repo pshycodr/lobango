@@ -1,7 +1,7 @@
+import { useAdminAuth } from "@/hooks/useAdminAuth";
+import AdminOrdersView from "@/pages/Orders";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import api from "../lib/axios";
-import AdminOrdersView from "../pages/Orders";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -9,22 +9,20 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   const navigate = useNavigate();
+  const { verifyAuth } = useAdminAuth();
 
   useEffect(() => {
     const checkAdmin = async () => {
-      try {
-        const res = await api.get("/api/v1/admin/verify");
-
-        if (!res.data.success) {
-          navigate({ to: "/signin" });
-        }
-      } catch (error) {
+      const isAuthenticated = await verifyAuth();
+      if (!isAuthenticated) {
         navigate({ to: "/signin" });
       }
     };
 
     checkAdmin();
-  }, []);
+  }, [navigate, verifyAuth]);
 
   return <AdminOrdersView />;
 }
+
+export default RouteComponent;
