@@ -6,6 +6,7 @@ import {
   UpdateOrderStatusRequestSchema,
   UpdateOrderStatusResponseSchema,
 } from "@lobango/contracts/order";
+import { isEmailWorthyOrderStatus } from "@/types/email";
 import { eq } from "drizzle-orm";
 
 export const updateOrderStatus = adminOrpc
@@ -24,13 +25,17 @@ export const updateOrderStatus = adminOrpc
   .handler(async ({ input, context, errors }) => {
     const db = getDB(context.env.DB);
 
-    const result = await db
+    const [updatedOrder] = await db
       .update(orders)
       .set({ status: input.status })
       .where(eq(orders.orderId, input.orderId))
-      .run();
+      .returning({
+        orderId: orders.orderId,
+        customerName: orders.customerName,
+        customerEmail: orders.customerEmail,
+      });
 
-    if ((result.meta?.changes ?? 0) === 0) {
+    if (!updatedOrder) {
       throw errors.NOT_FOUND();
     }
 
@@ -42,9 +47,19 @@ export const updateOrderStatus = adminOrpc
       context.cache.getKey.orderCache(input.orderId)
     );
 
+    if (updatedOrder.customerEmail && isEmailWorthyOrderStatus(input.status)) {
+      await context.queues.EmailQueue.send({
+        type: "order-status-update",
+        to: updatedOrder.customerEmail,
+        name: updatedOrder.customerName,
+        orderId: updatedOrder.orderId,
+        status: input.status,
+      });
+    }
+
     return {
       success: true as const,
-      updated: result.meta?.changes ?? 0,
+      updated: 1,
       status: input.status,
     };
   });

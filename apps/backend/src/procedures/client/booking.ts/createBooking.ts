@@ -59,18 +59,17 @@ export const createBooking = orpc
       throw errors.INTERNAL_SERVER_ERROR();
     }
 
-    // [TODO]: Use queue to off load this
-    // await sendBookingEmail({
-    //   env: context.env,
-    //   to: input.customerEmail,
-    //   customer_name: input.customerName,
-    //   booking_id: bookingId,
-    //   customer_phone: input.customerPhone,
-    //   customer_email: input.customerEmail,
-    //   date: input.date,
-    //   time: input.time,
-    //   number_of_people: input.numberOfPeople,
-    // });
+    await context.queues.EmailQueue.send({
+      type: "booking-confirmation",
+      to: input.customerEmail,
+      customerName: input.customerName,
+      bookingId,
+      customerPhone: input.customerPhone,
+      customerEmail: input.customerEmail,
+      date: input.date,
+      time: input.time,
+      numberOfPeople: input.numberOfPeople,
+    });
 
     return {
       success: true as const,

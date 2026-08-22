@@ -111,16 +111,15 @@ export const createOrder = orpc
       ...insertItemQueries,
     ]);
 
-    // [TODO] : implement queue to handle this
-    // await sendOrderEmail({
-    //   env: context.env,
-    //   to: order.customerEmail,
-    //   name: order.customerName,
-    //   total: totalAmount.toString(),
-    //   orderId,
-    //   customerPhone: order.customerPhone,
-    //   customerAddress: order.customerAddress.trim(),
-    // });
+    await context.queues.EmailQueue.send({
+      type: "order-confirmation",
+      to: order.customerEmail,
+      name: order.customerName,
+      total: totalAmount.toString(),
+      orderId,
+      customerPhone: order.customerPhone,
+      customerAddress: order.customerAddress.trim(),
+    });
 
     return {
       success: true,

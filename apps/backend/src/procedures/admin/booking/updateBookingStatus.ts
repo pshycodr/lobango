@@ -6,6 +6,7 @@ import {
   UpdateBookingStatusRequestSchema,
   UpdateBookingStatusResponseSchema,
 } from "@lobango/contracts/bookings";
+import { isEmailWorthyBookingStatus } from "@/types/email";
 import { eq } from "drizzle-orm";
 
 export const updateBookingStatus = adminOrpc
@@ -49,18 +50,17 @@ export const updateBookingStatus = adminOrpc
         throw errors.NOT_FOUND();
       }
 
-      // [TODO]: Use queue to off load this
-      // await sendBookingEmail({
-      //   env: context.env,
-      //   to: updatedBooking.customerEmail,
-      //   customer_name: updatedBooking.customerName,
-      //   booking_id: updatedBooking.bookingId,
-      //   customer_phone: updatedBooking.customerPhone,
-      //   customer_email: updatedBooking.customerEmail,
-      //   date: updatedBooking.date,
-      //   time: updatedBooking.time,
-      //   number_of_people: updatedBooking.numberOfPeople,
-      // });
+      if (isEmailWorthyBookingStatus(input.status)) {
+        await context.queues.EmailQueue.send({
+          type: "booking-status-update",
+          to: updatedBooking.customerEmail,
+          customerName: updatedBooking.customerName,
+          bookingId: updatedBooking.bookingId,
+          status: input.status,
+          date: updatedBooking.date,
+          time: updatedBooking.time,
+        });
+      }
 
       await context.cache.invalidateVersion(
         context.cache.getKey.admin.bookingVersion()
