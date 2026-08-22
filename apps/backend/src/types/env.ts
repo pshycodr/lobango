@@ -1,8 +1,11 @@
 import { SignatureAlgorithm } from "hono/utils/jwt/jwa";
+import { EmailQueueMessage } from "./queue";
 
 export type Bindings = {
   DB: D1Database;
   KV: KVNamespace;
+
+  EMAIL_QUEUE: Queue<EmailQueueMessage>;
 
   JWT_SECRET: string;
   JWT_SINATURE_ALGO: SignatureAlgorithm;
@@ -13,7 +16,6 @@ export type Bindings = {
   BREVO_API_KEY: string;
   BREVO_SENDER_EMAIL: string;
   BREVO_SENDER_NAME: string;
-  BREVO_SMTP_API_KEY: string;
 
   ORDER_CACHE_TTL: number;
   BOOKING_CACHE_TTL: number;
