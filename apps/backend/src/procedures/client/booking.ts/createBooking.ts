@@ -15,7 +15,7 @@ export const createBooking = orpc
     path: "/booking",
     summary: "Add New Booking",
     description: "Create a new table booking",
-    tags: [API_TAGS.BOOKINGS],
+    tags: [API_TAGS.CLIENT.BOOKING],
   })
   .input(CreateBookingRequestSchema)
   .output(CreateBookingResponseSchema)

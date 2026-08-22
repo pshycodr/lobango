@@ -14,7 +14,7 @@ export const getAllBookings = adminOrpc
   .route({
     method: "GET",
     path: "/admin/bookings",
-    tags: [API_TAGS.ADMIN],
+    tags: [API_TAGS.ADMIN.BOOKING],
     summary: "Get all bookings",
     description: "Returns all bookings ordered by date and time.",
   })

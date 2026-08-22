@@ -11,7 +11,7 @@ export const adminLogout = adminOrpc
   .route({
     method: "POST",
     path: "/admin/logout",
-    tags: [API_TAGS.ADMIN],
+    tags: [API_TAGS.ADMIN.AUTH],
     summary: "Logout admin user",
     description: "Clears the admin authentication cookie.",
   })

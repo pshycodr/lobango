@@ -7,7 +7,7 @@ export const getNewOrderPermission = orpc
   .route({
     method: "GET",
     path: "/permission/new-order",
-    tags: [API_TAGS.PERMISSIONS],
+    tags: [API_TAGS.CLIENT.PERMISSION],
     summary: "Check if new orders are enabled",
     description:
       "This is used to flag the availability of the order service in frontend",

@@ -16,7 +16,7 @@ export const createOrder = orpc
     path: "/order",
     summary: "Place New Order",
     description: "Add/Place a new order in the DB",
-    tags: [API_TAGS.ORDERS],
+    tags: [API_TAGS.CLIENT.ORDER],
   })
   .input(CreateOrderRequestSchema)
   .output(CreateOrderResponseSchema)

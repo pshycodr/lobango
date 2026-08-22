@@ -9,7 +9,7 @@ export const setNewBookingPermission = adminOrpc
   .route({
     method: "POST",
     path: "/permission/new-booking",
-    tags: [API_TAGS.PERMISSIONS, API_TAGS.ADMIN],
+    tags: [API_TAGS.ADMIN.PERMISSION],
     summary: "Set/Update the new booking permission",
     description:
       "This is used to flag the availability of the booking service in frontend",

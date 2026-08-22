@@ -13,7 +13,7 @@ export const updateBookingStatus = adminOrpc
   .route({
     method: "PATCH",
     path: "/admin/bookings/:bookingId",
-    tags: [API_TAGS.ADMIN],
+    tags: [API_TAGS.ADMIN.BOOKING],
     summary: "Update booking status",
     description:
       "Updates the status of a booking and sends an updated booking confirmation email to the customer.",

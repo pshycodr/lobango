@@ -1,29 +1,68 @@
 export const API_TAGS = {
-  ORDERS: "Orders",
-  BOOKINGS: "Bookings",
-  PERMISSIONS: "Permissions",
-  ADMIN: "Admin",
+  ADMIN: {
+    AUTH: "Admin Auth",
+    ORDER: "Admin Orders",
+    BOOKING: "Admin Bookings",
+    PERMISSION: "Admin Permissions",
+  },
+  CLIENT: {
+    ORDER: "Client Orders",
+    BOOKING: "Client Bookings",
+    PERMISSION: "Client Permissions",
+  },
   PAYMENTS: "Payments",
 } as const;
 
-export type ApiTag = (typeof API_TAGS)[keyof typeof API_TAGS];
+type ExtractTagValues<T> = T extends string
+  ? T
+  : T extends Record<string, unknown>
+    ? { [K in keyof T]: ExtractTagValues<T[K]> }[keyof T]
+    : never;
 
-export const API_TAG_DEFINITIONS: { name: ApiTag; description: string }[] = [
+export type ApiTag = ExtractTagValues<typeof API_TAGS>;
+
+const descriptions: Record<ApiTag, string> = {
+  [API_TAGS.ADMIN.AUTH]: "Admin login, logout, and session verification.",
+  [API_TAGS.ADMIN.ORDER]: "View and update customer orders (admin only).",
+  [API_TAGS.ADMIN.BOOKING]: "View and update table reservations (admin only).",
+  [API_TAGS.ADMIN.PERMISSION]:
+    "Toggle order/booking availability (admin only).",
+
+  [API_TAGS.CLIENT.ORDER]: "Placing and viewing customer orders.",
+  [API_TAGS.CLIENT.BOOKING]: "Placing and viewing table reservations.",
+  [API_TAGS.CLIENT.PERMISSION]:
+    "Check whether ordering/booking is currently open.",
+
+  [API_TAGS.PAYMENTS]: "Razorpay order creation and payment verification.",
+};
+
+export const API_TAG_DEFINITIONS = Object.entries(descriptions).map(
+  ([name, description]) => ({
+    name: name as ApiTag,
+    description,
+  })
+);
+
+export const API_TAG_GROUPS = [
   {
-    name: API_TAGS.ORDERS,
-    description: "Placing, viewing, and cancelling customer orders.",
+    name: "Admin",
+    tags: [
+      API_TAGS.ADMIN.AUTH,
+      API_TAGS.ADMIN.ORDER,
+      API_TAGS.ADMIN.BOOKING,
+      API_TAGS.ADMIN.PERMISSION,
+    ],
   },
-  { name: API_TAGS.BOOKINGS, description: "Table reservation management." },
   {
-    name: API_TAGS.PERMISSIONS,
-    description: "Feature flags controlling order/booking availability.",
+    name: "Client",
+    tags: [
+      API_TAGS.CLIENT.ORDER,
+      API_TAGS.CLIENT.BOOKING,
+      API_TAGS.CLIENT.PERMISSION,
+    ],
   },
   {
-    name: API_TAGS.ADMIN,
-    description: "Internal admin-only operations, requires authentication.",
-  },
-  {
-    name: API_TAGS.PAYMENTS,
-    description: "Razorpay order creation and payment verification.",
+    name: "Payments",
+    tags: [API_TAGS.PAYMENTS],
   },
 ];

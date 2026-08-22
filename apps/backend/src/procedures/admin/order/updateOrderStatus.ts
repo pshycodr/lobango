@@ -13,7 +13,7 @@ export const updateOrderStatus = adminOrpc
   .route({
     method: "PATCH",
     path: "/admin/orders/{orderId}/status",
-    tags: [API_TAGS.ADMIN],
+    tags: [API_TAGS.ADMIN.ORDER],
     summary: "Update order status",
     description: "Updates the status of an order.",
   })

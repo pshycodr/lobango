@@ -15,7 +15,7 @@ export const adminLogin = orpc
   .route({
     method: "POST",
     path: "/admin/login",
-    tags: [API_TAGS.ADMIN],
+    tags: [API_TAGS.ADMIN.AUTH],
     summary: "Login Admin user",
     description:
       "Authenticates an admin using username and password and sets an HTTP-only JWT cookie.",

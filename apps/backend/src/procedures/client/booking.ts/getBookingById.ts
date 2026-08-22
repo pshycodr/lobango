@@ -13,7 +13,7 @@ export const getBookingById = orpc
     path: "/bookings/{bookingId}",
     summary: "Fetch a booking by ID",
     description: "Returns booking details given a valid booking ID.",
-    tags: [API_TAGS.BOOKINGS],
+    tags: [API_TAGS.CLIENT.BOOKING],
   })
   .input(GetBookingByIdRequestSchema)
   .output(GetBookingByIdResponseSchema)

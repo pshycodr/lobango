@@ -16,7 +16,7 @@ export const getOrderById = orpc
     summary: "Fetch an order by ID",
     description:
       "Returns order details along with the items in that order, given a valid order ID.",
-    tags: [API_TAGS.ORDERS],
+    tags: [API_TAGS.CLIENT.ORDER],
   })
   .input(GetOrderByIdRequestSchema)
   .output(GetOrderByIdResponseSchema)

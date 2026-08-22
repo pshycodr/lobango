@@ -14,7 +14,7 @@ export const getAllOrders = adminOrpc
   .route({
     method: "GET",
     path: "/admin/orders",
-    tags: [API_TAGS.ADMIN],
+    tags: [API_TAGS.ADMIN.ORDER],
     summary: "View orders",
     description:
       "Returns order summaries. Orders can be filtered by a specific date or a UTC date range.",

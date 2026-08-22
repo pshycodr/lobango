@@ -9,7 +9,7 @@ export const setNewOrderPermission = adminOrpc
   .route({
     method: "POST",
     path: "/permission/new-order",
-    tags: [API_TAGS.ADMIN, API_TAGS.PERMISSIONS],
+    tags: [API_TAGS.ADMIN.PERMISSION],
     summary: "Set/Update the new Order permission",
     description:
       "This is used to flag the availability of the Order service in frontend",

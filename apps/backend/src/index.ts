@@ -11,7 +11,7 @@ import { RPCHandler } from "@orpc/server/fetch";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { API_TAG_DEFINITIONS } from "./orpc/openapi/tags";
+import { API_TAG_DEFINITIONS, API_TAG_GROUPS } from "./orpc/openapi/tags";
 import { EmailQueueMessage } from "./types/queue";
 import {
   sendBookingConfirmedEmail,
@@ -108,7 +108,8 @@ const openApiHandler = new OpenAPIHandler(openApiRouter, {
             "Public and internal API for Lobango ordering and admin operations.",
         },
         tags: API_TAG_DEFINITIONS,
-      },
+        "x-tagGroups": API_TAG_GROUPS,
+      } as any,
       docsConfig: {
         theme: "deepSpace",
         layout: "modern",
