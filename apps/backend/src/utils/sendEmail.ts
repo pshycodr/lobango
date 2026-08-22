@@ -1,178 +1,233 @@
-import * as Brevo from "@getbrevo/brevo";
-import { newOrderHtmlTemplate } from "../template/email/newOrder";
+import type {
+  BookingConfirmedEmailData,
+  BookingStatusUpdateEmailData,
+  EmailBookingStatus,
+  EmailData,
+  EmailOrderStatus,
+  OrderPlacedEmailData,
+  OrderStatusUpdateEmailData,
+  OtpEmailData,
+  SendEmailEnv,
+  SendEmailParams,
+} from "@/types/email";
+import {
+  bookingStatusUpdateHtmlTemplate,
+  type BookingStatus as TemplateBookingStatus,
+} from "../template/email/bookingStatusUpdate";
 import { bookingConfirmationHtmlTemplate } from "../template/email/newBooking";
+import { newOrderHtmlTemplate } from "../template/email/newOrder";
+import {
+  orderStatusUpdateHtmlTemplate,
+  type OrderStatus as TemplateOrderStatus,
+} from "../template/email/orderStatusUpdate";
+import { otpHtmlTemplate } from "../template/email/otp";
 
-export function brevoClient(apiKey: string) {
-  const client = new Brevo.TransactionalEmailsApi();
-  client.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, apiKey);
-  return client;
+export type {
+  BookingConfirmedEmailData,
+  BookingStatusUpdateEmailData,
+  EmailBookingStatus,
+  EmailData,
+  EmailOrderStatus,
+  OrderPlacedEmailData,
+  OrderStatusUpdateEmailData,
+  OtpEmailData,
+  SendEmailEnv,
+  SendEmailParams,
+} from "@/types/email";
+
+/**
+ * Thrown when a transactional email fails to send or is malformed.
+ */
+export class EmailDeliveryError extends Error {
+  constructor(
+    message: string,
+    public readonly cause?: unknown
+  ) {
+    super(message);
+    this.name = "EmailDeliveryError";
+  }
 }
 
-interface Env {
-  BREVO_API_KEY: string;
-  BREVO_SENDER_EMAIL: string;
-  BREVO_SENDER_NAME: string;
+interface RenderedEmail {
+  subject: string;
+  recipientName: string;
+  content: { html: string; text: string };
 }
 
-// Order email data interface
-interface OrderEmailData {
-  type: "order";
-  to: string;
-  name: string;
-  total: string;
-  orderId: string;
-  customerPhone: string;
-  customerAddress: string;
+type EmailDefinitions = {
+  [K in EmailData["type"]]: (
+    data: Extract<EmailData, { type: K }>
+  ) => RenderedEmail;
+};
+
+function toTemplateOrderStatus(status: EmailOrderStatus): TemplateOrderStatus {
+  return status === "canceld" ? "cancelled" : status;
 }
 
-// Booking email data interface
-interface BookingEmailData {
-  type: "booking";
-  to: string;
-  customer_name: string;
-  booking_id: string;
-  customer_phone: string;
-  customer_email: string;
-  date: string; // YYYY-MM-DD
-  time: string; // HH:mm
-  number_of_people: number;
+function toTemplateBookingStatus(
+  status: EmailBookingStatus
+): TemplateBookingStatus {
+  return status === "rejected" ? "cancelled" : status;
 }
 
-// Union type for email data
-type EmailData = OrderEmailData | BookingEmailData;
-
-// Parameters for sendEmail function
-interface SendEmailParams {
-  env: Env;
-  data: EmailData;
-}
-
-// Parameters for sendOrderEmail function
-interface SendOrderEmailParams {
-  env: Env;
-  to: string;
-  name: string;
-  total: string;
-  orderId: string;
-  customerPhone: string;
-  customerAddress: string;
-}
-
-// Parameters for sendBookingEmail function
-interface SendBookingEmailParams {
-  env: Env;
-  to: string;
-  customer_name: string;
-  booking_id: string;
-  customer_phone: string;
-  customer_email: string;
-  date: string;
-  time: string;
-  number_of_people: number;
-}
-
-export async function sendEmail({ env, data }: SendEmailParams) {
-  console.log(env);
-
-  const client = brevoClient(env.BREVO_API_KEY);
-
-  let emailContent: { text: string; html: string };
-  let subject: string;
-  let recipientName: string;
-  let recipientEmail: string;
-
-  if (data.type === "order") {
-    // Handle order confirmation email
-    emailContent = newOrderHtmlTemplate({
+const emailDefinitions: EmailDefinitions = {
+  order_placed: (data) => ({
+    subject: `Order ${data.orderId} Confirmed - Lobango`,
+    recipientName: data.name,
+    content: newOrderHtmlTemplate({
       name: data.name,
       total: data.total,
       orderId: data.orderId,
       customerAddress: data.customerAddress,
       customerPhone: data.customerPhone,
-    });
-    subject = `Order ${data.orderId} Confirmed`;
-    recipientName = data.name;
-    recipientEmail = data.to;
-  } else if (data.type === "booking") {
-    // Handle booking confirmation email
-    emailContent = bookingConfirmationHtmlTemplate({
-      customer_name: data.customer_name,
-      booking_id: data.booking_id,
-      customer_phone: data.customer_phone,
-      customer_email: data.customer_email,
+    }),
+  }),
+
+  order_status_update: (data) => {
+    const templateStatus = toTemplateOrderStatus(data.status);
+    return {
+      subject: `Order ${data.orderId} Update - ${formatStatus(data.status)}`,
+      recipientName: data.name,
+      content: orderStatusUpdateHtmlTemplate({
+        customer_name: data.name,
+        order_id: data.orderId,
+        status: templateStatus,
+        reason: data.reason,
+      }),
+    };
+  },
+
+  booking_confirmed: (data) => ({
+    subject: `Reservation ${data.bookingId} Confirmed - Lobango`,
+    recipientName: data.customerName,
+    content: bookingConfirmationHtmlTemplate({
+      customer_name: data.customerName,
+      booking_id: data.bookingId,
+      customer_phone: data.customerPhone,
+      customer_email: data.customerEmail,
       date: data.date,
       time: data.time,
-      number_of_people: data.number_of_people,
-    });
-    subject = `Reservation ${data.booking_id} Confirmed`;
-    recipientName = data.customer_name;
-    recipientEmail = data.to;
-  } else {
-    throw new Error("Invalid email type");
+      number_of_people: data.numberOfPeople,
+    }),
+  }),
+
+  booking_status_update: (data) => {
+    const templateStatus = toTemplateBookingStatus(data.status);
+    return {
+      subject: `Reservation ${data.bookingId} Update - ${formatStatus(data.status)}`,
+      recipientName: data.customerName,
+      content: bookingStatusUpdateHtmlTemplate({
+        customer_name: data.customerName,
+        booking_id: data.bookingId,
+        status: templateStatus,
+        date: data.date,
+        time: data.time,
+        reason: data.reason,
+      }),
+    };
+  },
+
+  otp: (data) => ({
+    subject: `Your verification code: ${data.otp}`,
+    recipientName: data.name ?? "Customer",
+    content: otpHtmlTemplate({
+      customer_name: data.name ?? "Customer",
+      otp: data.otp,
+      expiry_minutes: data.expiresInMinutes,
+    }),
+  }),
+};
+
+function formatStatus(status: string): string {
+  return status
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function renderEmail(data: EmailData): RenderedEmail {
+  const definition = emailDefinitions[data.type] as (
+    data: EmailData
+  ) => RenderedEmail;
+  return definition(data);
+}
+
+export async function sendEmail({ env, data }: SendEmailParams) {
+  const apiKey = env.BREVO_API_KEY;
+
+  if (!apiKey) {
+    throw new EmailDeliveryError("Brevo API key is not configured");
   }
 
-  const payload: Brevo.SendSmtpEmail = {
+  const { subject, recipientName, content } = renderEmail(data);
+
+  const payload = {
     subject,
     sender: {
       email: env.BREVO_SENDER_EMAIL,
-      name: env.BREVO_SENDER_NAME || "Lobango",
+      name: env.BREVO_SENDER_NAME,
     },
-    to: [{ email: recipientEmail, name: recipientName }],
-    htmlContent: emailContent.html,
-    textContent: emailContent.text,
+    to: [{ email: data.to, name: recipientName }],
+    htmlContent: content.html,
+    textContent: content.text,
   };
 
-  return await client.sendTransacEmail(payload);
+  try {
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new EmailDeliveryError(
+      `Failed to send "${data.type}" email to ${data.to}`,
+      error
+    );
+  }
 }
 
-// Legacy function for backward compatibility (optional)
-export async function sendOrderEmail({
-  env,
-  to,
-  name,
-  total,
-  orderId,
-  customerPhone,
-  customerAddress,
-}: SendOrderEmailParams) {
-  return sendEmail({
-    env,
-    data: {
-      type: "order",
-      to,
-      name,
-      total,
-      orderId,
-      customerPhone,
-      customerAddress,
-    },
-  });
+export function sendOrderPlacedEmail(
+  params: Omit<OrderPlacedEmailData, "type"> & { env: SendEmailEnv }
+) {
+  const { env, ...data } = params;
+  return sendEmail({ env, data: { type: "order_placed", ...data } });
 }
 
-// booking emails
-export async function sendBookingEmail({
-  env,
-  to,
-  customer_name,
-  booking_id,
-  customer_phone,
-  customer_email,
-  date,
-  time,
-  number_of_people,
-}: SendBookingEmailParams) {
-  return sendEmail({
-    env,
-    data: {
-      type: "booking",
-      to,
-      customer_name,
-      booking_id,
-      customer_phone,
-      customer_email,
-      date,
-      time,
-      number_of_people,
-    },
-  });
+export function sendOrderStatusUpdateEmail(
+  params: Omit<OrderStatusUpdateEmailData, "type"> & { env: SendEmailEnv }
+) {
+  const { env, ...data } = params;
+  return sendEmail({ env, data: { type: "order_status_update", ...data } });
+}
+
+export function sendBookingConfirmedEmail(
+  params: Omit<BookingConfirmedEmailData, "type"> & { env: SendEmailEnv }
+) {
+  const { env, ...data } = params;
+  return sendEmail({ env, data: { type: "booking_confirmed", ...data } });
+}
+
+export function sendBookingStatusUpdateEmail(
+  params: Omit<BookingStatusUpdateEmailData, "type"> & { env: SendEmailEnv }
+) {
+  const { env, ...data } = params;
+  return sendEmail({ env, data: { type: "booking_status_update", ...data } });
+}
+
+export function sendOtpEmail(
+  params: Omit<OtpEmailData, "type"> & { env: SendEmailEnv }
+) {
+  const { env, ...data } = params;
+  return sendEmail({ env, data: { type: "otp", ...data } });
 }

@@ -12,6 +12,14 @@ import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { API_TAG_DEFINITIONS } from "./orpc/openapi/tags";
+import { EmailQueueMessage } from "./types/queue";
+import {
+  sendBookingConfirmedEmail,
+  sendBookingStatusUpdateEmail,
+  sendOrderPlacedEmail,
+  sendOrderStatusUpdateEmail,
+  sendOtpEmail,
+} from "./utils/sendEmail";
 import { withCookies } from "./utils/withCookies";
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -121,4 +129,89 @@ app.use("/openapi/*", async (context, next) => {
   await next();
 });
 
-export default app;
+export default {
+  fetch: app.fetch,
+
+  async queue(batch: MessageBatch<EmailQueueMessage>, env: Env): Promise<void> {
+    for (const message of batch.messages) {
+      try {
+        const payload = message.body;
+
+        switch (payload.type) {
+          case "order-confirmation":
+            await sendOrderPlacedEmail({
+              env,
+              to: payload.to,
+              name: payload.name,
+              total: payload.total,
+              orderId: payload.orderId,
+              customerPhone: payload.customerPhone,
+              customerAddress: payload.customerAddress,
+            });
+            break;
+
+          case "order-status-update":
+            await sendOrderStatusUpdateEmail({
+              env,
+              to: payload.to,
+              name: payload.name,
+              orderId: payload.orderId,
+              status: payload.status,
+              reason: payload.reason,
+            });
+            break;
+
+          case "booking-confirmation":
+            await sendBookingConfirmedEmail({
+              env,
+              to: payload.to,
+              customerName: payload.customerName,
+              bookingId: payload.bookingId,
+              customerPhone: payload.customerPhone,
+              customerEmail: payload.customerEmail,
+              date: payload.date,
+              time: payload.time,
+              numberOfPeople: payload.numberOfPeople,
+            });
+            break;
+
+          case "booking-status-update":
+            await sendBookingStatusUpdateEmail({
+              env,
+              to: payload.to,
+              customerName: payload.customerName,
+              bookingId: payload.bookingId,
+              status: payload.status,
+              date: payload.date,
+              time: payload.time,
+              reason: payload.reason,
+            });
+            break;
+
+          case "otp":
+            await sendOtpEmail({
+              env,
+              to: payload.to,
+              name: payload.name,
+              otp: payload.otp,
+              expiresInMinutes: payload.expiresInMinutes,
+            });
+            break;
+
+          default: {
+            const _exhaustive: never = payload;
+            console.warn("Unhandled email queue message", _exhaustive);
+          }
+        }
+
+        message.ack();
+      } catch (err) {
+        console.error("Failed to process email", {
+          error: err,
+          body: message.body,
+        });
+        message.retry();
+      }
+    }
+  },
+};

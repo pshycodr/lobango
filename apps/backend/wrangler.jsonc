@@ -17,7 +17,7 @@
   },
   "secrets": {
     "required": [
-      "BREVO_SMTP_API_KEY",
+      "BREVO_API_KEY",
       "BREVO_SENDER_NAME",
       "BREVO_SENDER_EMAIL",
       "RAZORPAY_KEY_ID",
@@ -38,5 +38,23 @@
       "database_name": "lobangodb",
       "database_id": "ccde44e8-78a6-4d78-84e6-b93dac2ac215"
     }
-  ]
+  ],
+  "queues": {
+    "producers": [
+      {
+        "queue": "email-queue",
+        "binding": "EMAIL_QUEUE"
+      }
+    ],
+     "consumers": [
+      {
+        "queue": "email-queue",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 3,
+        "max_concurrency": 5
+      }
+    ]
+  }
 }
+
