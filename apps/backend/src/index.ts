@@ -108,6 +108,17 @@ const openApiHandler = new OpenAPIHandler(openApiRouter, {
             "Public and internal API for Lobango ordering and admin operations.",
         },
         tags: API_TAG_DEFINITIONS,
+        components: {
+          securitySchemes: {
+            adminSession: {
+              type: "apiKey",
+              in: "cookie",
+              name: "admin_auth",
+              description:
+                "Set after a successful admin login. Required for all admin endpoints.",
+            },
+          },
+        },
         "x-tagGroups": API_TAG_GROUPS,
       } as any,
       docsConfig: {
