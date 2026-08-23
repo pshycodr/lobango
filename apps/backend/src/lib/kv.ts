@@ -1,4 +1,6 @@
-export async function setKV<T>(
+import { OtpPurpose } from "@lobango/contracts/otp";
+
+async function setKV<T>(
   kv: KVNamespace,
   key: string,
   value: T,
@@ -17,10 +19,7 @@ export async function setKV<T>(
   });
 }
 
-export async function getKV<T>(
-  kv: KVNamespace,
-  key: string
-): Promise<T | null> {
+async function getKV<T>(kv: KVNamespace, key: string): Promise<T | null> {
   const raw = await kv.get(key, { type: "text" });
   if (raw === null) return null;
   try {
@@ -30,14 +29,19 @@ export async function getKV<T>(
   }
 }
 
-export async function deleteKV(kv: KVNamespace, key: string): Promise<void> {
+async function deleteKV(kv: KVNamespace, key: string): Promise<void> {
   await kv.delete(key);
 }
 
-export const kvKeys = {
+const kvKeys = {
   orderCache: (orderId: string) => `order-cache:${orderId}`,
   bookingCache: (bookingId: string) => `booking-cache:${bookingId}`,
   orderStatus: (orderId: string) => `order-status:${orderId}`,
+
+  otpKey: (purpose: OtpPurpose, email: string, resourceId?: string) =>
+    `otp:${purpose}:${email.toLowerCase().trim()}
+     ${resourceId ? `:${resourceId}` : ""}`,
+  otpActionKey: (actionToken: string) => `otp-action:${actionToken}`,
 
   admin: {
     ordersVersion: () => "admin:orders:version",
