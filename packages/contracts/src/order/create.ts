@@ -12,8 +12,8 @@ export type CreateOrderItem = z.infer<typeof CreateOrderItemSchema>;
 export const CreateOrderSchema = z.object({
   customerName: z.string().min(1),
   customerPhone: z.string().min(8),
-  customerEmail: z.email(),
-  customerAddress: z.string().min(5),
+  customerEmail: z.string().email(),
+  customerAddress: z.string().min(1),
   longitude: z.string(),
   latitude: z.string(),
   paymentMethod: PaymentMethodsSchema,

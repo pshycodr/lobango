@@ -4,7 +4,6 @@ import { payments } from "@/db/schema/payments";
 import { orpc } from "@/orpc/base";
 import { API_TAGS } from "@/orpc/openapi/tags";
 import { generateOrderId } from "@/utils/generateId";
-import { verifyRazorpaySignature } from "@/utils/verifyRazorpay";
 import {
   CreateOrderRequestSchema,
   CreateOrderResponseSchema,
@@ -23,7 +22,7 @@ export const createOrder = orpc
   .errors({
     BAD_REQUEST: { message: "Missing Razorpay payment details" },
   })
-  .handler(async ({ input, context, errors }) => {
+  .handler(async ({ input, context }) => {
     const db = getDB(context.env.DB);
     const { order, razorpay } = input;
 
@@ -32,30 +31,6 @@ export const createOrder = orpc
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-
-    if (order.paymentMethod === "razorpay") {
-      const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-        razorpay;
-
-      if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-        throw errors.BAD_REQUEST({
-          message: "Missing Razorpay payment details",
-        });
-      }
-
-      const isValid = verifyRazorpaySignature(
-        razorpay_order_id,
-        razorpay_payment_id,
-        razorpay_signature,
-        context.env.RAZORPAY_SECRET_KEY
-      );
-
-      if (!isValid) {
-        throw errors.BAD_REQUEST({
-          message: "Invalid Razorpay payment signature",
-        });
-      }
-    }
 
     let orderId: string;
     while (true) {

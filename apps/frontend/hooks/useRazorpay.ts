@@ -3,6 +3,7 @@ import type { Address } from "@/types/address";
 import type { CartItem } from "@/types/cart";
 import type { LoadingState, PaymentData } from "@/types/checkout";
 import type { CreateOrder, RazorPay } from "@lobango/contracts/order";
+import type { VerifyRazorPaySignatureRequest } from "@lobango/contracts/payments/razorpay";
 import { useCallback } from "react";
 
 export interface UseRazorpayProps {
@@ -84,13 +85,28 @@ export function useRazorpay({
           message: "Verifying payment...",
         });
 
-        const razorpayPayload: RazorPay = {
-          razorpay_payment_id: response.razorpay_payment_id,
+        if (
+          !response.razorpay_order_id ||
+          !response.razorpay_payment_id ||
+          !response.razorpay_signature
+        ) {
+          throw new Error("Invalid Razorpay payment response.");
+        }
+
+        const razorpayPayload: VerifyRazorPaySignatureRequest = {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
+          razorpay_payment_id: response.razorpay_payment_id,
         };
 
-        const verifyRes = await client.order.createOrder({
+        const verify =
+          await client.payment.verifyPaymentSignature(razorpayPayload);
+
+        if (!verify.success) {
+          throw new Error("Faild to verify Razorpay payment");
+        }
+
+        const order = await client.order.createOrder({
           order: orderData,
           razorpay: razorpayPayload,
         });
@@ -102,7 +118,7 @@ export function useRazorpay({
 
         clearCart();
         if (typeof window !== "undefined") {
-          localStorage.setItem("orderId", verifyRes.orderId);
+          localStorage.setItem("orderId", order.orderId);
         }
 
         setLoadingState({ type: "none", message: "" });
@@ -110,7 +126,7 @@ export function useRazorpay({
         onPaymentSuccess({
           amount: total,
           paymentId: response.razorpay_payment_id,
-          orderId: verifyRes.orderId,
+          orderId: order.orderId,
           customerName: selectedAddress.name,
         });
       } catch (error) {
@@ -132,16 +148,25 @@ export function useRazorpay({
           message: "Creating payment order...",
         });
 
+        const formatFullAddress = (addr: Address): string => {
+          const parts = [addr.address, addr.city, addr.state, addr.zipCode]
+            .map((part) => (part || "").trim())
+            .filter(Boolean);
+
+          const combined = parts.join(", ");
+          return combined.length > 0 ? combined : (addr.address || "").trim();
+        };
+
         const orderData: CreateOrder = {
-          customerName: selectedAddress.name,
-          customerPhone: selectedAddress.phone,
-          customerEmail: selectedAddress.email,
-          customerAddress: selectedAddress.address,
-          longitude: selectedAddress.longitude,
-          latitude: selectedAddress.latitude,
+          customerName: selectedAddress.name.trim(),
+          customerPhone: selectedAddress.phone.trim(),
+          customerEmail: selectedAddress.email.trim(),
+          customerAddress: formatFullAddress(selectedAddress),
+          longitude: selectedAddress.longitude || "none",
+          latitude: selectedAddress.latitude || "none",
           paymentMethod: "razorpay",
           items: cart.map((item) => ({
-            name: item.name,
+            name: item.name.trim(),
             price: item.price,
             quantity: item.quantity,
           })),

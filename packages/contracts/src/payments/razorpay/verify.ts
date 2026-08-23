@@ -1,11 +1,13 @@
 import { z } from "zod";
 
 export const VerifyRazorPaySignatureRequestSchema = z.object({
-  orderId: z.string().describe("Razorpay order ID associated with the payment"),
-  paymentId: z
+  razorpay_order_id: z
+    .string()
+    .describe("Razorpay order ID associated with the payment"),
+  razorpay_payment_id: z
     .string()
     .describe("Razorpay payment ID returned after the payment"),
-  signature: z
+  razorpay_signature: z
     .string()
     .describe("Razorpay payment signature used to verify the payment"),
 });
