@@ -10,6 +10,7 @@
     "./order": "./src/order/index.ts",
     "./admin": "./src/admin/index.ts",
     "./enums": "./src/enums/index.ts",
+    "./otp": "./src/otp/index.ts",
     "./permissions/*": "./src/permissions/*/index.ts",
     "./payments/*": "./src/payments/*/index.ts"
   },

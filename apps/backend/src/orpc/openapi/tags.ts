@@ -10,6 +10,10 @@ export const API_TAGS = {
     BOOKING: "Client Bookings",
     PERMISSION: "Client Permissions",
   },
+  SHARED: {
+    OTP: "Shared OTP",
+  },
+
   PAYMENTS: "Payments",
 } as const;
 
@@ -33,6 +37,8 @@ const descriptions: Record<ApiTag, string> = {
   [API_TAGS.CLIENT.PERMISSION]:
     "Check whether ordering/booking is currently open.",
 
+  [API_TAGS.SHARED.OTP]: "Generate OTP, Send with email and Verify OTP Securly",
+
   [API_TAGS.PAYMENTS]: "Razorpay order creation and payment verification.",
 };
 
@@ -43,7 +49,10 @@ export const API_TAG_DEFINITIONS = Object.entries(descriptions).map(
   })
 );
 
-export const API_TAG_GROUPS = [
+export const API_TAG_GROUPS: Array<{
+  name: string;
+  tags: ApiTag[];
+}> = [
   {
     name: "Admin",
     tags: [
@@ -60,6 +69,10 @@ export const API_TAG_GROUPS = [
       API_TAGS.CLIENT.BOOKING,
       API_TAGS.CLIENT.PERMISSION,
     ],
+  },
+  {
+    name: "Shared",
+    tags: [API_TAGS.SHARED.OTP],
   },
   {
     name: "Payments",
