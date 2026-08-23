@@ -23,6 +23,7 @@ export function OrderTrackingView({ searchOrderId }: OrderTrackingViewProps) {
     status,
     errorMessage,
     showInput,
+    fetchOrder,
     handleOrderIdSubmit,
     handleTryAnotherId,
     handleRetry,
@@ -72,6 +73,7 @@ export function OrderTrackingView({ searchOrderId }: OrderTrackingViewProps) {
             <OrderDetails
               order={orderData.order}
               onTryAnother={handleTryAnotherId}
+              onOrderCancelled={() => fetchOrder(orderData.order.orderId)}
             />
             <OrderItems
               items={orderData.items}

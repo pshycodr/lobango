@@ -19,8 +19,10 @@ export interface StatusStep {
 export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
   const getStatusSteps = (status: string): StatusStep[] => {
     const normalizedStatus = status.toLowerCase();
-    const isRejected =
-      normalizedStatus === "rejected" || normalizedStatus === "cancelled";
+    const isCancelled =
+      normalizedStatus === "cancelled" || normalizedStatus === "canceld";
+    const isRejected = normalizedStatus === "rejected";
+    const isTerminated = isCancelled || isRejected;
 
     const steps: StatusStep[] = [
       {
@@ -44,7 +46,7 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
         ].includes(normalizedStatus),
         isActive:
           normalizedStatus === "accepted" || normalizedStatus === "preparing",
-        isRejected,
+        isRejected: isTerminated,
       },
       {
         id: "out for delivery",
@@ -54,7 +56,7 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
         isActive:
           normalizedStatus === "out for delivery" ||
           normalizedStatus === "out_for_delivery",
-        isRejected,
+        isRejected: isTerminated,
       },
       {
         id: "delivered",
@@ -62,9 +64,23 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
         description: "Order successfully delivered",
         isCompleted: normalizedStatus === "delivered",
         isActive: normalizedStatus === "delivered",
-        isRejected,
+        isRejected: isTerminated,
       },
     ];
+
+    if (isCancelled) {
+      return [
+        steps[0],
+        {
+          id: "cancelled",
+          label: "Order Cancelled",
+          description: "This order was cancelled",
+          isCompleted: true,
+          isActive: true,
+          isRejected: true,
+        },
+      ];
+    }
 
     if (isRejected) {
       return [
@@ -87,7 +103,8 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
 
   const isRejected =
     currentStatus.toLowerCase() === "rejected" ||
-    currentStatus.toLowerCase() === "cancelled";
+    currentStatus.toLowerCase() === "cancelled" ||
+    currentStatus.toLowerCase() === "canceld";
 
   const lineProgress = useMemo(() => {
     const completedCount = steps.filter((s) => s.isCompleted).length;
@@ -129,9 +146,16 @@ export function OrderStatusTracker({ currentStatus }: OrderStatusTrackerProps) {
           borderColor: "border-green-400/30",
         };
       case "rejected":
-      case "cancelled":
         return {
           message: "Order could not be processed",
+          color: "text-red-400",
+          bgColor: "bg-red-400/10",
+          borderColor: "border-red-400/30",
+        };
+      case "cancelled":
+      case "canceld":
+        return {
+          message: "Order has been cancelled",
           color: "text-red-400",
           bgColor: "bg-red-400/10",
           borderColor: "border-red-400/30",

@@ -1,3 +1,5 @@
+import { CancelOrderModal } from "@/components/ViewOrder/CancelOrderModal";
+import { useCancelOrder } from "@/hooks/useCancelOrder";
 import type { Order } from "@lobango/contracts/order";
 import { Playfair_Display } from "next/font/google";
 import React from "react";
@@ -8,9 +10,38 @@ const playfair = Playfair_Display({ subsets: ["latin"] });
 export interface OrderDetailsProps {
   order: Order;
   onTryAnother: () => void;
+  onOrderCancelled?: () => void;
 }
 
-export function OrderDetails({ order, onTryAnother }: OrderDetailsProps) {
+export function OrderDetails({
+  order,
+  onTryAnother,
+  onOrderCancelled,
+}: OrderDetailsProps) {
+  const isCancellable =
+    order.status === "pending" || order.status === "accepted";
+
+  const {
+    isModalOpen,
+    step,
+    otp,
+    isLoading,
+    isResending,
+    error,
+    resendCountdown,
+    openModal,
+    closeModal,
+    setOtp,
+    handleRequestOtp,
+    handleResendOtp,
+    handleVerifyAndCancel,
+  } = useCancelOrder({
+    orderId: order.orderId,
+    customerEmail: order.customerEmail,
+    customerName: order.customerName,
+    onSuccess: onOrderCancelled,
+  });
+
   const getPaymentStatusColor = (status: string) => {
     return status.toLowerCase() === "paid" ? "text-green-400" : "text-red-400";
   };
@@ -114,8 +145,45 @@ export function OrderDetails({ order, onTryAnother }: OrderDetailsProps) {
               </div>
             </div>
           </div>
+
+          {isCancellable && (
+            <div className="flex flex-col gap-3 rounded-lg border border-red-500/20 bg-red-500/5 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-medium text-(--white)">
+                  Need to cancel this order?
+                </p>
+                <p className="text-xs text-(--quick-silver)">
+                  Cancellation is available while your order is being prepared.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={openModal}
+                className="shrink-0 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2 text-xs font-semibold text-red-400 transition-all hover:bg-red-600 hover:text-white"
+              >
+                Cancel Order
+              </button>
+            </div>
+          )}
         </div>
       </div>
+
+      <CancelOrderModal
+        isOpen={isModalOpen}
+        step={step}
+        customerEmail={order.customerEmail}
+        orderId={order.orderId}
+        otp={otp}
+        isLoading={isLoading}
+        isResending={isResending}
+        error={error}
+        resendCountdown={resendCountdown}
+        onClose={closeModal}
+        onOtpChange={setOtp}
+        onRequestOtp={handleRequestOtp}
+        onResendOtp={handleResendOtp}
+        onVerifyAndCancel={handleVerifyAndCancel}
+      />
     </div>
   );
 }
