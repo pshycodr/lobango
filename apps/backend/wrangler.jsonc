@@ -11,6 +11,11 @@
     "ADMIN_ORDERS_CACHE_TTL": 60,
     "ADMIN_BOOKING_CACHE_TTL": 60,
 
+    "OTP_TTL" : 300, // seconds -> 5 mins
+    "OTP_ACTION_TOEKN_TTL" : 120,
+    "OTP_MAX_ATTEMPTS" : 5,
+
+
     "ADMIN_AUTH_TOKEN_TTL": 604800, // seconds -> 7 days
     "ADMIN_AUTH_COOKIE_KEY": "admin_auth",
     "JWT_SINATURE_ALGO": "HS256"

@@ -8,8 +8,6 @@ import {
   SendOtpEmailResponseSchema,
 } from "@lobango/contracts/otp";
 
-const OTP_TTL_SECONDS = 300;
-
 export const sendOtpEmail = orpc
   .route({
     method: "POST",
@@ -45,8 +43,8 @@ export const sendOtpEmail = orpc
 
     await context.cache.set(
       context.cache.getKey.otpKey(input.purpose, input.email, input.resourceId),
-      { hash, attempts: 0, expiresAt: Date.now() + OTP_TTL_SECONDS * 1000 },
-      OTP_TTL_SECONDS
+      { hash, attempts: 0, expiresAt: Date.now() + context.env.OTP_TTL * 1000 },
+      context.env.OTP_TTL
     );
 
     await context.env.EMAIL_QUEUE.send({
@@ -54,7 +52,7 @@ export const sendOtpEmail = orpc
       to: input.email,
       name: input.name,
       otp,
-      expiresInMinutes: 5,
+      expiresInMinutes: context.env.OTP_TTL / 60,
     });
 
     return { success: true as const };

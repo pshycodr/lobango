@@ -9,8 +9,6 @@ import {
 } from "@lobango/contracts/otp";
 import { timingSafeEqual } from "crypto";
 
-const MAX_ATTEMPTS = 5;
-
 export interface OtpActionData {
   email: string;
   purpose: string;
@@ -46,7 +44,7 @@ export const verifyOtp = orpc
     }>(key);
 
     if (!record) throw errors.INVALID_OTP();
-    if (record.attempts >= MAX_ATTEMPTS) {
+    if (record.attempts >= context.env.OTP_MAX_ATTEMPTS) {
       await context.cache.delete(key);
       throw errors.TOO_MANY_REQUESTS();
     }
@@ -82,7 +80,7 @@ export const verifyOtp = orpc
     await context.cache.set(
       context.cache.getKey.otpActionKey(actionToken),
       otpActionData,
-      120
+      context.env.OTP_ACTION_TOEKN_TTL
     );
 
     return { actionToken };

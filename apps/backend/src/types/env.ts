@@ -24,5 +24,9 @@ export type Bindings = {
   ADMIN_ORDERS_CACHE_TTL: number;
   ADMIN_BOOKING_CACHE_TTL: number;
 
+  OTP_TTL: number;
+  OTP_ACTION_TOEKN_TTL: number;
+  OTP_MAX_ATTEMPTS: number;
+
   ADMIN_AUTH_COOKIE_KEY: string;
 };
